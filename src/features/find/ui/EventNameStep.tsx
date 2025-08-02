@@ -11,11 +11,28 @@ interface EventNameStepProps {
   setCurrentStep: (step: number) => void;
   setName: (name: string) => void;
   name: string;
+  eventName: string;
+  eventDate: string;
+  eventTime: string;
+  setEventName: (eventName: string) => void;
+  setEventDate: (eventDate: string) => void;
+  setEventTime: (eventTime: string) => void;
 }
 
-export const EventNameStep = ({ setCurrentStep, setName, name }: EventNameStepProps) => {
-  const { value, error, handleChange, validateValue, isValid } = useValidation(name, validateEventName);
+export const EventNameStep = ({ 
+  setCurrentStep, 
+  setName, 
+  name, 
+  eventName, 
+  eventDate, 
+  eventTime, 
+  setEventName, 
+  setEventDate, 
+  setEventTime 
+}: EventNameStepProps) => {
+  const { value, error, handleChange, validateValue, isValid } = useValidation(eventName, validateEventName);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   useEffect(() => {
     const handleResize = () => {
@@ -35,7 +52,12 @@ export const EventNameStep = ({ setCurrentStep, setName, name }: EventNameStepPr
 
   const handleNext = () => {
     if (!validateValue()) return;
-    setName(value);
+    setEventName(value);
+    
+    // 날짜를 "YYYY-MM-DD" 형식으로 변환
+    const formattedDate = selectedDate.toISOString().split('T')[0];
+    setEventDate(formattedDate);
+    
     setCurrentStep(2);
   };
 
@@ -64,8 +86,8 @@ export const EventNameStep = ({ setCurrentStep, setName, name }: EventNameStepPr
             언제 모이시나요?
           </p>
           <div className="flex flex-row gap-[8px]">
-            <DatePicker />
-            <TimePicker value={""} onChange={() => {}} />       
+            <DatePicker value={selectedDate} onChange={setSelectedDate} />
+            <TimePicker value={eventTime} onChange={setEventTime} />       
           </div>
         </div>
       </div>

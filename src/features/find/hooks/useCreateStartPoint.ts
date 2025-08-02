@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { addMember, createEvent } from "../service";
-import { FormattedData } from "../model";
+import { FormattedData, CreateEventData } from "../model";
 import { getCookie, setCookie } from "@/shared/utils";
 
 export const useCreateStartPoint = (eventIdParam: string | null) => {
@@ -39,11 +39,11 @@ export const useCreateStartPoint = (eventIdParam: string | null) => {
     },
   });
 
-  const handleSubmit = (data: FormattedData) => {
+  const handleSubmit = (data: FormattedData | CreateEventData) => {
     if (eventIdExists && eventIdParam) {
-      addMemberMutate({ payload: data, eventId: eventIdParam });
+      addMemberMutate({ payload: data as FormattedData, eventId: eventIdParam });
     } else {
-      createEventMutate(data);
+      createEventMutate(data as CreateEventData);
     }
   };
 

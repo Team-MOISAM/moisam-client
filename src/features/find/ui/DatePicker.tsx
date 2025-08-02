@@ -11,9 +11,13 @@ import {
 } from "@/components/ui/popover"
 import { useIsMobile } from "@/shared/hooks"
 
-export function DatePicker() {
+interface DatePickerProps {
+  value: Date;
+  onChange: (date: Date) => void;
+}
+
+export function DatePicker({ value, onChange }: DatePickerProps) {
   const [open, setOpen] = React.useState(false)
-  const [date, setDate] = React.useState<Date>(new Date())
   const isMobile = useIsMobile()
 
   return (
@@ -25,7 +29,7 @@ export function DatePicker() {
             id="date"
             className="w-48 h-[48px] justify-between font-normal bg-gray-5"
           >
-            {date.getFullYear()}.{String(date.getMonth() + 1).padStart(2, '0')}.{String(date.getDate()).padStart(2, '0')}
+            {value.getFullYear()}.{String(value.getMonth() + 1).padStart(2, '0')}.{String(value.getDate()).padStart(2, '0')}
             <img src={calender} alt="calender" />
           </Button>
         </PopoverTrigger>
@@ -38,11 +42,11 @@ export function DatePicker() {
         >
           <Calendar
             mode="single"
-            selected={date}
+            selected={value}
             captionLayout="dropdown"
             onSelect={(date) => {
               if (date) {
-                setDate(date)
+                onChange(date)
                 setOpen(false)
               }
             }}

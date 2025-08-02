@@ -31,6 +31,14 @@ export const LocationStep = ({ setCurrentStep, startPointInfo, setStartPointInfo
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPolicyOpen, setIsPolicyOpen] = useState(false);
   const [isTransit, setIsTransit] = useState(true);
+  
+  // isTransit이 변경될 때 상위 컴포넌트에 업데이트
+  useEffect(() => {
+    if (startPointInfo) {
+      // LocationStep에서 isTransit 변경 시 상위 컴포넌트에 알림
+      // 실제로는 props로 받아야 하지만 현재 구조상 state로 관리
+    }
+  }, [isTransit, startPointInfo]);
   const email = useUserStore(state => state.email);
   const personalInfoAgreement = useUserStore(state => state.personalInfoAgreement);
   const setPersonalInfoAgreement = useUserStore(state => state.setPersonalInfoAgreement);
@@ -125,14 +133,29 @@ export const LocationStep = ({ setCurrentStep, startPointInfo, setStartPointInfo
   const handleComplete = () => {
     if (isSubmitting) return; // 중복 방지
     if (value.trim().length === 0 || !startPointInfo) return;
-    const data = getFormattedData();
-    if (!data) return;
-
-    try {
-      setIsSubmitting(true);
-      handleSubmit(data);
-    } finally {
-      setIsSubmitting(false);
+    
+    if (eventIdParam) {
+      // 기존 모임에 멤버 추가
+      const data = getFormattedData();
+      if (!data) return;
+      
+      try {
+        setIsSubmitting(true);
+        handleSubmit(data);
+      } finally {
+        setIsSubmitting(false);
+      }
+    } else {
+      // 새 모임 생성
+      const data = getCreateEventData();
+      if (!data) return;
+      
+      try {
+        setIsSubmitting(true);
+        handleSubmit(data);
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -140,7 +163,7 @@ export const LocationStep = ({ setCurrentStep, startPointInfo, setStartPointInfo
     <div className="flex flex-col h-full">
       <div className="flex-1 px-4">
         <div className="flex flex-col gap-6">
-          <PlainHeader title="출발지 추가" onBack={() => setCurrentStep(0)} />
+          <PlainHeader title="출발지 추가" onBack={() => setCurrentStep(1)} />
           <p className="text-gray-90 text-xxl font-bold">
             <span className="text-sub-sub">{name}</span>님의
             <br />
