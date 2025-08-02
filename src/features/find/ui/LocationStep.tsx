@@ -11,21 +11,26 @@ import NoResult from "@/assets/icon/noresult.svg";
 import { useSearch } from "@/entities/place/hooks";
 import { StartPoint } from "@/entities/place/model";
 import { useUserStore } from "@/shared/stores";
+import { TransportToggle } from "./TransportToggle";
 
 interface LocationStepProps {
   setCurrentStep: (step: number) => void;
   startPointInfo: StartPointInfo | null;
   setStartPointInfo: (info: StartPointInfo) => void;
   name: string;
+  eventName: string;
+  eventDate: string;
+  eventTime: string;
 }
 
-export const LocationStep = ({ setCurrentStep, startPointInfo, setStartPointInfo, name }: LocationStepProps) => {
+export const LocationStep = ({ setCurrentStep, startPointInfo, setStartPointInfo, name, eventName, eventDate, eventTime }: LocationStepProps) => {
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [searchParams] = useSearchParams();
   const eventIdParam = searchParams.get("eventId");
   const [locationError, setLocationError] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPolicyOpen, setIsPolicyOpen] = useState(false);
+  const [isTransit, setIsTransit] = useState(true);
   const email = useUserStore(state => state.email);
   const personalInfoAgreement = useUserStore(state => state.personalInfoAgreement);
   const setPersonalInfoAgreement = useUserStore(state => state.setPersonalInfoAgreement);
@@ -100,6 +105,23 @@ export const LocationStep = ({ setCurrentStep, startPointInfo, setStartPointInfo
     };
   };
 
+  const getCreateEventData = () => {
+    if (!startPointInfo) return null;
+
+    return {
+      eventName,
+      eventDate,
+      eventTime,
+      username: name,
+      startPoint: startPointInfo.startPoint,
+      address: startPointInfo.address,
+      roadAddress: startPointInfo.roadAddress,
+      longitude: startPointInfo.longitude,
+      latitude: startPointInfo.latitude,
+      isTransit: isTransit,
+    };
+  };
+
   const handleComplete = () => {
     if (isSubmitting) return; // 중복 방지
     if (value.trim().length === 0 || !startPointInfo) return;
@@ -167,6 +189,14 @@ export const LocationStep = ({ setCurrentStep, startPointInfo, setStartPointInfo
               <div className="flex flex-col items-center justify-center py-4">
                 <img src={NoResult} alt="위치 에러" width={128} height={128} />
                 <p className="text-center text-gray-40 text-sm">현재 서울 내 지역인지 다시 확인해보세요</p>
+              </div>
+            )}
+            {startPointInfo && (
+              <div className="flex flex-col gap-4 mt-4">
+                <p className="text-gray-90 text-xxl font-bold">
+                  어떻게 오시나요?
+                </p>
+                <TransportToggle value={isTransit} onChange={setIsTransit} />
               </div>
             )}
           </div>

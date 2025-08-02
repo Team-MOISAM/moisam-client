@@ -2,7 +2,6 @@ import { useValidation } from "@/shared/hooks";
 import Button from "@/shared/ui/Button";
 import { useEffect, useState } from "react";
 import { InputField } from "@/shared/ui";
-import { useNavigate } from "react-router-dom";
 import { PlainHeader } from "@/widgets/headers";
 import { validateEventName } from "@/shared/utils";
 import { DatePicker } from "./DatePicker";
