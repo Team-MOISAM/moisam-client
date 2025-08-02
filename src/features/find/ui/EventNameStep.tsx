@@ -21,10 +21,7 @@ interface EventNameStepProps {
 
 export const EventNameStep = ({ 
   setCurrentStep, 
-  setName, 
-  name, 
-  eventName, 
-  eventDate, 
+  eventName,
   eventTime, 
   setEventName, 
   setEventDate, 
