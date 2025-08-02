@@ -5,6 +5,7 @@ import { StartPointInfo } from "../model";
 import { useUserStore } from "@/shared/stores";
 import { useSearchParams } from "react-router-dom";
 import { formatName } from "@/shared/utils";
+import { EventNameStep } from "./EventNameStep";
 
 export const FindContainer = () => {
   const nickname = useUserStore(state => state.nickname);
@@ -25,7 +26,8 @@ export const FindContainer = () => {
   return (
     <div className="flex-1 gap-y-[16px]">
       {currentStep === 0 && <NameStep setCurrentStep={setCurrentStep} setName={setName} name={name} />}
-      {currentStep === 1 && (
+      {currentStep === 1 && <EventNameStep setCurrentStep={setCurrentStep} setName={setName} name={name} />}
+      {currentStep === 2 && (
         <LocationStep
           setCurrentStep={setCurrentStep}
           startPointInfo={startPointInfo}
