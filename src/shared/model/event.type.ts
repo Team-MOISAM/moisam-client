@@ -6,16 +6,13 @@ export interface MeetingPoint {
 
 export interface TransitRoute {
   trafficType: string;
-  distance: number;
-  sectionTime: number;
-  stationCount: number;
-
-  // type에 따른 선택적 필드들
   startExitNo?: string;
   endExitNo?: string;
+  distance: number;
   laneName?: string;
   startBoardName?: string;
   endBoardName?: string;
+  stationCount: number;
   passStopList?: {
     stations: {
       index: number;
@@ -24,6 +21,7 @@ export interface TransitRoute {
       y: string;
     }[];
   };
+  sectionTime: number;
 }
 
 export interface DrivingInfo {
@@ -45,6 +43,8 @@ export interface RouteResponse {
   isTransit: boolean;
   isMe: boolean;
   id: string;
+  userId: number;
+  guestId: string;
   nickname: string;
   profileImage: string | null;
   startName: string;
@@ -56,19 +56,27 @@ export interface RouteResponse {
   drivingInfo: DrivingInfo;
   drivingRoute: DrivingRoute[];
   totalTime: number;
-  guestId: string;
 }
 
 export interface ParkingLot {
   name: string;
-  distance: number;
-  latitude: number;
   longitude: number;
+  latitude: number;
+  distance: number;
 }
 
 export interface GetEventRouteResponse {
+  eventName: string;
+  eventDate: string;
+  eventTime: string;
   eventMaker: string;
+  placeName: string;
   peopleCount: number;
+  meetingPointRouteGroups: MeetingPointRouteGroup[];
+}
+
+export interface MeetingPointRouteGroup {
+  subwayId: number;
   averageTime: number;
   meetingPoint: MeetingPoint;
   routeResponse: RouteResponse[];
