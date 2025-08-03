@@ -17,6 +17,11 @@ export const MapModal = ({ onClose }: MapModalProps) => {
 
   if (!eventData || !detailEventData) return;
 
+  const firstGroup = eventData.meetingPointRouteGroups?.[0];
+  const meetingPoint = firstGroup?.meetingPoint;
+
+  if (!meetingPoint) return;
+
   const TransferMap = [
     {
       src: KakaoMap,
@@ -26,9 +31,9 @@ export const MapModal = ({ onClose }: MapModalProps) => {
         openKakaoMap({
           startLat: detailEventData.startLatitude,
           startLng: detailEventData.startLongitude,
-          endPoint: eventData.meetingPoint.endStationName,
-          endLat: eventData.meetingPoint.endLatitude,
-          endLng: eventData.meetingPoint.endLongitude,
+          endPoint: meetingPoint.endStationName,
+          endLat: meetingPoint.endLatitude,
+          endLng: meetingPoint.endLongitude,
           isPc: deviceType === "Mac PC" || deviceType === "Windows PC" || deviceType === "Unknown Device",
         }),
     },
@@ -41,9 +46,9 @@ export const MapModal = ({ onClose }: MapModalProps) => {
           startPoint: detailEventData.startName,
           startLat: detailEventData.startLatitude,
           startLng: detailEventData.startLongitude,
-          endPoint: eventData.meetingPoint.endStationName,
-          endLat: eventData.meetingPoint.endLatitude,
-          endLng: eventData.meetingPoint.endLongitude,
+          endPoint: meetingPoint.endStationName,
+          endLat: meetingPoint.endLatitude,
+          endLng: meetingPoint.endLongitude,
         }),
     },
     ...(deviceType === "iPhone"
@@ -54,9 +59,9 @@ export const MapModal = ({ onClose }: MapModalProps) => {
             text: "TMAP",
             onClick: () =>
               openTMAP({
-                endPoint: eventData.meetingPoint.endStationName,
-                endLat: eventData.meetingPoint.endLatitude,
-                endLng: eventData.meetingPoint.endLongitude,
+                endPoint: meetingPoint.endStationName,
+                endLat: meetingPoint.endLatitude,
+                endLng: meetingPoint.endLongitude,
               }),
           },
         ]

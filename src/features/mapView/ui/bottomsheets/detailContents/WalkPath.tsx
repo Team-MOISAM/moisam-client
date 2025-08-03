@@ -13,8 +13,11 @@ export const WalkPath = ({ sectionTime, distance, previousInfo, nextInfo }: Walk
 
   const nextTransferType = nextInfo?.trafficType;
 
+  const firstGroup = eventData?.meetingPointRouteGroups?.[0];
+  const meetingPoint = firstGroup?.meetingPoint;
+
   // 다음 역이 없으면 meetingPoint의 endStationName을 사용
-  const nextStationName = nextInfo?.startBoardName ?? eventData?.meetingPoint.endStationName;
+  const nextStationName = nextInfo?.startBoardName ?? meetingPoint?.endStationName;
 
   let displayStationName = nextStationName;
 
