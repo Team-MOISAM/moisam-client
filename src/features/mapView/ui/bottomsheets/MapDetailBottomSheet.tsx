@@ -25,14 +25,14 @@ export const MapDetailBottomSheet = ({ type, setType }: MapDetailBottomSheetProp
           setType={setType}
           averageDuration={type === "car" ? detailEventData.driveTime : detailEventData.transitTime}
           startPoint={detailEventData.startName}
-          endPoint={eventData.meetingPoint.endStationName}
+          endPoint={eventData.meetingPointRouteGroups?.[0]?.meetingPoint?.endStationName || ""}
           isMe={detailEventData.isMe}
         />
         <SnapBottomSheet.Content>
           {type === "subway" ? (
             <Path
               startPoint={detailEventData.startName}
-              endPoint={eventData.meetingPoint.endStationName}
+              endPoint={eventData.meetingPointRouteGroups?.[0]?.meetingPoint?.endStationName || ""}
               transferInfo={detailEventData.transitRoute}
             />
           ) : (
@@ -40,7 +40,7 @@ export const MapDetailBottomSheet = ({ type, setType }: MapDetailBottomSheetProp
               driveDistance={detailEventData.drivingInfo.distance}
               toll={detailEventData.drivingInfo.toll}
               taxiToll={detailEventData.drivingInfo.taxi}
-              parking={eventData.parkingLot}
+              parking={eventData.meetingPointRouteGroups?.[0]?.parkingLot}
             />
           )}
           <FixedButton />
