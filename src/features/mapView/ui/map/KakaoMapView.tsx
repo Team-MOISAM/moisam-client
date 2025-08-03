@@ -17,13 +17,13 @@ export function KakaoMapView() {
 
       window.kakao.maps.load(() => {
         if (mapRef.current) {
-                  const firstGroup = eventData.meetingPointRouteGroups?.[0];
-        if (!firstGroup?.meetingPoint) return;
-        
-        const centerLatLng = new window.kakao.maps.LatLng(
-          firstGroup.meetingPoint.endLatitude,
-          firstGroup.meetingPoint.endLongitude
-        );
+          const firstGroup = eventData.meetingPointRouteGroups?.[0];
+          if (!firstGroup?.meetingPoint) return;
+
+          const centerLatLng = new window.kakao.maps.LatLng(
+            firstGroup.meetingPoint.endLatitude,
+            firstGroup.meetingPoint.endLongitude
+          );
           setCenter(centerLatLng);
 
           const options = {
@@ -79,52 +79,52 @@ export function KakaoMapView() {
     const firstGroup = eventData?.meetingPointRouteGroups?.[0];
     if (firstGroup?.routeResponse) {
       firstGroup.routeResponse.forEach(user => {
-      const fullPath: kakao.maps.LatLng[] = [];
-      // 사용자의 시작 위치 추가
-      fullPath.push(new window.kakao.maps.LatLng(user.startLatitude, user.startLongitude));
+        const fullPath: kakao.maps.LatLng[] = [];
+        // 사용자의 시작 위치 추가
+        fullPath.push(new window.kakao.maps.LatLng(user.startLatitude, user.startLongitude));
 
-      if (user.isTransit) {
-        // 대중교통 경로: 각 지하철 구간의 정류장 좌표를 추가
-        user.transitRoute?.forEach(section => {
-          if (section.trafficType === "SUBWAY" && section.passStopList?.stations) {
-            section.passStopList.stations.forEach(station => {
-              fullPath.push(new window.kakao.maps.LatLng(parseFloat(station.y), parseFloat(station.x)));
-            });
-          }
-        });
-      } else {
-        // 자가용 경로: drivingRoute의 좌표들을 추가
-        user.drivingRoute?.forEach(route => {
-          route.coordinates?.forEach(coord => {
-            fullPath.push(new window.kakao.maps.LatLng(parseFloat(coord.y), parseFloat(coord.x)));
+        if (user.isTransit) {
+          // 대중교통 경로: 각 지하철 구간의 정류장 좌표를 추가
+          user.transitRoute?.forEach(section => {
+            if (section.trafficType === "SUBWAY" && section.passStopList?.stations) {
+              section.passStopList.stations.forEach(station => {
+                fullPath.push(new window.kakao.maps.LatLng(parseFloat(station.y), parseFloat(station.x)));
+              });
+            }
           });
+        } else {
+          // 자가용 경로: drivingRoute의 좌표들을 추가
+          user.drivingRoute?.forEach(route => {
+            route.coordinates?.forEach(coord => {
+              fullPath.push(new window.kakao.maps.LatLng(parseFloat(coord.y), parseFloat(coord.x)));
+            });
+          });
+        }
+
+        // 중간지점 좌표 마지막에 추가
+        fullPath.push(center);
+
+        // 1. 흰색 테두리용 선 (먼저 그림)
+        const borderLine = new window.kakao.maps.Polyline({
+          path: fullPath,
+          strokeWeight: 8, // 원래보다 굵게
+          strokeColor: "#FFF", // 테두리 색상
+          strokeOpacity: 1,
+          strokeStyle: "solid",
+          map: map,
         });
-      }
 
-      // 중간지점 좌표 마지막에 추가
-      fullPath.push(center);
+        // 2. 실제 선 (위에 겹쳐 그림)
+        const mainLine = new window.kakao.maps.Polyline({
+          path: fullPath,
+          strokeWeight: 4,
+          strokeColor: "#9494A8",
+          strokeOpacity: 1,
+          strokeStyle: "solid",
+          map: map,
+        });
 
-      // 1. 흰색 테두리용 선 (먼저 그림)
-      const borderLine = new window.kakao.maps.Polyline({
-        path: fullPath,
-        strokeWeight: 8, // 원래보다 굵게
-        strokeColor: "#FFF", // 테두리 색상
-        strokeOpacity: 1,
-        strokeStyle: "solid",
-        map: map,
-      });
-
-      // 2. 실제 선 (위에 겹쳐 그림)
-      const mainLine = new window.kakao.maps.Polyline({
-        path: fullPath,
-        strokeWeight: 4,
-        strokeColor: "#9494A8",
-        strokeOpacity: 1,
-        strokeStyle: "solid",
-        map: map,
-      });
-
-      window.polylines.push(borderLine, mainLine);
+        window.polylines.push(borderLine, mainLine);
       });
     }
   };
