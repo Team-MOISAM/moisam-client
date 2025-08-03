@@ -9,7 +9,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { useIsMobile } from "@/shared/hooks"
+import { useIsMobile, useResponsiveTranslate } from "@/shared/hooks"
 
 interface DatePickerProps {
   value: Date;
@@ -19,6 +19,7 @@ interface DatePickerProps {
 export function DatePicker({ value, onChange }: DatePickerProps) {
   const [open, setOpen] = React.useState(false)
   const isMobile = useIsMobile()
+  const translateX = useResponsiveTranslate()
 
   return (
     <div className="relative">
@@ -34,7 +35,8 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
           </Button>
         </PopoverTrigger>
         <PopoverContent 
-          className={`w-auto overflow-hidden p-0 ${!isMobile ? 'translate-x-[365px]' : ''}`}
+          className="w-auto overflow-hidden p-0"
+          style={!isMobile ? { transform: `translateX(${translateX}px)` } : {}}
           align={isMobile ? "center" : "start"}
           side={isMobile ? "top" : "bottom"}
           sideOffset={4} 

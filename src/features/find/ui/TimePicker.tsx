@@ -5,7 +5,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { useIsMobile } from "@/shared/hooks"
+import { useIsMobile, useResponsiveTranslate } from "@/shared/hooks"
 
 interface TimePickerProps {
   value: string;
@@ -15,6 +15,7 @@ interface TimePickerProps {
 export function TimePicker({ value, onChange }: TimePickerProps) {
   const [open, setOpen] = React.useState(false)
   const isMobile = useIsMobile()
+  const translateX = useResponsiveTranslate()
 
   // 30분 단위로 시간 생성
   const timeOptions = React.useMemo(() => {
@@ -57,7 +58,8 @@ export function TimePicker({ value, onChange }: TimePickerProps) {
         </Button>
       </PopoverTrigger>
       <PopoverContent 
-        className={`w-[116px] p-0 ${!isMobile ? 'translate-x-[365px]' : ''}`}
+        className="w-[116px] p-0"
+        style={!isMobile ? { transform: `translateX(${translateX}px)` } : {}}
         align={isMobile ? "center" : "start"}
         side="bottom" 
         sideOffset={4}
