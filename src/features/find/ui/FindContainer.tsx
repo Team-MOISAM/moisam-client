@@ -13,10 +13,16 @@ export const FindContainer = () => {
 
   const [searchParams] = useSearchParams();
   const startStepParam = searchParams.get("startStep");
+  const eventIdParam = searchParams.get("eventId");
 
-  const [name, setName] = useState(() =>
-    isLoggedIn && startStepParam === "1" && nickname ? formatName(nickname) : ""
-  );
+  const [name, setName] = useState(() => {
+    // eventId가 있으면 로그인된 사용자 이름 사용
+    if (eventIdParam && isLoggedIn && nickname) {
+      return formatName(nickname);
+    }
+    // 기존 로직
+    return isLoggedIn && startStepParam === "1" && nickname ? formatName(nickname) : "";
+  });
   const [currentStep, setCurrentStep] = useState(() => {
     // 쿼리로 전달받은 값이 1이면 1부터 시작, 아니면 0부터
     return +(startStepParam === "1");

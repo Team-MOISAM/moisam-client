@@ -163,7 +163,18 @@ export const LocationStep = ({ setCurrentStep, startPointInfo, setStartPointInfo
     <div className="flex flex-col h-full">
       <div className="flex-1 px-4">
         <div className="flex flex-col gap-6">
-          <PlainHeader title="출발지 추가" onBack={() => setCurrentStep(1)} />
+          <PlainHeader 
+            title="출발지 추가" 
+            onBack={() => {
+              if (eventIdParam) {
+                // eventId가 있으면 메인 페이지로 이동
+                window.history.back();
+              } else {
+                // 새 모임 생성이면 이전 스텝으로
+                setCurrentStep(1);
+              }
+            }} 
+          />
           <p className="text-gray-90 text-xxl font-bold">
             <span className="text-sub-sub">{name}</span>님의
             <br />
@@ -232,7 +243,7 @@ export const LocationStep = ({ setCurrentStep, startPointInfo, setStartPointInfo
             marginBottom: keyboardHeight > 0 ? `${keyboardHeight + 20}px` : "20px",
           }}>
           <Button onClick={handleComplete} disabled={value.trim().length === 0 || isSubmitting}>
-            추가하기
+            {eventIdParam ? "참여하기" : "추가하기"}
           </Button>
         </div>
       )}
