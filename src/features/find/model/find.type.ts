@@ -14,6 +14,7 @@ export interface FormattedData {
   roadAddress: string;
   longitude: number;
   latitude: number;
+  isTransit: boolean;
 }
 
 export interface CreateEventData {

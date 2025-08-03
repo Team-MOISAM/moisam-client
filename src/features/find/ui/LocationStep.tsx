@@ -110,6 +110,7 @@ export const LocationStep = ({ setCurrentStep, startPointInfo, setStartPointInfo
       roadAddress: startPointInfo.roadAddress,
       longitude: startPointInfo.longitude,
       latitude: startPointInfo.latitude,
+      isTransit: isTransit,
     };
   };
 
