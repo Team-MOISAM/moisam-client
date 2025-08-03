@@ -1,23 +1,35 @@
 import { useValidation } from "@/shared/hooks";
-import { validateName } from "@/shared/utils";
 import Button from "@/shared/ui/Button";
 import { useEffect, useState } from "react";
 import { InputField } from "@/shared/ui";
-import { useNavigate, useSearchParams } from "react-router-dom";
 import { PlainHeader } from "@/widgets/headers";
+import { validateEventName } from "@/shared/utils";
+import { DatePicker } from "./DatePicker";
+import { TimePicker } from "./TimePicker";
 
-interface NameStepProps {
+interface EventNameStepProps {
   setCurrentStep: (step: number) => void;
   setName: (name: string) => void;
   name: string;
+  eventName: string;
+  eventDate: string;
+  eventTime: string;
+  setEventName: (eventName: string) => void;
+  setEventDate: (eventDate: string) => void;
+  setEventTime: (eventTime: string) => void;
 }
 
-export const NameStep = ({ setCurrentStep, setName, name }: NameStepProps) => {
-  const { value, error, handleChange, validateValue, isValid } = useValidation(name, validateName);
+export const EventNameStep = ({ 
+  setCurrentStep, 
+  eventName,
+  eventTime, 
+  setEventName, 
+  setEventDate, 
+  setEventTime 
+}: EventNameStepProps) => {
+  const { value, error, handleChange, validateValue, isValid } = useValidation(eventName, validateEventName);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const eventIdParam = searchParams.get("eventId");
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   useEffect(() => {
     const handleResize = () => {
@@ -37,35 +49,47 @@ export const NameStep = ({ setCurrentStep, setName, name }: NameStepProps) => {
 
   const handleNext = () => {
     if (!validateValue()) return;
-    setName(value);
+    setEventName(value);
     
-    // eventId가 있으면 step1을 건너뛰고 step2로 이동
-    if (eventIdParam) {
-      setCurrentStep(2);
-    } else {
-      setCurrentStep(1);
-    }
+    // 날짜를 "YYYY-MM-DD" 형식으로 변환
+    const formattedDate = selectedDate.toISOString().split('T')[0];
+    setEventDate(formattedDate);
+    
+    setCurrentStep(2);
   };
 
   return (
     <div className="flex flex-col h-full">
       <div className="flex-1 px-4">
         <div className="flex flex-col gap-6">
-          <PlainHeader title="출발지 추가" onBack={() => navigate(-1)} />
+          <PlainHeader title="출발지 추가" onBack={() => setCurrentStep(0)} />
           <p className="text-gray-90 text-xxl font-bold">
-            새로운 출발지 추가를 위해
+            <span className="text-sub-sub">어떤 모임인가요?</span>
             <br />
-            이름을 알려주세요
+            모임명을 알려주세요
           </p>
           <InputField
             value={value}
-            placeholder="5글자 내로 입력해주세요"
+            placeholder="모임명을 입력해주세요"
             onChange={handleChange}
             error={error}
             type="name"
           />
         </div>
       </div>
+      <div className="flex-1 px-4">
+        <div className="flex flex-col gap-6">
+          <p className="text-gray-90 text-xxl font-bold">
+            언제 모이시나요?
+          </p>
+          <div className="flex flex-row gap-[8px]">
+            <DatePicker value={selectedDate} onChange={setSelectedDate} />
+            <TimePicker value={eventTime} onChange={setEventTime} />       
+          </div>
+        </div>
+      </div>
+
+
       <div
         className="px-4 mb-5 transition-all duration-300"
         style={{

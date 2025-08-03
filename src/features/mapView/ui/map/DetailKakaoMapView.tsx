@@ -34,8 +34,8 @@ export const DetailKakaoMapView = ({ type }: DetailKakaoMapViewProps) => {
 
   if (type === "subway") {
     // transitRoute 순회하며 경유지 추가
-    detailEventData.transitRoute.forEach(route => {
-      if (route.passStopList) {
+    detailEventData.transitRoute?.forEach(route => {
+      if (route.passStopList?.stations) {
         route.passStopList.stations.forEach(station => {
           pathPoints.push({
             latitude: parseFloat(station.y),
@@ -46,7 +46,7 @@ export const DetailKakaoMapView = ({ type }: DetailKakaoMapViewProps) => {
     });
   } else {
     // drivingRoute 순회하며 경유지 추가
-    detailEventData.drivingRoute.forEach(route => {
+    detailEventData.drivingRoute?.forEach(route => {
       if (route.coordinates) {
         route.coordinates.forEach(station => {
           pathPoints.push({
@@ -59,10 +59,13 @@ export const DetailKakaoMapView = ({ type }: DetailKakaoMapViewProps) => {
   }
 
   // 마지막 중간지점 마커 추가
-  pathPoints.push({
-    latitude: eventData.meetingPoint.endLatitude,
-    longitude: eventData.meetingPoint.endLongitude,
-  });
+  const firstGroup = eventData.meetingPointRouteGroups?.[0];
+  if (firstGroup?.meetingPoint) {
+    pathPoints.push({
+      latitude: firstGroup.meetingPoint.endLatitude,
+      longitude: firstGroup.meetingPoint.endLongitude,
+    });
+  }
 
   useEffect(() => {
     const initializeMap = () => {
@@ -134,14 +137,16 @@ export const DetailKakaoMapView = ({ type }: DetailKakaoMapViewProps) => {
       {map && (
         <>
           {/* 중간지점 마커 */}
-          <MeetingMarker
-            map={map}
-            position={{
-              lat: eventData.meetingPoint.endLatitude,
-              lng: eventData.meetingPoint.endLongitude,
-            }}
-            title={eventData.meetingPoint.endStationName}
-          />
+          {firstGroup?.meetingPoint && (
+            <MeetingMarker
+              map={map}
+              position={{
+                lat: firstGroup.meetingPoint.endLatitude,
+                lng: firstGroup.meetingPoint.endLongitude,
+              }}
+              title={firstGroup.meetingPoint.endStationName}
+            />
+          )}
           {/* 사용자 마커 */}
           <MapMarker
             key={detailEventData.id}
@@ -150,10 +155,10 @@ export const DetailKakaoMapView = ({ type }: DetailKakaoMapViewProps) => {
             profileImg={detailEventData.profileImage}
             name={detailEventData.nickname}
           />
-          {type === "car" && (
+          {type === "car" && firstGroup?.parkingLot && (
             <ParkingMarker
               map={map}
-              position={{ lat: eventData.parkingLot.latitude, lng: eventData.parkingLot.longitude }}
+              position={{ lat: firstGroup.parkingLot.latitude, lng: firstGroup.parkingLot.longitude }}
             />
           )}
         </>
