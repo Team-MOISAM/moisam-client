@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { logout } from "../service";
 import { useNavigate } from "react-router-dom";
+import { useUserStore } from "@/shared/stores";
 
 export const useLogout = () => {
   const navigate = useNavigate();
@@ -8,8 +9,8 @@ export const useLogout = () => {
   return useMutation({
     mutationFn: logout,
     onSuccess: () => {
+      useUserStore.getState().reset();
       navigate("/");
-      localStorage.removeItem("user-storage");
     },
     onError: error => {
       console.error("로그아웃 실패: ", error);

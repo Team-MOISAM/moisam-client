@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useUserStore } from "../stores";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
@@ -13,8 +14,8 @@ api.interceptors.response.use(
   res => res,
   err => {
     if (err.response?.status === 401 || err.response?.status === 403) {
+      useUserStore.getState().reset();
       window.location.href = "/";
-      localStorage.removeItem("user-storage");
     }
     return Promise.reject(err);
   }

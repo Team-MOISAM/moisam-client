@@ -3,22 +3,22 @@ import Button from "@/shared/ui/Button";
 import { useNavigate } from "react-router-dom";
 import Logo from "@/assets/icon/logo.svg";
 import MainImg from "@/assets/image/main.webp";
-//import { useEffect } from "react";
-//import { useUserStore } from "@/shared/stores";
+import { useEffect } from "react";
+import { useUserStore } from "@/shared/stores";
 
 const MainPage = () => {
   const navigate = useNavigate();
-  //const email = useUserStore(state => state.email);
+  const email = useUserStore(state => state.email);
 
   const handleClick = () => {
     navigate("/find");
   };
 
-  // useEffect(() => {
-  //   if (email) {
-  //     navigate("/history");
-  //   }
-  // }, [email]);
+  useEffect(() => {
+    if (email) {
+      navigate("/history");
+    }
+  }, [email]);
 
   return (
     <div className="relative bg-[#E5EFF7] h-screen-dvh flex flex-col justify-end">

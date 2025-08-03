@@ -10,6 +10,7 @@ interface UserState {
   setProfileImgUrl: (url: string) => void;
   setEmail: (email: string) => void;
   setPersonalInfoAgreement: (agree: boolean) => void;
+  reset: () => void;
 }
 
 export const useUserStore = create(
@@ -23,6 +24,16 @@ export const useUserStore = create(
       setProfileImgUrl: url => set({ profileImageUrl: url }),
       setEmail: email => set({ email }),
       setPersonalInfoAgreement: agree => set({ personalInfoAgreement: agree }),
+
+      reset: () => {
+        set({
+          nickname: null,
+          profileImageUrl: null,
+          email: null,
+          personalInfoAgreement: false,
+        });
+        localStorage.removeItem("user-storage");
+      },
     }),
     {
       name: "user-storage",
