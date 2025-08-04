@@ -61,7 +61,7 @@ const MapViewPage = () => {
   return (
     <>
       <Helmet>
-        <title>중간장소 | SPOT</title>
+        <title>중간장소 | 모이삼</title>
       </Helmet>
       <div className="relative w-full h-screen overflow-hidden">
         {!isDetail && <MapHeader />}
