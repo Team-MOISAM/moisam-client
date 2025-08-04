@@ -3,6 +3,7 @@ import { useEventStore } from "@/shared/stores";
 import { DeleteModal, Dropdown, PointChip } from "@/shared/ui";
 import { useState } from "react";
 import Setting from "@/assets/icon/setting.svg";
+import { useNavigate } from "react-router-dom";
 
 interface GroupInfoProps {
   id: string | null;
@@ -12,6 +13,8 @@ export const GroupInfo = ({ id }: GroupInfoProps) => {
   const eventData = useEventStore(state => state.eventData);
   const meetingPointData = useEventStore(state => state.meetingPointData);
   const setMeetingPointData = useEventStore(state => state.setMeetingPointData);
+  const { mutate } = useDeleteEvent();
+  const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
@@ -19,9 +22,9 @@ export const GroupInfo = ({ id }: GroupInfoProps) => {
   if (!eventData) return null;
   const [year, month, day] = eventData.eventDate.split("-");
 
-  const { mutate } = useDeleteEvent();
-
-  const handleEdit = () => setIsOpen(false);
+  const handleEdit = () => {
+    navigate(`/find?startStep=1&eventId=${id}&isEdit=true`);
+  };
 
   const handleDelete = () => {
     if (!id) return;
