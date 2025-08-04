@@ -11,7 +11,6 @@ export const MapDetailBottomSheet = () => {
     return <div>Loading...</div>;
   }
 
-  console.log(detailEventData);
   return (
     <>
       <SnapBottomSheet minHeightVh={30}>

@@ -6,6 +6,7 @@ import Edit from "@/assets/icon/editGray.svg";
 import Delete from "@/assets/icon/delete.svg";
 import { useState } from "react";
 import DeleteModal from "./DeleteModal";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface TransferDetailProps {
   type: boolean;
@@ -16,8 +17,14 @@ interface TransferDetailProps {
 }
 
 export const TransferDetail = ({ type, totalTime, startPoint, endPoint }: TransferDetailProps) => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const { id } = useParams();
+
+  const handleEdit = () => {
+    navigate(`/find?startStep=2&eventId=${id}&isEdit=true`);
+  };
 
   return (
     <div className="flex flex-col px-5 py-4 gap-1">
@@ -39,7 +46,7 @@ export const TransferDetail = ({ type, totalTime, startPoint, endPoint }: Transf
           <img src={Setting} alt="setting" className="w-[3px] h-[15px]" />
           {isOpen && (
             <div className="absolute top-[33px] right-0 w-[175px] h-[98px] rounded-[20px] bg-white shadow-box cursor-pointer">
-              <div className="px-5 py-[14px] flex gap-[26px] items-center">
+              <div className="px-5 py-[14px] flex gap-[26px] items-center" onClick={handleEdit}>
                 <p className="text-sm font-medium text-gray-80">출발지 수정하기</p>
                 <img src={Edit} alt="edit" className="w-5 h-5" />
               </div>
