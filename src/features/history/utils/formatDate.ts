@@ -1,9 +1,13 @@
 export const formatDate = (date: string) => {
-  if (date.includes("-")) {
+  // yyyy-mm-dd → yyyy.mm.dd
+  if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
     return date.replace(/-/g, ".");
   }
-  if (date.length === 8) {
+
+  // yyyymmdd → yyyy.mm.dd
+  if (/^\d{8}$/.test(date)) {
     return `${date.slice(0, 4)}.${date.slice(4, 6)}.${date.slice(6, 8)}`;
   }
+
   return date;
 };
