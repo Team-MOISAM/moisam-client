@@ -42,13 +42,13 @@ export const LocationStep = ({
   const [isPolicyOpen, setIsPolicyOpen] = useState(false);
   const [isTransit, setIsTransit] = useState(true);
 
-  // // isTransit이 변경될 때 상위 컴포넌트에 업데이트
-  // useEffect(() => {
-  //   if (startPointInfo) {
-  //     // LocationStep에서 isTransit 변경 시 상위 컴포넌트에 알림
-  //     // 실제로는 props로 받아야 하지만 현재 구조상 state로 관리
-  //   }
-  // }, [isTransit, startPointInfo]);
+  // isTransit이 변경될 때 상위 컴포넌트에 업데이트
+  useEffect(() => {
+    if (startPointInfo) {
+      // LocationStep에서 isTransit 변경 시 상위 컴포넌트에 알림
+      // 실제로는 props로 받아야 하지만 현재 구조상 state로 관리
+    }
+  }, [isTransit, startPointInfo]);
 
   const startPointId = useEventStore(state => state.detailEventData?.id);
   const email = useUserStore(state => state.email);

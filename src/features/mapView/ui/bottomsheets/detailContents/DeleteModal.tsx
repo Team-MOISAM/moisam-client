@@ -3,9 +3,10 @@ import { Modal } from "@/shared/ui";
 interface DeleteModalProps {
   endPoint: string;
   onClose: () => void;
+  onDelete: () => void;
 }
 
-const DeleteModal = ({ endPoint, onClose }: DeleteModalProps) => {
+const DeleteModal = ({ endPoint, onClose, onDelete }: DeleteModalProps) => {
   return (
     <Modal onClose={onClose}>
       <div className="px-5 py-[28px] flex flex-col gap-1 items-center">
@@ -18,7 +19,9 @@ const DeleteModal = ({ endPoint, onClose }: DeleteModalProps) => {
           onClick={onClose}>
           돌아가기
         </div>
-        <div className="w-1/2 flex justify-center items-center py-3 text-white text-sm font-semibold border-t bg-gray-90 rounded-br-[20px] cursor-pointer">
+        <div
+          className="w-1/2 flex justify-center items-center py-3 text-white text-sm font-semibold border-t bg-gray-90 rounded-br-[20px] cursor-pointer"
+          onClick={onDelete}>
           삭제하기
         </div>
       </div>

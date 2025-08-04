@@ -7,6 +7,8 @@ import Delete from "@/assets/icon/delete.svg";
 import { useState } from "react";
 import DeleteModal from "./DeleteModal";
 import { useNavigate, useParams } from "react-router-dom";
+import { useDeleteStartPoint } from "@/features/mapView/hooks/useDeleteEvent";
+import { useEventStore } from "@/shared/stores";
 
 interface TransferDetailProps {
   type: boolean;
@@ -21,9 +23,26 @@ export const TransferDetail = ({ type, totalTime, startPoint, endPoint }: Transf
   const [isOpen, setIsOpen] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const { id } = useParams();
+  const { mutate } = useDeleteStartPoint();
+  const startPointId = useEventStore(state => state.detailEventData?.id);
+  const toggleDetail = useEventStore(state => state.toggleDetail);
 
   const handleEdit = () => {
     navigate(`/find?startStep=2&eventId=${id}&isEdit=true`);
+  };
+
+  const handleDelete = () => {
+    if (!id || !startPointId) return;
+    mutate(
+      { eventId: id, startPointId },
+      {
+        onSuccess: () => {
+          setOpenDeleteModal(false);
+          setIsOpen(false);
+          toggleDetail();
+        },
+      }
+    );
   };
 
   return (
@@ -62,7 +81,9 @@ export const TransferDetail = ({ type, totalTime, startPoint, endPoint }: Transf
           )}
         </button>
       </div>
-      {openDeleteModal && <DeleteModal endPoint={endPoint} onClose={() => setOpenDeleteModal(false)} />}
+      {openDeleteModal && (
+        <DeleteModal endPoint={endPoint} onClose={() => setOpenDeleteModal(false)} onDelete={handleDelete} />
+      )}
     </div>
   );
 };
