@@ -9,13 +9,13 @@ import DeleteModal from "./DeleteModal";
 
 interface TransferDetailProps {
   type: boolean;
-  averageDuration: number;
+  totalTime: number;
   startPoint: string;
   endPoint: string;
   isMe: boolean;
 }
 
-export const TransferDetail = ({ type, averageDuration, startPoint, endPoint }: TransferDetailProps) => {
+export const TransferDetail = ({ type, totalTime, startPoint, endPoint }: TransferDetailProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
@@ -23,7 +23,7 @@ export const TransferDetail = ({ type, averageDuration, startPoint, endPoint }: 
     <div className="flex flex-col px-5 py-4 gap-1">
       <div className="flex items-center gap-[6px]">
         <img src={type ? Subway : Car} alt="transfer" className="w-6 h-6" />
-        <span className="text-xl font-bold text-gray-90">{averageDuration}분</span>
+        <span className="text-xl font-bold text-gray-90">{totalTime}분</span>
       </div>
       <div className="flex justify-between items-center">
         <div className="flex gap-1 items-center text-md font-semibold text-gray-60">

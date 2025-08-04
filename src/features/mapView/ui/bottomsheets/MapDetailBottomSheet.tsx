@@ -11,13 +11,14 @@ export const MapDetailBottomSheet = () => {
     return <div>Loading...</div>;
   }
 
+  console.log(detailEventData);
   return (
     <>
       <SnapBottomSheet minHeightVh={30}>
         <SnapBottomSheet.Header />
         <TransferDetail
           type={detailEventData.isTransit}
-          averageDuration={detailEventData.isTransit ? detailEventData.transitTime : detailEventData.driveTime}
+          totalTime={detailEventData.totalTime}
           startPoint={detailEventData.startName}
           endPoint={eventData.meetingPointRouteGroups?.[0]?.meetingPoint?.endStationName || ""}
           isMe={detailEventData.isMe}
