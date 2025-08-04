@@ -20,3 +20,13 @@ export const addMember = async (payload: FormattedData, eventId: string) => {
 
   return response.data;
 };
+
+export const editStartPoint = async (eventId: string, startPointId: string, payload: FormattedData) => {
+  const response = await api.patch(`/events/${eventId}/start-points/${startPointId}`, payload);
+
+  if (response.data.result !== "SUCCESS") {
+    throw new Error(response.data.error?.message || "출발지 수정 실패");
+  }
+
+  return response.data;
+};

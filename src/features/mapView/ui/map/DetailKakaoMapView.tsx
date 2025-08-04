@@ -3,18 +3,13 @@ import { useEventStore } from "@/shared/stores";
 import { MeetingMarker } from "./MeetingMarker";
 import { MapMarker } from "./MapMarker";
 import { ParkingMarker } from "./ParkingMarker";
-import { TransferType } from "../../model";
 
 interface PathPoint {
   latitude: number;
   longitude: number;
 }
 
-interface DetailKakaoMapViewProps {
-  type: TransferType;
-}
-
-export const DetailKakaoMapView = ({ type }: DetailKakaoMapViewProps) => {
+export const DetailKakaoMapView = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
   const eventData = useEventStore(state => state.eventData);
@@ -32,7 +27,7 @@ export const DetailKakaoMapView = ({ type }: DetailKakaoMapViewProps) => {
     longitude: detailEventData.startLongitude,
   });
 
-  if (type === "subway") {
+  if (detailEventData.isTransit) {
     // transitRoute 순회하며 경유지 추가
     detailEventData.transitRoute?.forEach(route => {
       if (route.passStopList?.stations) {
@@ -125,7 +120,7 @@ export const DetailKakaoMapView = ({ type }: DetailKakaoMapViewProps) => {
       script.onload = initializeMap;
       document.head.appendChild(script);
     }
-  }, [type, eventData, detailEventData]);
+  }, [eventData, detailEventData]);
 
   return (
     <div
@@ -155,7 +150,7 @@ export const DetailKakaoMapView = ({ type }: DetailKakaoMapViewProps) => {
             profileImg={detailEventData.profileImage}
             name={detailEventData.nickname}
           />
-          {type === "car" && firstGroup?.parkingLot && (
+          {!detailEventData.isTransit && (
             <ParkingMarker
               map={map}
               position={{ lat: firstGroup.parkingLot.latitude, lng: firstGroup.parkingLot.longitude }}

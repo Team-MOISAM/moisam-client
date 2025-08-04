@@ -20,17 +20,12 @@ export const getEventInfo = async (eventId: string, guestId?: string) => {
   throw new Error(response.data.error?.message || "모임 경로 조회 실패");
 };
 
-export const patchEvent = async (eventId: string, startPointId: string, isTransit: boolean) => {
-  const response = await api.patch(`/events/${eventId}`, null, {
-    params: {
-      startPointId,
-      isTransit,
-    },
-  });
+export const deleteStartPoint = async (eventId: string, startPointId: string) => {
+  const response = await api.delete(`/events/${eventId}/start-points/${startPointId}`);
 
   if (response.data.result === "SUCCESS") {
     return true;
   }
 
-  throw new Error(response.data.error?.message || "대중교통 변경 실패");
+  throw new Error(response.data.error?.message || "출발지 삭제 실패");
 };

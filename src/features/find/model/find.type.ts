@@ -1,4 +1,5 @@
 export interface StartPointInfo {
+  id?: string;
   name: string;
   startPoint: string;
   address: string;

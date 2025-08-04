@@ -1,14 +1,9 @@
 import { SnapBottomSheet } from "@/shared/ui";
 import { useEventStore } from "@/shared/stores";
-import { TransferType } from "../../model";
+
 import { CarDetail, FixedButton, Path, TransferDetail } from "./detailContents";
 
-interface MapDetailBottomSheetProps {
-  type: TransferType;
-  setType: React.Dispatch<React.SetStateAction<"subway" | "car">>;
-}
-
-export const MapDetailBottomSheet = ({ type, setType }: MapDetailBottomSheetProps) => {
+export const MapDetailBottomSheet = () => {
   const detailEventData = useEventStore(state => state.detailEventData);
   const eventData = useEventStore(state => state.eventData);
 
@@ -21,15 +16,14 @@ export const MapDetailBottomSheet = ({ type, setType }: MapDetailBottomSheetProp
       <SnapBottomSheet minHeightVh={30}>
         <SnapBottomSheet.Header />
         <TransferDetail
-          type={type}
-          setType={setType}
-          averageDuration={type === "car" ? detailEventData.driveTime : detailEventData.transitTime}
+          type={detailEventData.isTransit}
+          totalTime={detailEventData.totalTime}
           startPoint={detailEventData.startName}
           endPoint={eventData.meetingPointRouteGroups?.[0]?.meetingPoint?.endStationName || ""}
           isMe={detailEventData.isMe}
         />
         <SnapBottomSheet.Content>
-          {type === "subway" ? (
+          {detailEventData.isTransit ? (
             <Path
               startPoint={detailEventData.startName}
               endPoint={eventData.meetingPointRouteGroups?.[0]?.meetingPoint?.endStationName || ""}

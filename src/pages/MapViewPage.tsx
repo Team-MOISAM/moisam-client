@@ -1,5 +1,4 @@
 import { useEventRoutes } from "@/features/mapView/hooks";
-import { TransferType } from "@/features/mapView/model";
 import {
   AddMemberBottomSheet,
   DetailKakaoMapView,
@@ -29,7 +28,6 @@ const MapViewPage = () => {
   const email = useUserStore(state => state.email);
   const personalInfoAgreement = useUserStore(state => state.personalInfoAgreement);
   const setPersonalInfoAgreement = useUserStore(state => state.setPersonalInfoAgreement);
-  const [type, setType] = useState<TransferType>("subway");
   const [isPolicyOpen, setIsPolicyOpen] = useState(false);
 
   const onClose = () => {
@@ -78,8 +76,8 @@ const MapViewPage = () => {
         ) : isDetail ? (
           <div className="relative">
             <BackButton />
-            <DetailKakaoMapView type={type} />
-            <MapDetailBottomSheet type={type} setType={setType} />
+            <DetailKakaoMapView />
+            <MapDetailBottomSheet />
           </div>
         ) : (
           <>

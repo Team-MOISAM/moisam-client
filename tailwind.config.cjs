@@ -156,6 +156,7 @@ module.exports = {
         pin02: "0px 4px 8px 0px rgba(28, 28, 34, 0.15)",
         list: "0px 0px 16px 0px rgba(0, 0, 0, 0.05)",
         back: "0px 0px 32px 0px rgba(28, 28, 34, 0.20)",
+        box: "0 0 12px 0 rgba(28, 28, 34, 0.14)",
       },
       borderRadius: {
         lg: "var(--radius)",
