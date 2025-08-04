@@ -15,8 +15,9 @@ import { MapHeader } from "@/widgets/headers";
 import { AxiosError } from "axios";
 import { setCookie } from "@/shared/utils";
 import { useEffect, useState } from "react";
-import { PolicyBottomSheet } from "@/shared/ui";
+import { MeetPointCard, PolicyBottomSheet } from "@/shared/ui";
 import { Helmet } from "react-helmet-async";
+import { useNavigate, useParams } from "react-router-dom";
 
 const MapViewPage = () => {
   const { data, isLoading, isError, error } = useEventRoutes();
@@ -30,10 +31,16 @@ const MapViewPage = () => {
   const personalInfoAgreement = useUserStore(state => state.personalInfoAgreement);
   const setPersonalInfoAgreement = useUserStore(state => state.setPersonalInfoAgreement);
   const [isPolicyOpen, setIsPolicyOpen] = useState(false);
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   const onClose = () => {
     setIsPolicyOpen(false);
     setPersonalInfoAgreement(true);
+  };
+
+  const goToPlace = () => {
+    navigate(`/place/${id}`);
   };
 
   useEffect(() => {
@@ -82,10 +89,13 @@ const MapViewPage = () => {
             <MapDetailBottomSheet />
           </div>
         ) : (
-          <>
+          <div className="relative">
             <KakaoMapView />
             {isPolicyOpen ? <PolicyBottomSheet onClose={onClose} /> : <SnapMapBottomSheet />}
-          </>
+            <div className="absolute top-3 left-1/2 -translate-x-1/2 z-[1001]">
+              <MeetPointCard placeName={data?.placeName} onClick={goToPlace} />
+            </div>
+          </div>
         )}
       </div>
     </>
