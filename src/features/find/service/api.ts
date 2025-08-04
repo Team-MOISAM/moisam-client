@@ -1,7 +1,7 @@
 import api from "@/shared/api/api";
-import { FormattedData } from "../model";
+import { FormattedData, CreateEventData } from "../model";
 
-export const createEvent = async (payload: FormattedData) => {
+export const createEvent = async (payload: CreateEventData) => {
   const response = await api.post("/events", payload);
 
   if (response.data.result !== "SUCCESS") {

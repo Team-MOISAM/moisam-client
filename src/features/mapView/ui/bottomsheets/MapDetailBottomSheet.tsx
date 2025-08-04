@@ -19,14 +19,14 @@ export const MapDetailBottomSheet = () => {
           type={detailEventData.isTransit}
           averageDuration={detailEventData.isTransit ? detailEventData.transitTime : detailEventData.driveTime}
           startPoint={detailEventData.startName}
-          endPoint={eventData.meetingPoint.endStationName}
+          endPoint={eventData.meetingPointRouteGroups?.[0]?.meetingPoint?.endStationName || ""}
           isMe={detailEventData.isMe}
         />
         <SnapBottomSheet.Content>
           {detailEventData.isTransit ? (
             <Path
               startPoint={detailEventData.startName}
-              endPoint={eventData.meetingPoint.endStationName}
+              endPoint={eventData.meetingPointRouteGroups?.[0]?.meetingPoint?.endStationName || ""}
               transferInfo={detailEventData.transitRoute}
             />
           ) : (
@@ -34,7 +34,7 @@ export const MapDetailBottomSheet = () => {
               driveDistance={detailEventData.drivingInfo.distance}
               toll={detailEventData.drivingInfo.toll}
               taxiToll={detailEventData.drivingInfo.taxi}
-              parking={eventData.parkingLot}
+              parking={eventData.meetingPointRouteGroups?.[0]?.parkingLot}
             />
           )}
           <FixedButton />

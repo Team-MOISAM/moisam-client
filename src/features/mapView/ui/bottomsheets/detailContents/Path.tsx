@@ -24,10 +24,10 @@ export const Path = ({ startPoint, endPoint, transferInfo }: PathProps) => {
       </div>
       <img src={ShortPath} alt="shortPath" className="ml-[11px] w-[2px] h-8" />
 
-      {transferInfo.map((info, index) => {
-        const isLastIndex = index === transferInfo.length - 1;
-        const prevInfo = index > 0 ? transferInfo[index - 1] : null;
-        const nextInfo = index < transferInfo.length - 1 ? transferInfo[index + 1] : null;
+      {transferInfo?.map((info, index) => {
+        const isLastIndex = index === (transferInfo?.length || 0) - 1;
+        const prevInfo = index > 0 ? transferInfo?.[index - 1] : null;
+        const nextInfo = index < (transferInfo?.length || 0) - 1 ? transferInfo?.[index + 1] : null;
 
         if (info.trafficType === "SUBWAY") {
           return <SubwayPath key={index} {...info} />;

@@ -44,11 +44,14 @@ const MapViewPage = () => {
   useEffect(() => {
     if (data) {
       setEventData(data);
-      // 현재 사용자의 routeResponse 찾기
-      const myRoute = data.routeResponse.find(route => route.isMe);
-      if (myRoute) {
-        // startPointId를 쿠키에 저장
-        setCookie("startPointId", myRoute.id, { path: "/", maxAge: 86400 });
+      // 현재 사용자의 routeResponse 찾기 (첫 번째 그룹에서 찾음)
+      const firstGroup = data.meetingPointRouteGroups?.[0];
+      if (firstGroup?.routeResponse) {
+        const myRoute = firstGroup.routeResponse.find(route => route.isMe);
+        if (myRoute) {
+          // startPointId를 쿠키에 저장
+          setCookie("startPointId", myRoute.id, { path: "/", maxAge: 86400 });
+        }
       }
     }
   }, [data, setEventData]);

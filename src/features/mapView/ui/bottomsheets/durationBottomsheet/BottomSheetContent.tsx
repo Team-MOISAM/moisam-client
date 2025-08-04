@@ -17,7 +17,7 @@ export const BottomSheetContent = () => {
   return (
     <div className="h-full flex flex-col">
       <div className="mx-5 pb-[80px]">
-        {eventData?.routeResponse.map(user => (
+        {eventData?.meetingPointRouteGroups?.[0]?.routeResponse?.map(user => (
           <UserCard
             key={user.id}
             isTransit={user.isTransit}
@@ -40,8 +40,8 @@ export const GroupAverageTime = () => {
   return (
     <div className="mx-5">
       <div>
-        <h1 className="text-gray-80 text-xl font-bold pb-[2px]">{eventData?.meetingPoint.endStationName}</h1>
-        <p className="text-gray-40 text-md pb-3">평균 {eventData?.averageTime}분</p>
+        <h1 className="text-gray-80 text-xl font-bold pb-[2px]">{eventData?.meetingPointRouteGroups?.[0]?.meetingPoint?.endStationName}</h1>
+        <p className="text-gray-40 text-md pb-3">평균 {eventData?.meetingPointRouteGroups?.[0]?.averageTime}분</p>
       </div>
     </div>
   );
