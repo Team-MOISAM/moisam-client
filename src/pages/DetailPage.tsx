@@ -73,7 +73,7 @@ const DetailPage = () => {
   return (
     <>
       <Helmet>
-        <title>장소 상세 | SPOT</title>
+        <title>장소 상세 | 모이삼</title>
       </Helmet>
       <div className="relative flex flex-col h-screen-dvh">
         <DetailHeader

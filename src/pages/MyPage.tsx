@@ -18,7 +18,7 @@ const MyPage = () => {
   return (
     <>
       <Helmet>
-        <title>내 정보 | SPOT</title>
+        <title>내 정보 | 모이삼</title>
       </Helmet>
       <div className="flex flex-col h-screen-dvh">
         <div className="flex flex-col px-5">

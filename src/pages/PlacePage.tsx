@@ -30,7 +30,7 @@ const PlacePage = () => {
   return (
     <>
       <Helmet>
-        <title>장소 추천 | SPOT</title>
+        <title>장소 추천 | 모이삼</title>
       </Helmet>
       <div className="flex flex-col h-screen-dvh overflow-hidden">
         <div className="flex-none px-5">

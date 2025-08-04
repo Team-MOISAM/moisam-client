@@ -82,7 +82,7 @@ const HistoryPage = () => {
   return (
     <>
       <Helmet>
-        <title>나의 모임 | SPOT</title>
+        <title>나의 모임 | 모이삼</title>
       </Helmet>
       <div className="relative flex flex-col h-screen-dvh">
         <div className="flex flex-col px-5">
