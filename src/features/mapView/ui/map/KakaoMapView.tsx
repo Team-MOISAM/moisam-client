@@ -9,6 +9,7 @@ export function KakaoMapView() {
   const [center, setCenter] = useState<kakao.maps.LatLng | null>(null);
 
   const eventData = useEventStore(state => state.eventData);
+  const meetingPointData = useEventStore(state => state.meetingPointData);
 
   useEffect(() => {
     if (!eventData) return; // 데이터 없으면 초기화하지 않음
@@ -17,12 +18,11 @@ export function KakaoMapView() {
 
       window.kakao.maps.load(() => {
         if (mapRef.current) {
-          const firstGroup = eventData.meetingPointRouteGroups?.[0];
-          if (!firstGroup?.meetingPoint) return;
+          if (!meetingPointData?.meetingPoint) return;
 
           const centerLatLng = new window.kakao.maps.LatLng(
-            firstGroup.meetingPoint.endLatitude,
-            firstGroup.meetingPoint.endLongitude
+            meetingPointData.meetingPoint.endLatitude,
+            meetingPointData.meetingPoint.endLongitude
           );
           setCenter(centerLatLng);
 
@@ -40,7 +40,7 @@ export function KakaoMapView() {
           bounds.extend(centerLatLng);
 
           // 사용자 위치 bounds 설정
-          firstGroup.routeResponse?.forEach(user => {
+          meetingPointData.routeResponse?.forEach(user => {
             bounds.extend(new window.kakao.maps.LatLng(user.startLatitude, user.startLongitude));
           });
 
@@ -68,17 +68,17 @@ export function KakaoMapView() {
   const drawPolylines = () => {
     if (!map || !center || !eventData) return;
 
-    if (window.polylines) {
+    if (!window.polylines) {
+      window.polylines = [];
+    } else {
       window.polylines.forEach((polyline: kakao.maps.Polyline) => {
         polyline.setMap(null);
       });
+      window.polylines = [];
     }
 
-    window.polylines = [];
-
-    const firstGroup = eventData?.meetingPointRouteGroups?.[0];
-    if (firstGroup?.routeResponse) {
-      firstGroup.routeResponse.forEach(user => {
+    if (meetingPointData?.routeResponse) {
+      meetingPointData.routeResponse.forEach(user => {
         const fullPath: kakao.maps.LatLng[] = [];
         // 사용자의 시작 위치 추가
         fullPath.push(new window.kakao.maps.LatLng(user.startLatitude, user.startLongitude));
@@ -131,7 +131,7 @@ export function KakaoMapView() {
 
   useEffect(() => {
     drawPolylines();
-  }, [map, center]);
+  }, [map, center, meetingPointData]);
 
   return (
     <div
@@ -143,18 +143,18 @@ export function KakaoMapView() {
       {map && (
         <>
           {/* 중간지점 마커 */}
-          {eventData!.meetingPointRouteGroups?.[0]?.meetingPoint && (
+          {meetingPointData?.meetingPoint && (
             <MeetingMarker
               map={map}
               position={{
-                lat: eventData!.meetingPointRouteGroups[0].meetingPoint.endLatitude,
-                lng: eventData!.meetingPointRouteGroups[0].meetingPoint.endLongitude,
+                lat: meetingPointData!.meetingPoint.endLatitude,
+                lng: meetingPointData!.meetingPoint.endLongitude,
               }}
-              title={eventData!.meetingPointRouteGroups[0].meetingPoint.endStationName}
+              title={meetingPointData!.meetingPoint.endStationName}
             />
           )}
           {/* 사용자 마커 */}
-          {eventData!.meetingPointRouteGroups?.[0]?.routeResponse?.map(user => (
+          {meetingPointData?.routeResponse?.map(user => (
             <MapMarker
               key={user.id}
               map={map}

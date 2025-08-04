@@ -21,6 +21,7 @@ import { Helmet } from "react-helmet-async";
 const MapViewPage = () => {
   const { data, isLoading, isError, error } = useEventRoutes();
   const setEventData = useEventStore(state => state.setEventData);
+  const setMeetingPointData = useEventStore(state => state.setMeetingPointData);
   const isDetail = useEventStore(state => state.isDetail);
 
   const errorCode = (error as AxiosError<{ error: { code: string } }>)?.response?.data?.error?.code;
@@ -46,6 +47,7 @@ const MapViewPage = () => {
       setEventData(data);
       // 현재 사용자의 routeResponse 찾기 (첫 번째 그룹에서 찾음)
       const firstGroup = data.meetingPointRouteGroups?.[0];
+      setMeetingPointData(firstGroup);
       if (firstGroup?.routeResponse) {
         const myRoute = firstGroup.routeResponse.find(route => route.isMe);
         if (myRoute) {
@@ -54,7 +56,7 @@ const MapViewPage = () => {
         }
       }
     }
-  }, [data, setEventData]);
+  }, [data, setEventData, setMeetingPointData]);
 
   return (
     <>

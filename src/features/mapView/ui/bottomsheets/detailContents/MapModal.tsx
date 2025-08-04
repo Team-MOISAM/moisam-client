@@ -12,13 +12,13 @@ interface MapModalProps {
 
 export const MapModal = ({ onClose }: MapModalProps) => {
   const eventData = useEventStore(state => state.eventData);
+  const meetingPointData = useEventStore(state => state.meetingPointData);
   const detailEventData = useEventStore(state => state.detailEventData);
   const deviceType = useDeviceDetector();
 
   if (!eventData || !detailEventData) return;
 
-  const firstGroup = eventData.meetingPointRouteGroups?.[0];
-  const meetingPoint = firstGroup?.meetingPoint;
+  const meetingPoint = meetingPointData?.meetingPoint;
 
   if (!meetingPoint) return;
 

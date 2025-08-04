@@ -54,11 +54,11 @@ export const DetailKakaoMapView = () => {
   }
 
   // 마지막 중간지점 마커 추가
-  const firstGroup = eventData.meetingPointRouteGroups?.[0];
-  if (firstGroup?.meetingPoint) {
+  const meetingPointData = useEventStore(state => state.meetingPointData);
+  if (meetingPointData?.meetingPoint) {
     pathPoints.push({
-      latitude: firstGroup.meetingPoint.endLatitude,
-      longitude: firstGroup.meetingPoint.endLongitude,
+      latitude: meetingPointData.meetingPoint.endLatitude,
+      longitude: meetingPointData.meetingPoint.endLongitude,
     });
   }
 
@@ -132,14 +132,14 @@ export const DetailKakaoMapView = () => {
       {map && (
         <>
           {/* 중간지점 마커 */}
-          {firstGroup?.meetingPoint && (
+          {meetingPointData?.meetingPoint && (
             <MeetingMarker
               map={map}
               position={{
-                lat: firstGroup.meetingPoint.endLatitude,
-                lng: firstGroup.meetingPoint.endLongitude,
+                lat: meetingPointData.meetingPoint.endLatitude,
+                lng: meetingPointData.meetingPoint.endLongitude,
               }}
-              title={firstGroup.meetingPoint.endStationName}
+              title={meetingPointData.meetingPoint.endStationName}
             />
           )}
           {/* 사용자 마커 */}
@@ -150,10 +150,10 @@ export const DetailKakaoMapView = () => {
             profileImg={detailEventData.profileImage}
             name={detailEventData.nickname}
           />
-          {!detailEventData.isTransit && (
+          {!detailEventData.isTransit && meetingPointData?.parkingLot && (
             <ParkingMarker
               map={map}
-              position={{ lat: firstGroup.parkingLot.latitude, lng: firstGroup.parkingLot.longitude }}
+              position={{ lat: meetingPointData.parkingLot.latitude, lng: meetingPointData.parkingLot.longitude }}
             />
           )}
         </>

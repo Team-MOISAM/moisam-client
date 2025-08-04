@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import { GetEventRouteResponse, RouteResponse } from "../model";
+import { GetEventRouteResponse, MeetingPointRouteGroup, RouteResponse } from "../model";
 
 interface EventStoreState {
   eventData: GetEventRouteResponse | null;
@@ -10,6 +10,8 @@ interface EventStoreState {
   toggleDetail: () => void;
   detailEventData: RouteResponse | null;
   setDetailEventData: (data: RouteResponse) => void;
+  meetingPointData: MeetingPointRouteGroup | null;
+  setMeetingPointData: (data: MeetingPointRouteGroup) => void;
 }
 
 export const useEventStore = create<EventStoreState>()(
@@ -21,5 +23,7 @@ export const useEventStore = create<EventStoreState>()(
     toggleDetail: () => set(state => ({ isDetail: !state.isDetail })),
     detailEventData: null,
     setDetailEventData: data => set({ detailEventData: data }),
+    meetingPointData: null,
+    setMeetingPointData: data => set({ meetingPointData: data }),
   }))
 );
