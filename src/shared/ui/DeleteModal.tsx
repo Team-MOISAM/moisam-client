@@ -7,7 +7,7 @@ interface DeleteModalProps {
   onDelete: () => void;
 }
 
-const DeleteModal = ({ title, description, onClose, onDelete }: DeleteModalProps) => {
+export const DeleteModal = ({ title, description, onClose, onDelete }: DeleteModalProps) => {
   return (
     <Modal onClose={onClose}>
       <div className="px-5 py-[28px] flex flex-col gap-1 items-center">
@@ -29,5 +29,3 @@ const DeleteModal = ({ title, description, onClose, onDelete }: DeleteModalProps
     </Modal>
   );
 };
-
-export default DeleteModal;

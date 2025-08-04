@@ -2,13 +2,11 @@ import ArrowLine from "@/assets/icon/rightArrowLine.svg";
 import Subway from "@/assets/icon/subway.svg";
 import Car from "@/assets/icon/car.svg";
 import Setting from "@/assets/icon/setting.svg";
-import Edit from "@/assets/icon/editGray.svg";
-import Delete from "@/assets/icon/delete.svg";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDeleteStartPoint } from "@/features/mapView/hooks/useDeleteEvent";
 import { useEventStore } from "@/shared/stores";
-import DeleteModal from "@/shared/ui/DeleteModal";
+import { DeleteModal, Dropdown } from "@/shared/ui";
 
 interface TransferDetailProps {
   type: boolean;
@@ -64,20 +62,7 @@ export const TransferDetail = ({ type, totalTime, startPoint, endPoint }: Transf
           }}>
           <img src={Setting} alt="setting" className="w-[3px] h-[15px]" />
           {isOpen && (
-            <div className="absolute top-[33px] right-0 w-[175px] h-[98px] rounded-[20px] bg-white shadow-box cursor-pointer">
-              <div className="px-5 py-[14px] flex gap-[26px] items-center" onClick={handleEdit}>
-                <p className="text-sm font-medium text-gray-80">출발지 수정하기</p>
-                <img src={Edit} alt="edit" className="w-5 h-5" />
-              </div>
-              <div
-                className="px-5 py-[14px] flex gap-[26px] items-center border-t border-t-gray-5 cursor-pointer"
-                onClick={() => {
-                  setOpenDeleteModal(true);
-                }}>
-                <p className="text-sm font-medium text-gray-80">출발지 삭제하기</p>
-                <img src={Delete} alt="delete" className="w-5 h-5" />
-              </div>
-            </div>
+            <Dropdown handleEdit={handleEdit} handleDelete={() => setOpenDeleteModal(true)} top={33} isDetail={true} />
           )}
         </button>
       </div>
