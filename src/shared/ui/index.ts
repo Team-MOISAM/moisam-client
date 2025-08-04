@@ -12,3 +12,4 @@ export * from "./ReviewModal";
 export * from "./PolicyBottomSheet";
 export * from "./DeleteModal";
 export * from "./Dropdown";
+export * from "./PointChip";
