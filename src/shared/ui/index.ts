@@ -10,3 +10,4 @@ export * from "./ShareModal";
 export * from "./LoadingSpinner";
 export * from "./ReviewModal";
 export * from "./PolicyBottomSheet";
+export * from "./DeleteModal";

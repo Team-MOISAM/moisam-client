@@ -1,17 +1,18 @@
 import { Modal } from "@/shared/ui";
 
 interface DeleteModalProps {
-  endPoint: string;
+  title: string;
+  description: string;
   onClose: () => void;
   onDelete: () => void;
 }
 
-const DeleteModal = ({ endPoint, onClose, onDelete }: DeleteModalProps) => {
+const DeleteModal = ({ title, description, onClose, onDelete }: DeleteModalProps) => {
   return (
     <Modal onClose={onClose}>
       <div className="px-5 py-[28px] flex flex-col gap-1 items-center">
-        <span className="text-sub-sub text-md font-semibold">{endPoint}역</span>
-        <p className="text-gray-90 text-md font-semibold">출발지를 삭제하시겠어요?</p>
+        <span className="text-sub-sub text-md font-semibold">{title}</span>
+        <p className="text-gray-90 text-md font-semibold">{description}</p>
       </div>
       <div className="flex w-full">
         <div

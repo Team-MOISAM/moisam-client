@@ -5,10 +5,10 @@ import Setting from "@/assets/icon/setting.svg";
 import Edit from "@/assets/icon/editGray.svg";
 import Delete from "@/assets/icon/delete.svg";
 import { useState } from "react";
-import DeleteModal from "./DeleteModal";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDeleteStartPoint } from "@/features/mapView/hooks/useDeleteEvent";
 import { useEventStore } from "@/shared/stores";
+import DeleteModal from "@/shared/ui/DeleteModal";
 
 interface TransferDetailProps {
   type: boolean;
@@ -82,7 +82,12 @@ export const TransferDetail = ({ type, totalTime, startPoint, endPoint }: Transf
         </button>
       </div>
       {openDeleteModal && (
-        <DeleteModal endPoint={endPoint} onClose={() => setOpenDeleteModal(false)} onDelete={handleDelete} />
+        <DeleteModal
+          title={`${endPoint}역`}
+          description="출발지를 삭제하시겠어요?"
+          onClose={() => setOpenDeleteModal(false)}
+          onDelete={handleDelete}
+        />
       )}
     </div>
   );
