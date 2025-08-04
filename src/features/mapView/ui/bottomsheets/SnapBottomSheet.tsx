@@ -1,5 +1,5 @@
 import { SnapBottomSheet } from "@/shared/ui";
-import { BottomSheetContent, FixedButtons, GroupAverageTime } from "./durationBottomsheet";
+import { BottomSheetContent, FixedButtons, GroupInfo } from "./durationBottomsheet";
 import { useNavigate, useParams } from "react-router-dom";
 
 export const SnapMapBottomSheet = () => {
@@ -19,7 +19,7 @@ export const SnapMapBottomSheet = () => {
           역 주변 둘러보기
         </button>
       </div>
-      <GroupAverageTime />
+      <GroupInfo id={id ?? null} />
       <SnapBottomSheet.Content>
         <BottomSheetContent />
         <FixedButtons />
