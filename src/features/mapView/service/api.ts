@@ -29,3 +29,13 @@ export const deleteStartPoint = async (eventId: string, startPointId: string) =>
 
   throw new Error(response.data.error?.message || "출발지 삭제 실패");
 };
+
+export const deleteEvent = async (eventId: string) => {
+  const response = await api.delete(`/events/${eventId}`);
+
+  if (response.data.result === "SUCCESS") {
+    return true;
+  }
+
+  throw new Error(response.data.error?.message || "모임 삭제 실패");
+};

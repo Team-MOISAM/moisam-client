@@ -18,10 +18,13 @@ export interface FormattedData {
   isTransit: boolean;
 }
 
-export interface CreateEventData {
+export interface EventData {
   eventName: string;
   eventDate: string;
   eventTime: string;
+}
+
+export interface CreateEventData extends EventData {
   username: string;
   startPoint: string;
   address: string;

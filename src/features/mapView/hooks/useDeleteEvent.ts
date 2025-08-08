@@ -1,20 +1,19 @@
 import { useMutation } from "@tanstack/react-query";
-import { deleteStartPoint } from "../service";
-import { useQueryClient } from "@tanstack/react-query";
+import { deleteEvent } from "../service";
+import { useNavigate } from "react-router-dom";
 
-export const useDeleteStartPoint = () => {
-  const queryClient = useQueryClient();
+export const useDeleteEvent = () => {
+  const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: ({ eventId, startPointId }: { eventId: string; startPointId: string }) =>
-      deleteStartPoint(eventId, startPointId),
+    mutationFn: (eventId: string) => deleteEvent(eventId),
 
-    onSuccess: (_, { eventId }) => {
-      queryClient.invalidateQueries({ queryKey: ["eventRoutes", eventId] });
+    onSuccess: () => {
+      navigate("/history");
     },
 
     onError: error => {
-      console.error("출발지 삭제 실패: ", error);
+      console.error("모임 삭제 실패: ", error);
     },
   });
 };

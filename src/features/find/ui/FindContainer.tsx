@@ -63,6 +63,7 @@ export const FindContainer = () => {
           setEventName={eventName => setEventData(prev => ({ ...prev, eventName }))}
           setEventDate={eventDate => setEventData(prev => ({ ...prev, eventDate }))}
           setEventTime={eventTime => setEventData(prev => ({ ...prev, eventTime }))}
+          isEdit={isEdit}
         />
       )}
       {currentStep === 2 && (

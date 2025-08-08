@@ -6,6 +6,7 @@ import { CarDetail, FixedButton, Path, TransferDetail } from "./detailContents";
 export const MapDetailBottomSheet = () => {
   const detailEventData = useEventStore(state => state.detailEventData);
   const eventData = useEventStore(state => state.eventData);
+  const meetingPointData = useEventStore(state => state.meetingPointData);
 
   if (!detailEventData || !eventData) {
     return <div>Loading...</div>;
@@ -19,14 +20,14 @@ export const MapDetailBottomSheet = () => {
           type={detailEventData.isTransit}
           totalTime={detailEventData.totalTime}
           startPoint={detailEventData.startName}
-          endPoint={eventData.meetingPointRouteGroups?.[0]?.meetingPoint?.endStationName || ""}
+          endPoint={meetingPointData?.meetingPoint?.endStationName || ""}
           isMe={detailEventData.isMe}
         />
         <SnapBottomSheet.Content>
           {detailEventData.isTransit ? (
             <Path
               startPoint={detailEventData.startName}
-              endPoint={eventData.meetingPointRouteGroups?.[0]?.meetingPoint?.endStationName || ""}
+              endPoint={meetingPointData?.meetingPoint?.endStationName || ""}
               transferInfo={detailEventData.transitRoute}
             />
           ) : (
@@ -34,7 +35,7 @@ export const MapDetailBottomSheet = () => {
               driveDistance={detailEventData.drivingInfo.distance}
               toll={detailEventData.drivingInfo.toll}
               taxiToll={detailEventData.drivingInfo.taxi}
-              parking={eventData.meetingPointRouteGroups?.[0]?.parkingLot}
+              parking={meetingPointData?.parkingLot}
             />
           )}
           <FixedButton />

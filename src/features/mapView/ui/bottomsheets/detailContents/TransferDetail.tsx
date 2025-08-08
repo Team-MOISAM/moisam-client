@@ -4,9 +4,9 @@ import Car from "@/assets/icon/car.svg";
 import Setting from "@/assets/icon/setting.svg";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useDeleteStartPoint } from "@/features/mapView/hooks/useDeleteEvent";
 import { useEventStore } from "@/shared/stores";
 import { DeleteModal, Dropdown } from "@/shared/ui";
+import { useDeleteStartPoint } from "@/features/mapView/hooks";
 
 interface TransferDetailProps {
   type: boolean;
@@ -61,9 +61,7 @@ export const TransferDetail = ({ type, totalTime, startPoint, endPoint }: Transf
             setIsOpen(prev => !prev);
           }}>
           <img src={Setting} alt="setting" className="w-[3px] h-[15px]" />
-          {isOpen && (
-            <Dropdown handleEdit={handleEdit} handleDelete={() => setOpenDeleteModal(true)} top={33} isDetail={true} />
-          )}
+          {isOpen && <Dropdown handleEdit={handleEdit} handleDelete={() => setOpenDeleteModal(true)} isDetail={true} />}
         </button>
       </div>
       {openDeleteModal && (
