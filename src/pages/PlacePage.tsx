@@ -4,11 +4,17 @@ import LoadingSpinner from "@/shared/ui/LoadingSpinner";
 import { PlainHeader } from "@/widgets/headers";
 import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
+import { useEventStore } from "@/shared/stores";
 
 const PlacePage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { data, isLoading, isError } = useRecommendedPlaces(id ?? "");
+  const eventData = useEventStore(state => state.eventData);
+  
+  // 첫 번째 그룹의 subwayId 가져오기
+  const subwayId = eventData?.meetingPointRouteGroups?.[0]?.subwayId ?? 0;
+  
+  const { data, isLoading, isError } = useRecommendedPlaces(id ?? "", subwayId);
   // 데이터가 없으면 null 처리
   const confirmedPlace = data?.data.confirmedPlaceResponse ?? null;
   const isConfirmed = confirmedPlace !== null;
@@ -18,7 +24,7 @@ const PlacePage = () => {
     navigate(`/detail/${id}/${placeId}`);
   };
 
-  if (isLoading)
+  if (isLoading || !eventData)
     return (
       <div className="flex flex-col items-center justify-center gap-3 h-screen-dvh">
         <LoadingSpinner />

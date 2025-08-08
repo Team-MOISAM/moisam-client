@@ -9,14 +9,15 @@ export interface PlaceResponse {
   closeTime?: string;
   distance: number;
   averageRating: number | null;
+  googleRating?: number;
   placeScore?: PlaceScore | null;
 }
 
 export interface PlaceList {
   result: string;
   data: {
+    eventName: string;
     middlePointName: string;
-    subwayId: number;
     confirmedPlaceResponse: PlaceResponse | null;
     placeResponses: PlaceResponse[];
   };
