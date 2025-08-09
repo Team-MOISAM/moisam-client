@@ -6,16 +6,20 @@ import { PlainHeader } from "@/widgets/headers";
 import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEventStore } from "@/shared/stores";
+import { PointChip } from "@/shared/ui";
+import { useState } from "react";
 
 const PlacePage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const eventData = useEventStore(state => state.eventData);
   
-  // 첫 번째 그룹의 subwayId 가져오기
-  const subwayId = eventData?.meetingPointRouteGroups?.[0]?.subwayId ?? 0;
+  // 선택된 지하철역 ID 상태 관리
+  const [selectedSubwayId, setSelectedSubwayId] = useState<number>(
+    eventData?.meetingPointRouteGroups?.[0]?.subwayId ?? 0
+  );
   
-  const { data, isLoading, isError } = useRecommendedPlaces(id ?? "", subwayId);
+  const { data, isLoading, isError } = useRecommendedPlaces(id ?? "", selectedSubwayId);
   // 데이터가 없으면 null 처리
   const confirmedPlace = data?.data.confirmedPlaceResponse ?? null;
   const isConfirmed = confirmedPlace !== null;
@@ -23,6 +27,11 @@ const PlacePage = () => {
 
   const handleNavigate = (placeId: string) => {
     navigate(`/detail/${id}/${placeId}`);
+  };
+
+  // 지하철역 선택 핸들러
+  const handleSubwaySelect = (subwayId: number) => {
+    setSelectedSubwayId(subwayId);
   };
 
   if (isLoading || !eventData)
@@ -47,7 +56,6 @@ const PlacePage = () => {
           {!isConfirmed && (
             <MeetPointCard
               placeName={data!.data.middlePointName}
-              onClick={() => {}} // 클릭 방지 처리
               isPlace={false}
               isConfirmed={false}
             />
@@ -60,6 +68,17 @@ const PlacePage = () => {
               isConfirmed={true}
             />
           )}
+        </div>
+        {/* 지하철역 선택 칩들 */}
+        <div className="flex-none mt-3 px-5 flex gap-2 overflow-x-auto scrollbar-hidden">
+          {eventData.meetingPointRouteGroups.map(group => (
+            <PointChip
+              key={group.subwayId}
+              text={group.meetingPoint.endStationName.replace(/역$/, '')}
+              isSelect={group.subwayId === selectedSubwayId}
+              onClick={() => handleSubwaySelect(group.subwayId)}
+            />
+          ))}
         </div>
         <div className="flex-1 mt-3 min-h-0 relative">
           <RecommendList places={recommendedPlaces} />
