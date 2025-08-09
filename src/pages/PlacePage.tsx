@@ -47,7 +47,7 @@ const PlacePage = () => {
           {!isConfirmed && (
             <MeetPointCard
               placeName={data!.data.middlePointName}
-              onClick={() => {}} // 추천 중간지점은 클릭 불가
+              onClick={() => {}} // 클릭 방지 처리
               isPlace={false}
               isConfirmed={false}
             />
