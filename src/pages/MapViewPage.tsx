@@ -92,7 +92,7 @@ const MapViewPage = () => {
           <div className="relative">
             <KakaoMapView />
             {isPolicyOpen ? <PolicyBottomSheet onClose={onClose} /> : <SnapMapBottomSheet />}
-            <div className="absolute top-3 left-1/2 -translate-x-1/2 z-[1000]">
+            <div className="absolute top-3 left-5 right-5 z-[1000]">
               <MeetPointCard placeName={data?.placeName} onClick={goToPlace} />
             </div>
           </div>
