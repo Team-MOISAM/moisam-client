@@ -1,6 +1,7 @@
 import { useRecommendedPlaces } from "@/features/place/hooks";
-import { ConfirmedCard, RecommendCard, RecommendList } from "@/features/place/ui";
+import { RecommendList } from "@/features/place/ui";
 import LoadingSpinner from "@/shared/ui/LoadingSpinner";
+import { MeetPointCard } from "@/shared/ui/MeetPointCard";
 import { PlainHeader } from "@/widgets/headers";
 import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
@@ -42,18 +43,21 @@ const PlacePage = () => {
         <div className="flex-none px-5">
           <PlainHeader title="장소 추천" url={`/mapview/${id}`} />
         </div>
-        <div className="flex-none mt-3 px-5">
-          {!isConfirmed && <RecommendCard place={data!.data.middlePointName} />}
+        <div className="flex-none mt-3 px-5 flex justify-center">
+          {!isConfirmed && (
+            <MeetPointCard
+              placeName={data!.data.middlePointName}
+              onClick={() => {}} // 추천 중간지점은 클릭 불가
+              isPlace={false}
+              isConfirmed={false}
+            />
+          )}
           {isConfirmed && (
-            <ConfirmedCard
-              name={confirmedPlace.name}
-              distance={confirmedPlace.distance}
-              image={confirmedPlace.image}
-              openTime={confirmedPlace.openTime}
-              closeTime={confirmedPlace.closeTime}
-              averageRating={confirmedPlace.averageRating}
-              placeScore={confirmedPlace.placeScore}
+            <MeetPointCard
+              placeName={confirmedPlace.name}
               onClick={() => handleNavigate(confirmedPlace.id)}
+              isPlace={true}
+              isConfirmed={true}
             />
           )}
         </div>

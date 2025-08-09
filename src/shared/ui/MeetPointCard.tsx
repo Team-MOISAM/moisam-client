@@ -1,19 +1,21 @@
 import Pin from "@/assets/icon/pin.svg";
 import Arrow from "@/assets/icon/rightArrowGray.svg";
+import PinBlue from "@/assets/icon/pinBlue.svg";
 
 interface MeetPointCardProps {
   placeName: string | undefined;
   onClick: () => void;
   isPlace?: boolean;
+  isConfirmed?: boolean;
 }
 
-export const MeetPointCard = ({ placeName, onClick, isPlace = true }: MeetPointCardProps) => {
+export const MeetPointCard = ({ placeName, onClick, isPlace = true, isConfirmed = false }: MeetPointCardProps) => {
   const isSelect = !!placeName;
 
   return (
     <div className="flex gap-3 p-3 rounded-2xl bg-white shadow-list w-[320px] items-center" onClick={onClick}>
       <div className="w-10 h-10 flex justify-center items-center rounded-xl bg-gray-5">
-        <img src={Pin} alt="pin" className="w-6 h-6" />
+        <img src={isConfirmed ? PinBlue : Pin} alt="pin" className="w-6 h-6" />
       </div>
       <div className="w-[212px]">
         <p className={`text-xs ${isSelect ? "text-sub-sub" : "text-gray-40"}`}>
