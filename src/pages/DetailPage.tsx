@@ -1,6 +1,6 @@
 import { Photo, PlaceButton, PlaceInfo, Review } from "@/features/detail/ui";
 import { Empty } from "@/features/detail/ui";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { ShareModal } from "@/shared/ui";
 import { DetailHeader } from "@/widgets/headers";
@@ -40,10 +40,16 @@ const DetailPage = () => {
   }, []);
 
   const { eventId, placeId } = useParams();
+  const [searchParams] = useSearchParams();
+  const subwayId = searchParams.get('subwayId');
 
   if (!placeId || !eventId) return <p>잘못된 접근입니다</p>;
 
-  const { data, isLoading, isError } = usePlaceInfo({ placeId: placeId, eventId: eventId });
+  const { data, isLoading, isError } = usePlaceInfo({ 
+    placeId: placeId, 
+    eventId: eventId, 
+    subwayId: subwayId || undefined 
+  });
 
   if (isLoading)
     return (
@@ -111,6 +117,7 @@ const DetailPage = () => {
           name={data.name}
           isChanged={data.isChanged}
           isConfirmed={data.isConfirmed}
+          subwayId={subwayId}
           onComplete={() => setIsOpenShareModal(true)}
         />
         {isOpenShareModal && (

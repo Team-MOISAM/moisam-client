@@ -5,13 +5,14 @@ import { PlaceResponse } from "../model";
 
 interface RecommendListProps {
   places: PlaceResponse[];
+  subwayId: number;
 }
 
-export const RecommendList = ({ places }: RecommendListProps) => {
+export const RecommendList = ({ places, subwayId }: RecommendListProps) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const handleNavigate = (placeId: string) => {
-    navigate(`/detail/${id}/${placeId}`);
+    navigate(`/detail/${id}/${placeId}?subwayId=${subwayId}`);
   };
 
   return (

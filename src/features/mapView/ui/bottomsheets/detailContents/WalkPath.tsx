@@ -9,11 +9,11 @@ interface WalkPathProps extends TransitRoute {
 }
 
 export const WalkPath = ({ sectionTime, distance, previousInfo, nextInfo }: WalkPathProps) => {
-  const meeintPointData = useEventStore(state => state.meetingPointData);
+  const meetingPointData = useEventStore(state => state.meetingPointData);
 
   const nextTransferType = nextInfo?.trafficType;
 
-  const meetingPoint = meeintPointData?.meetingPoint;
+  const meetingPoint = meetingPointData?.meetingPoint;
 
   // 다음 역이 없으면 meetingPoint의 endStationName을 사용
   const nextStationName = nextInfo?.startBoardName ?? meetingPoint?.endStationName;
