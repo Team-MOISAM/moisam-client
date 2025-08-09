@@ -7,17 +7,25 @@ import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEventStore } from "@/shared/stores";
 import { PointChip } from "@/shared/ui";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const PlacePage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const eventData = useEventStore(state => state.eventData);
+  const meetingPointData = useEventStore(state => state.meetingPointData);
   
-  // 선택된 지하철역 ID 상태 관리
+  // 선택된 지하철역 ID 상태 관리 - meetingPointData에서 초기값 설정
   const [selectedSubwayId, setSelectedSubwayId] = useState<number>(
-    eventData?.meetingPointRouteGroups?.[0]?.subwayId ?? 0
+    meetingPointData?.subwayId ?? eventData?.meetingPointRouteGroups?.[0]?.subwayId ?? 0
   );
+
+  // meetingPointData가 변경될 때 selectedSubwayId 업데이트
+  useEffect(() => {
+    if (meetingPointData?.subwayId) {
+      setSelectedSubwayId(meetingPointData.subwayId);
+    }
+  }, [meetingPointData?.subwayId]);
   
   const { data, isLoading, isError } = useRecommendedPlaces(id ?? "", selectedSubwayId);
   // 데이터가 없으면 null 처리
