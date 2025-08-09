@@ -26,7 +26,7 @@ const PlacePage = () => {
   const recommendedPlaces = data?.data.placeResponses ?? [];
 
   const handleNavigate = (placeId: string) => {
-    navigate(`/detail/${id}/${placeId}`);
+    navigate(`/detail/${id}/${placeId}?subwayId=${selectedSubwayId}`);
   };
 
   // 지하철역 선택 핸들러
@@ -81,7 +81,7 @@ const PlacePage = () => {
           ))}
         </div>
         <div className="flex-1 mt-3 min-h-0 relative">
-          <RecommendList places={recommendedPlaces} />
+          <RecommendList places={recommendedPlaces} subwayId={selectedSubwayId} />
         </div>
       </div>
     </>

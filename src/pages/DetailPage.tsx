@@ -40,10 +40,16 @@ const DetailPage = () => {
   }, []);
 
   const { eventId, placeId } = useParams();
+  const searchParams = new URLSearchParams(window.location.search);
+  const subwayId = searchParams.get('subwayId');
 
   if (!placeId || !eventId) return <p>잘못된 접근입니다</p>;
 
-  const { data, isLoading, isError } = usePlaceInfo({ placeId: placeId, eventId: eventId });
+  const { data, isLoading, isError } = usePlaceInfo({ 
+    placeId: placeId, 
+    eventId: eventId, 
+    subwayId: subwayId || undefined 
+  });
 
   if (isLoading)
     return (
@@ -111,6 +117,7 @@ const DetailPage = () => {
           name={data.name}
           isChanged={data.isChanged}
           isConfirmed={data.isConfirmed}
+          subwayId={subwayId}
           onComplete={() => setIsOpenShareModal(true)}
         />
         {isOpenShareModal && (
