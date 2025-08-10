@@ -75,7 +75,7 @@ export function TimePicker({ value, onChange, selectedDate }: TimePickerProps) {
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className={`w-[116px] h-[48px] justify-between font-normal bg-gray-5 border-none ${
+          className={`w-[116px] h-[48px] justify-between font-normal bg-gray-5 border-none shadow-none text-md ${
             isTimeSelected ? 'text-gray-90' : 'text-gray-40'
           }`}
         >
