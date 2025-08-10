@@ -21,6 +21,14 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
   const isMobile = useIsMobile()
   const translateX = useResponsiveTranslate()
 
+  // 오늘 날짜를 기준으로 과거 날짜 비활성화
+  const today = new Date()
+  today.setHours(0, 0, 0, 0) // 시간을 00:00:00으로 설정하여 정확한 날짜 비교
+
+  const disabledDays = {
+    before: today
+  }
+
   return (
     <div className="relative">
       <Popover open={open} onOpenChange={setOpen}>
@@ -46,6 +54,7 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
             mode="single"
             selected={value}
             captionLayout="dropdown"
+            disabled={disabledDays}
             onSelect={(date) => {
               if (date) {
                 onChange(date)
