@@ -13,7 +13,6 @@ export const FindContainer = () => {
 
   const [searchParams] = useSearchParams();
   const startStepParam = searchParams.get("startStep");
-  const eventIdParam = searchParams.get("eventId");
   const isEditParam = searchParams.get("isEdit");
   const isEdit = isEditParam === "true";
 
