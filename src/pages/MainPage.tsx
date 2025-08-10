@@ -37,7 +37,7 @@ const MainPage = () => {
   return (
     <div className="relative h-screen-dvh flex flex-col items-center">
       <LoginHeader />
-      <div className="overflow-auto scrollbar-hidden w-full mb-[76px]">
+      <div className="overflow-auto scrollbar-hidden w-full">
         <AnimatedSection
           ref={el => {
             sectionRefs.current[0] = el;
@@ -80,7 +80,7 @@ const MainPage = () => {
         </AnimatedSection>
         <Footer />
       </div>
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[600px] px-5 py-3 bg-[rgba(255,255,255,0.05)] backdrop-blur-[12px]">
+      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[600px] px-5 py-3 bg-[rgba(255,255,255,0.05)] backdrop-blur-md ">
         <Button onClick={handleClick}>중간장소 찾기</Button>
       </div>
     </div>
