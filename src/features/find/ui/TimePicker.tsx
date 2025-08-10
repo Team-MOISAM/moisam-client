@@ -67,12 +67,17 @@ export function TimePicker({ value, onChange, selectedDate }: TimePickerProps) {
     setOpen(false);
   };
 
+  // 시간이 선택되었는지 확인
+  const isTimeSelected = value && value.trim() !== '';
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="w-[116px] h-[48px] justify-between font-normal bg-gray-5 border-none"
+          className={`w-[116px] h-[48px] justify-between font-normal bg-gray-5 border-none ${
+            isTimeSelected ? 'text-gray-90' : 'text-gray-40'
+          }`}
         >
           {value || "시간 선택"}
           <svg
@@ -108,9 +113,9 @@ export function TimePicker({ value, onChange, selectedDate }: TimePickerProps) {
                 disabled={isDisabled}
                 className={`w-full px-4 py-2 text-left focus:outline-none ${
                   isDisabled 
-                    ? 'text-gray-300 cursor-not-allowed' // gray-5에 가까운 색상으로 비활성화
+                    ? 'text-gray-40 cursor-not-allowed'
                     : value === time 
-                      ? 'bg-gray-10 text-gray-900' 
+                      ? 'bg-gray-10 text-gray-90' 
                       : 'text-gray-700 hover:bg-gray-10 focus:bg-gray-20'
                 }`}
               >

@@ -39,7 +39,7 @@ export const FindContainer = () => {
   const [eventData, setEventData] = useState<CreateEventData>({
     eventName: "",
     eventDate: "",
-    eventTime: "00:00",
+    eventTime: "",
     username: "",
     startPoint: "",
     address: "",

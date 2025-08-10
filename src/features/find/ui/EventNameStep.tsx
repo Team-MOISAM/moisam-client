@@ -64,8 +64,11 @@ export const EventNameStep = ({
     }
   };
 
+  // 시간 선택 여부 확인
+  const isTimeSelected = eventTime && eventTime.trim() !== '';
+  
   // 전체 유효성 검사 (이름 + 시간)
-  const isFormValid = isValid && eventTime.trim() !== '';
+  const isFormValid = isValid && isTimeSelected;
 
   useEffect(() => {
     const handleResize = () => {
@@ -110,12 +113,14 @@ export const EventNameStep = ({
   };
 
   const handleNext = () => {
-    if (!validateValue() || !eventTime.trim()) return;
+    // 이벤트명 유효성 검사
+    if (!validateValue()) return;
+    
+    // 시간 선택 검사
+    if (!isTimeSelected) return;
+    
     setEventName(value);
-
-    // 날짜를 "YYYY-MM-DD" 형식으로 변환
     setEventDate(formatDateWithDash(selectedDate));
-
     setCurrentStep(2);
   };
 
@@ -145,10 +150,6 @@ export const EventNameStep = ({
             <DatePicker value={selectedDate} onChange={handleDateChange} />
             <TimePicker value={eventTime} onChange={setEventTime} selectedDate={selectedDate} />
           </div>
-          {/* 시간 선택 안내 메시지 */}
-          {!eventTime && (
-            <p className="text-sm text-gray-400 -mt-4">시간을 선택해주세요</p>
-          )}
         </div>
       </div>
 
