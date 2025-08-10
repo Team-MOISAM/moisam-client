@@ -22,11 +22,7 @@ export const FindContainer = () => {
 
   const [name, setName] = useState(() => {
     if (isEdit && detailEventData) return detailEventData.nickname;
-    // eventId가 있으면 로그인된 사용자 이름 사용
-    if (eventIdParam && isLoggedIn && nickname) {
-      return formatName(nickname);
-    }
-    // 기존 로직
+    // startStep이 명시적으로 설정된 경우만 자동 이름 설정
     return isLoggedIn && startStepParam === "1" && nickname ? formatName(nickname) : "";
   });
   const [currentStep, setCurrentStep] = useState(() => {
