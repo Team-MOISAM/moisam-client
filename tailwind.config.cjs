@@ -8,25 +8,29 @@ module.exports = {
         xxxl: [
           "24px",
           {
-            lineHeight: "150%",
+            lineHeight: "120%",
+            letterSpacing: "-2%",
           },
         ],
         xxl: [
           "22px",
           {
-            lineHeight: "150%",
+            lineHeight: "120%",
+            letterSpacing: "-2%",
           },
         ],
         xl: [
           "20px",
           {
-            lineHeight: "150%",
+            lineHeight: "120%",
+            letterSpacing: "-2%",
           },
         ],
         lg: [
           "18px",
           {
-            lineHeight: "150%",
+            lineHeight: "120%",
+            letterSpacing: "-2%",
           },
         ],
         md: [
@@ -41,22 +45,39 @@ module.exports = {
             lineHeight: "150%",
           },
         ],
-        xs: [
-          "12px",
+        labelMd: [
+          "16px",
           {
-            lineHeight: "150%",
+            lineHeight: "120%",
+            letterSpacing: "-2%",
           },
         ],
-        xxs: [
+        labelSm: [
+          "14px",
+          {
+            lineHeight: "120%",
+            letterSpacing: "-2%",
+          },
+        ],
+        labelXs: [
+          "12px",
+          {
+            lineHeight: "120%",
+            letterSpacing: "-2%",
+          },
+        ],
+        labelXxs: [
           "10px",
           {
             lineHeight: "120%",
+            letterSpacing: "-2%",
           },
         ],
         xxxs: [
           "8px",
           {
-            lineHeight: "110%",
+            lineHeight: "120%",
+            letterSpacing: "-2%",
           },
         ],
       },

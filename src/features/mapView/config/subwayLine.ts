@@ -32,7 +32,7 @@ export const subwayLine: Record<
     textSize: "text-xxxs",
     fontWeight: "font-bold",
   },
-  경춘선: { bg: "bg-metro-rail4", text: "경춘", textSize: "text-xxs", fontWeight: "font-bold" },
+  경춘선: { bg: "bg-metro-rail4", text: "경춘", textSize: "text-labelXxs", fontWeight: "font-bold" },
 
   "수도권 1호선": { bg: "bg-metro-line1", text: "1", textSize: "text-sm" },
   "수도권 2호선": { bg: "bg-metro-line2", text: "2", textSize: "text-sm" },

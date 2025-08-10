@@ -31,7 +31,7 @@ const PlaceCard = ({
   return (
     <div className="flex flex-col gap-3 p-4 rounded-2xl w-full shadow-list bg-white" onClick={onClick}>
       <div className="flex justify-between">
-        <div className="flex gap-1 flex-col text-xs font-medium">
+        <div className="flex gap-1 flex-col text-labelXs font-medium">
           <span className="text-md font-semibold text-gray-90">{name}</span>
           {/* openingHours가 있을 때만 영업시간 표시 */}
           {openingHours && (

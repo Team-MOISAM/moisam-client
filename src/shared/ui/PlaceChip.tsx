@@ -20,7 +20,7 @@ const PlaceChip = ({ label }: PlaceChipProps) => {
   if (!icon) return null;
 
   return (
-    <div className="flex gap-[1px] py-[3px] px-[6px] bg-gray-5 rounded-[6px] items-center font-semibold text-xs">
+    <div className="flex gap-[1px] py-[3px] px-[6px] bg-gray-5 rounded-[6px] items-center font-semibold text-labelXs">
       <img src={icon} alt={label} className="w-4 h-4 mr-[2px]" />
       <span className="text-gray-70">{prefix}</span>
       <span className="text-gray-90 ml-[1px]">{emphasis}</span>
