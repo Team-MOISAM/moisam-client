@@ -6,6 +6,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { useIsMobile, useResponsiveTranslate } from "@/shared/hooks"
+import dropdown from "@/assets/icon/dropdown.svg"
 
 interface TimePickerProps {
   value: string;
@@ -80,19 +81,7 @@ export function TimePicker({ value, onChange, selectedDate }: TimePickerProps) {
           }`}
         >
           {value || "시간 선택"}
-          <svg
-            className="h-4 w-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
+          <img src={dropdown} alt="dropdown" className="h-4 w-4" />
         </Button>
       </PopoverTrigger>
       <PopoverContent 
