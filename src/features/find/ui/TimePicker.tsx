@@ -72,7 +72,7 @@ export function TimePicker({ value, onChange, selectedDate }: TimePickerProps) {
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="w-[116px] h-[48px] justify-between font-normal bg-gray-5"
+          className="w-[116px] h-[48px] justify-between font-normal bg-gray-5 border-none"
         >
           {value || "시간 선택"}
           <svg

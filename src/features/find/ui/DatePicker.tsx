@@ -36,7 +36,7 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
           <Button
             variant="outline"
             id="date"
-            className="w-48 h-[48px] justify-between font-normal bg-gray-5"
+            className="w-48 h-[48px] justify-between font-normal bg-gray-5 border-none"
           >
             {value.getFullYear()}.{String(value.getMonth() + 1).padStart(2, '0')}.{String(value.getDate()).padStart(2, '0')}
             <img src={calender} alt="calender" />
