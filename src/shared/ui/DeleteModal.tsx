@@ -15,16 +15,16 @@ export const DeleteModal = ({ title, description, onClose, onDelete }: DeleteMod
         <p className="text-gray-90 text-md font-semibold">{description}</p>
       </div>
       <div className="flex w-full">
-        <div
+        <button
           className="w-1/2 flex justify-center items-center py-3 text-gray-40 text-sm font-medium border-t border-t-gray-5 cursor-pointer"
           onClick={onClose}>
           돌아가기
-        </div>
-        <div
+        </button>
+        <button
           className="w-1/2 flex justify-center items-center py-3 text-white text-sm font-semibold border-t bg-gray-90 rounded-br-[20px] cursor-pointer"
           onClick={onDelete}>
           삭제하기
-        </div>
+        </button>
       </div>
     </Modal>
   );

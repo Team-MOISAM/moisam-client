@@ -13,16 +13,16 @@ export const DeleteAccountModal = ({ onClose, onDelete }: DeleteAccountModalProp
         <p className="text-gray-40 text-sm font-medium">탈퇴 시 계정 정보가 모두 삭제돼요</p>
       </div>
       <div className="flex w-full">
-        <div
+        <button
           className="w-1/2 flex justify-center items-center py-3 text-gray-40 text-sm font-medium border-t border-t-gray-5 cursor-pointer"
           onClick={onClose}>
           더 써볼래요
-        </div>
-        <div
+        </button>
+        <button
           className="w-1/2 flex justify-center items-center py-3 text-white text-sm font-semibold border-t bg-gray-90 rounded-br-[20px] cursor-pointer"
           onClick={onDelete}>
           떠날래요
-        </div>
+        </button>
       </div>
     </Modal>
   );
