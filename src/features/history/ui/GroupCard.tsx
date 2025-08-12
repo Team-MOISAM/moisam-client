@@ -42,7 +42,7 @@ export const GroupCard = ({
           </>
         </div>
       </div>
-      <div className="flex gap-1 text-xs font-medium items-center">
+      <div className="flex gap-1 text-labelXs font-medium items-center">
         {/* 이미지 영역 */}
         <div className="flex items-center">
           {displayImages.map((src, index) => {

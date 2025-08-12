@@ -21,7 +21,7 @@ export const MeetPointCard = ({ placeName, onClick, isPlace = true }: MeetPointC
       </div>
       <div className="flex justify-between items-center w-full">
         <div>
-          <p className={`text-xs ${isSelect ? "text-sub-sub" : "text-gray-40"}`}>
+          <p className={`text-labelXs ${isSelect ? "text-sub-sub" : "text-gray-40"}`}>
             {isSelect ? "여기에서 모여요" : "어디서 만나실 건가요?"}
           </p>
           <span className="text-md font-semibold text-gray-90">{placeName ?? "장소를 정해보세요"}</span>

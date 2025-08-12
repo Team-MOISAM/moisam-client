@@ -21,7 +21,7 @@ export const LoginModal = () => {
       <div>
         <div className="flex flex-col items-center gap-1 py-7 px-5 text-center">
           <h1 className="text-md font-semibold text-gray-90">로그인 하시겠어요?</h1>
-          <p className="text-xs text-gray-50 font-semibold">
+          <p className="text-labelXs text-gray-50 font-semibold">
             로그인하지 않으면 <br />
             모임을 저장할 수 없어요
           </p>
