@@ -10,7 +10,7 @@ export const BusPath = ({ startBoardName, endBoardName, laneName, stationCount, 
         <div className="flex flex-col items-center w-fit">
           <img src={Bus} alt="bus" className="w-6 h-6" />
           <div className="h-[87px] w-1 bg-gray-70" />
-          <div className="flex w-6 h-6 justify-center items-center bg-gray-70 rounded-[30px] text-xxs font-semibold text-white">
+          <div className="flex w-6 h-6 justify-center items-center bg-gray-70 rounded-[30px] text-labelXxs font-semibold text-white">
             하차
           </div>
         </div>

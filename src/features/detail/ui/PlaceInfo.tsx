@@ -21,7 +21,7 @@ export const PlaceInfo = ({ placeId, distance, name, averageRating, openTime, cl
   return (
     <div className="flex flex-col">
       <div className="p-5 flex flex-col gap-1">
-        <div className="flex py-[2px] px-[6px] gap-1 items-center rounded-[4px] bg-sub-10 w-fit text-xs font-semibold text-sub-sub">
+        <div className="flex py-[2px] px-[6px] gap-1 items-center rounded-[4px] bg-sub-10 w-fit text-labelXs font-semibold text-sub-sub">
           <img src={Pin} alt="pin" className="w-[14px] h-[14px]" />
           역에서 {distance}m
         </div>

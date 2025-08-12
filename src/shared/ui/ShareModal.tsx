@@ -62,7 +62,7 @@ export const ShareModal = ({ onClose, title, description, shareContent, onCopyCo
               }}
               className="flex flex-col gap-2 items-center">
               <img src={src} alt={alt} className="w-12 h-12" />
-              <p className="text-xs font-medium text-gray-80">{label}</p>
+              <p className="text-labelXs font-medium text-gray-80">{label}</p>
             </button>
           ))}
         </div>

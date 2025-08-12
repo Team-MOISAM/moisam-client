@@ -13,15 +13,15 @@ export const MeetPointCard = ({ placeName, onClick, isPlace = true, isConfirmed 
   const isSelect = !!placeName;
 
   return (
-    <div 
-      className={`flex gap-3 p-3 rounded-2xl bg-white shadow-list w-full items-center ${onClick ? 'cursor-pointer' : ''}`} 
-      onClick={onClick}
-    >
-      <div className={`w-10 h-10 flex justify-center items-center rounded-xl ${isConfirmed ? 'bg-sub-10' : 'bg-gray-5'}`}>
+    <div
+      className={`flex gap-3 p-3 rounded-2xl bg-white shadow-list w-full items-center ${onClick ? "cursor-pointer" : ""}`}
+      onClick={onClick}>
+      <div
+        className={`w-10 h-10 flex justify-center items-center rounded-xl ${isConfirmed ? "bg-sub-10" : "bg-gray-5"}`}>
         <img src={isConfirmed ? PinBlue : Pin} alt="pin" className="w-6 h-6" />
       </div>
       <div className="w-full">
-        <p className={`text-xs ${isSelect ? "text-sub-sub" : "text-gray-40"}`}>
+        <p className={`text-labelXs ${isSelect ? "text-sub-sub" : "text-gray-40"}`}>
           {isSelect ? "여기에서 모여요" : "어디서 만나실 건가요?"}
         </p>
         <span className="text-md font-semibold text-gray-90">{placeName ?? "장소를 정해보세요"}</span>

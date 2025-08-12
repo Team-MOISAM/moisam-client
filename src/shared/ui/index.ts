@@ -14,3 +14,4 @@ export * from "./DeleteModal";
 export * from "./Dropdown";
 export * from "./PointChip";
 export * from "./MeetPointCard";
+export * from "./AnimatedSection";

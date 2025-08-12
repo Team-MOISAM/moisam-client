@@ -81,7 +81,7 @@ export const MapModal = ({ onClose }: MapModalProps) => {
           {TransferMap.map(item => (
             <div className="flex flex-col gap-2 items-center cursor-pointer" onClick={item.onClick}>
               <img src={item.src} alt={item.alt} className="w-10 h-10" />
-              <p className="text-xs font-medium text-gray-80">{item.text}</p>
+              <p className="text-labelXs font-medium text-gray-80">{item.text}</p>
             </div>
           ))}
         </div>
