@@ -18,7 +18,7 @@ export const useScrollAnimation = () => {
     observerRef.current = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
-          const index = parseInt(entry.target.getAttribute("data-index") || "0");
+          const index = parseInt(entry.target.getAttribute("data-index") ?? "0");
 
           if (entry.isIntersecting) {
             setVisibleSections(prev => new Set([...prev, index]));
