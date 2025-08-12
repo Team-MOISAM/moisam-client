@@ -59,6 +59,7 @@ const DetailPage = () => {
     navigate(`/place/${eventId}`);
   };
 
+  console.log(data);
   return (
     <>
       <Helmet>
@@ -106,8 +107,8 @@ const DetailPage = () => {
           <ShareModal
             onClose={() => setIsOpenShareModal(false)}
             onCopyComplete={() => setToastKey(Date.now())}
-            title={data.isConfirmed ? "모임장소가 정해졌어요!" : "장소 공유하기"}
-            description={data.isConfirmed ? "멤버들에게 알려주세요" : undefined}
+            title={data.isChanged ? "장소 공유하기" : "모임장소가 정해졌어요!"}
+            description={data.isChanged ? undefined : "멤버들에게 알려주세요"}
             shareContent={shareContent}
           />
         )}
