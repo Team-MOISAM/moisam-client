@@ -21,7 +21,7 @@ export const PathSection = () => {
       <div className="flex flex-col items-center">
         <div className="flex items-center w-fit gap-2 px-3 py-[6px] bg-[#DFEEFF] rounded-[30px]">
           <img src={Car} alt="car" className="w-6 h-6" />
-          <p className="text-lg font-semibold text-[#0967CD]">대중교통</p>
+          <p className="text-lg font-semibold text-[#0967CD]">자가용</p>
         </div>
         <img src={CarImg} alt="CarImg" className="max-w-[500px] w-full h-full" />
       </div>
