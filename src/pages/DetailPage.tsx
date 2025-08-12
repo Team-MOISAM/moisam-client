@@ -16,12 +16,6 @@ const DetailPage = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [toastKey, setToastKey] = useState<number | null>(null);
 
-  const onScroll = () => {
-    const el = scrollRef.current;
-    if (!el) return;
-    setIsScrolled(el.scrollTop > 0);
-  };
-
   const { eventId, placeId } = useParams();
   const [searchParams] = useSearchParams();
   const subwayId = searchParams.get("subwayId");
@@ -33,6 +27,12 @@ const DetailPage = () => {
     eventId: eventId,
     subwayId: subwayId || undefined,
   });
+
+  const onScroll = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setIsScrolled(el.scrollTop > 0);
+  };
 
   if (isLoading)
     return (
@@ -56,7 +56,7 @@ const DetailPage = () => {
   };
 
   const handleClick = () => {
-    navigate(-1);
+    navigate(`/place/${eventId}`);
   };
 
   return (
