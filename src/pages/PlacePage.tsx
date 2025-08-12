@@ -7,26 +7,20 @@ import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEventStore } from "@/shared/stores";
 import { PointChip } from "@/shared/ui";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const PlacePage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const eventData = useEventStore(state => state.eventData);
   const meetingPointData = useEventStore(state => state.meetingPointData);
-  
+  const setMeetingPointData = useEventStore(state => state.setMeetingPointData);
+
   // 선택된 지하철역 ID 상태 관리 - meetingPointData에서 초기값 설정
   const [selectedSubwayId, setSelectedSubwayId] = useState<number>(
     meetingPointData?.subwayId ?? eventData?.meetingPointRouteGroups?.[0]?.subwayId ?? 0
   );
 
-  // meetingPointData가 변경될 때 selectedSubwayId 업데이트
-  useEffect(() => {
-    if (meetingPointData?.subwayId) {
-      setSelectedSubwayId(meetingPointData.subwayId);
-    }
-  }, [meetingPointData?.subwayId]);
-  
   const { data, isLoading, isError } = useRecommendedPlaces(id ?? "", selectedSubwayId);
   // 데이터가 없으면 null 처리
   const confirmedPlace = data?.data.confirmedPlaceResponse ?? null;
@@ -40,6 +34,11 @@ const PlacePage = () => {
   // 지하철역 선택 핸들러
   const handleSubwaySelect = (subwayId: number) => {
     setSelectedSubwayId(subwayId);
+
+    const matchedData = eventData?.meetingPointRouteGroups.find(group => group.subwayId === subwayId);
+    if (matchedData) {
+      setMeetingPointData(matchedData);
+    }
   };
 
   if (isLoading || !eventData)
@@ -61,28 +60,18 @@ const PlacePage = () => {
           <PlainHeader title="장소 추천" url={`/mapview/${id}`} />
         </div>
         <div className="flex-none mt-3 px-5 flex justify-center">
-          {!isConfirmed && (
-            <MeetPointCard
-              placeName={data!.data.middlePointName}
-              isPlace={false}
-              isConfirmed={false}
-            />
-          )}
-          {isConfirmed && (
-            <MeetPointCard
-              placeName={confirmedPlace.name}
-              onClick={() => handleNavigate(confirmedPlace.id)}
-              isPlace={true}
-              isConfirmed={true}
-            />
-          )}
+          <MeetPointCard
+            placeName={isConfirmed ? confirmedPlace.name : undefined}
+            isPlace={isConfirmed}
+            onClick={isConfirmed ? () => handleNavigate(confirmedPlace.id) : undefined}
+          />
         </div>
         {/* 지하철역 선택 칩들 */}
         <div className="flex-none mt-3 px-5 flex gap-2 overflow-x-auto scrollbar-hidden">
           {eventData.meetingPointRouteGroups.map(group => (
             <PointChip
               key={group.subwayId}
-              text={group.meetingPoint.endStationName.replace(/역$/, '')}
+              text={group.meetingPoint.endStationName.replace(/역$/, "")}
               isSelect={group.subwayId === selectedSubwayId}
               onClick={() => handleSubwaySelect(group.subwayId)}
             />

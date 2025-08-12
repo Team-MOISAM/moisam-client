@@ -16,7 +16,7 @@ export const UserCard = ({ isTransit, name, startStation, totalTime, onClick }: 
       <div className="py-[8px] cursor-pointer">
         <div className="flex gap-1 text-lg font-bold text-gray-70 items-center">
           <img src={isTransit ? Subway : Car} alt="transfer" className="w-5 h-5" />
-          <span>{totalTime}분</span>
+          <span>{totalTime >= 60 ? `${Math.floor(totalTime / 60)}시간 ${totalTime % 60}분` : `${totalTime}분`}</span>
         </div>
         <p className="text-gray-40 text-sm">
           {name} · {startStation}
