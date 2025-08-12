@@ -1,7 +1,7 @@
 import { Photo, PlaceButton, PlaceInfo, Review } from "@/features/detail/ui";
 import { Empty } from "@/features/detail/ui";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { ShareModal } from "@/shared/ui";
 import { DetailHeader } from "@/widgets/headers";
 import { usePlaceInfo } from "@/features/detail/hooks";
@@ -14,41 +14,24 @@ const DetailPage = () => {
   const [isOpenShareModal, setIsOpenShareModal] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const topMarkerRef = useRef<HTMLDivElement>(null);
   const [toastKey, setToastKey] = useState<number | null>(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsScrolled(!entry.isIntersecting); // 위에 닿아 있지 않으면 스크롤된 상태
-      },
-      {
-        root: scrollRef.current, // 스크롤 기준 대상
-        threshold: 0,
-      }
-    );
-
-    if (topMarkerRef.current) {
-      observer.observe(topMarkerRef.current);
-    }
-
-    return () => {
-      if (topMarkerRef.current) {
-        observer.unobserve(topMarkerRef.current);
-      }
-    };
-  }, []);
+  const onScroll = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setIsScrolled(el.scrollTop > 0);
+  };
 
   const { eventId, placeId } = useParams();
   const [searchParams] = useSearchParams();
-  const subwayId = searchParams.get('subwayId');
+  const subwayId = searchParams.get("subwayId");
 
   if (!placeId || !eventId) return <p>잘못된 접근입니다</p>;
 
-  const { data, isLoading, isError } = usePlaceInfo({ 
-    placeId: placeId, 
-    eventId: eventId, 
-    subwayId: subwayId || undefined 
+  const { data, isLoading, isError } = usePlaceInfo({
+    placeId: placeId,
+    eventId: eventId,
+    subwayId: subwayId || undefined,
   });
 
   if (isLoading)
@@ -88,8 +71,7 @@ const DetailPage = () => {
           isScrolled={isScrolled}
           name={data.name}
         />
-        <div className="flex-1 overflow-y-auto scrollbar-hidden mb-[88px]" ref={scrollRef}>
-          <div ref={topMarkerRef} />
+        <div className="flex-1 overflow-y-auto scrollbar-hidden mb-[88px]" ref={scrollRef} onScroll={onScroll}>
           <Photo images={data.images} />
           <PlaceInfo
             placeId={data.kakaoPlaceId}
