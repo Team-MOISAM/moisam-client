@@ -1,4 +1,5 @@
-import FooterImg from "@/assets/image/footer.webp";
+import FooterImg from "@/assets/image/footerImg.webp";
+import FooterIcon from "@/assets/icon/footerIcon.svg";
 import Logo from "@/assets/icon/logoWhite.svg";
 import Instagram from "@/assets/icon/instagram.svg";
 import { useNavigate } from "react-router-dom";
@@ -8,10 +9,14 @@ export const Footer = () => {
 
   return (
     <footer className="relative flex flex-col w-full">
-      <img src={FooterImg} alt="footerImg" className="w-full max-h-[300px] h-full" />
-      <div className="w-full absolute top-9 left-1/2 -translate-x-1/2 flex flex-col items-center text-xxxl font-bold text-white">
-        <p>지금 바로 중간장소를</p>
-        <p>찾아보세요!</p>
+      <div
+        className="w-full h-[257px] bg-no-repeat bg-cover flex flex-col items-center"
+        style={{ backgroundImage: `url(${FooterImg})` }}>
+        <div className="w-full flex flex-col pt-9 pb-8 items-center text-xxxl font-bold text-white">
+          <p>지금 바로 중간장소를</p>
+          <p>찾아보세요!</p>
+        </div>
+        <img src={FooterIcon} alt="footerIcon" />
       </div>
       <div className="pt-8 pb-[116px] flex-col flex bg-gray-80 gap-[26px] px-5">
         <div className="flex justify-between items-center">
