@@ -7,8 +7,12 @@ export const Footer = () => {
   const navigate = useNavigate();
 
   return (
-    <footer className="flex flex-col w-full">
-      <img src={FooterImg} alt="footerImg" className="w-full max-h-[400px] h-full" />
+    <footer className="relative flex flex-col w-full">
+      <img src={FooterImg} alt="footerImg" className="w-full max-h-[300px] h-full" />
+      <div className="w-full absolute top-9 left-1/2 -translate-x-1/2 flex flex-col items-center text-xxxl font-bold text-white">
+        <p>지금 바로 중간장소를</p>
+        <p>찾아보세요!</p>
+      </div>
       <div className="pt-8 pb-[116px] flex-col flex bg-gray-80 gap-[26px] px-5">
         <div className="flex justify-between items-center">
           <img src={Logo} alt="logo" className="w-[105px] h-[29px]" />
