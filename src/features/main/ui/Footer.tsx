@@ -16,7 +16,7 @@ export const Footer = () => {
           <p>지금 바로 중간장소를</p>
           <p>찾아보세요!</p>
         </div>
-        <img src={FooterIcon} alt="footerIcon" />
+        <img src={FooterIcon} alt="footerIcon" className="w-[132px] h-[100px]" />
       </div>
       <div className="pt-8 pb-[116px] flex-col flex bg-gray-80 gap-[26px] px-5">
         <div className="flex justify-between items-center">
