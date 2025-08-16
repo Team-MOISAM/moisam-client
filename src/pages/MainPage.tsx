@@ -35,7 +35,6 @@ const MainPage = () => {
   }, [registerSection]);
 
   return (
-<<<<<<< HEAD
     <div className="relative h-screen-dvh flex flex-col items-center">
       <LoginHeader />
       <div className="overflow-auto scrollbar-hidden w-full">
@@ -83,16 +82,6 @@ const MainPage = () => {
       </div>
       <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[600px] px-5 py-3 bg-[rgba(255,255,255,0.05)] backdrop-blur-md ">
         <Button onClick={handleClick}>중간장소 찾기</Button>
-=======
-    <div className="relative bg-[#E5EFF7] h-screen-dvh flex flex-col justify-end">
-      <div
-        className="flex flex-col gap-3 items-center pb-5 h-fit px-5 pt-32 z-10"
-        style={{ background: "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, #FFF 30%)" }}>
-        <span className="text-md font-medium text-gray-60">모두를 위한 하나의 SPOT</span>
-        <img src={Logo} alt="logo" className="mb-[38px] w-[173px] h-12" />
-        <Button onClick={handleClick}>중간장소 찾기</Button>
-        <KakaoLogin />
->>>>>>> 94b7afe ([fix] #SPOT-159 : main 버튼 라이팅 수정)
       </div>
     </div>
   );
