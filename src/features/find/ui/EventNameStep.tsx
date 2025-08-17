@@ -41,6 +41,35 @@ export const EventNameStep = ({
   const { mutate } = useEditEventName();
   const navigate = useNavigate();
 
+  // 날짜 변경 시 과거 시간이 선택되어 있으면 초기화
+  const handleDateChange = (date: Date) => {
+    setSelectedDate(date);
+    
+    // 오늘 날짜인 경우에만 시간 검증
+    const today = new Date();
+    const dateOnly = new Date(date);
+    dateOnly.setHours(0, 0, 0, 0);
+    const todayOnly = new Date(today);
+    todayOnly.setHours(0, 0, 0, 0);
+    
+    if (dateOnly.getTime() === todayOnly.getTime() && eventTime) {
+      const [hour, minute] = eventTime.split(':').map(Number);
+      const selectedTimeInMinutes = hour * 60 + minute;
+      const currentTimeInMinutes = today.getHours() * 60 + today.getMinutes();
+      
+      // 선택된 시간이 현재 시간보다 이전이면 초기화
+      if (selectedTimeInMinutes <= currentTimeInMinutes) {
+        setEventTime('');
+      }
+    }
+  };
+
+  // 시간 선택 여부 확인
+  const isTimeSelected = eventTime && eventTime.trim() !== '';
+  
+  // 전체 유효성 검사 (이름 + 시간)
+  const isFormValid = isValid && isTimeSelected;
+
   useEffect(() => {
     const handleResize = () => {
       if (window.visualViewport) {
@@ -84,12 +113,14 @@ export const EventNameStep = ({
   };
 
   const handleNext = () => {
+    // 이벤트명 유효성 검사
     if (!validateValue()) return;
+    
+    // 시간 선택 검사
+    if (!isTimeSelected) return;
+    
     setEventName(value);
-
-    // 날짜를 "YYYY-MM-DD" 형식으로 변환
     setEventDate(formatDateWithDash(selectedDate));
-
     setCurrentStep(2);
   };
 
@@ -116,8 +147,8 @@ export const EventNameStep = ({
         <div className="flex flex-col gap-6">
           <p className="text-gray-90 text-xxl font-bold">언제 모이시나요?</p>
           <div className="flex flex-row gap-[8px]">
-            <DatePicker value={selectedDate} onChange={setSelectedDate} />
-            <TimePicker value={eventTime} onChange={setEventTime} />
+            <DatePicker value={selectedDate} onChange={handleDateChange} />
+            <TimePicker value={eventTime} onChange={setEventTime} selectedDate={selectedDate} />
           </div>
         </div>
       </div>
@@ -127,7 +158,7 @@ export const EventNameStep = ({
         style={{
           marginBottom: keyboardHeight > 0 ? `${keyboardHeight + 20}px` : "20px",
         }}>
-        <Button onClick={isEdit ? handleEdit : handleNext} disabled={!isValid}>
+        <Button onClick={isEdit ? handleEdit : handleNext} disabled={!isFormValid}>
           {isEdit ? "수정하기" : "다음"}
         </Button>
       </div>

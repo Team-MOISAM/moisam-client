@@ -42,14 +42,6 @@ export const LocationStep = ({
   const [isPolicyOpen, setIsPolicyOpen] = useState(false);
   const [isTransit, setIsTransit] = useState(true);
 
-  // isTransit이 변경될 때 상위 컴포넌트에 업데이트
-  useEffect(() => {
-    if (startPointInfo) {
-      // LocationStep에서 isTransit 변경 시 상위 컴포넌트에 알림
-      // 실제로는 props로 받아야 하지만 현재 구조상 state로 관리
-    }
-  }, [isTransit, startPointInfo]);
-
   const startPointId = useEventStore(state => state.detailEventData?.id);
   const email = useUserStore(state => state.email);
   const personalInfoAgreement = useUserStore(state => state.personalInfoAgreement);
@@ -105,7 +97,21 @@ export const LocationStep = ({
     const newValue = e.target.value;
     setValue(newValue);
 
-    if ((startPointInfo && newValue === startPointInfo.startPoint) || (startPointInfo && newValue === "")) {
+    // 입력 필드가 비워지면 startPointInfo 초기화 (TransportToggle 숨김)
+    if (newValue === "") {
+      setStartPointInfo({
+        name: name,
+        startPoint: "",
+        address: "",
+        roadAddress: "",
+        latitude: 0,
+        longitude: 0,
+      });
+      setIsSearching(false);
+      return;
+    }
+
+    if (startPointInfo && newValue === startPointInfo.startPoint) {
       setIsSearching(false);
       return;
     }
@@ -261,7 +267,7 @@ export const LocationStep = ({
                 <p className="text-center text-gray-40 text-sm">현재 서울 내 지역인지 다시 확인해보세요</p>
               </div>
             )}
-            {startPointInfo && (
+            {startPointInfo && startPointInfo.startPoint && startPointInfo.startPoint.trim() !== "" && (
               <div className="flex flex-col gap-4 mt-4">
                 <p className="text-gray-90 text-xxl font-bold">어떻게 오시나요?</p>
                 <TransportToggle value={isTransit} onChange={setIsTransit} />
