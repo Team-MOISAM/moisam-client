@@ -36,9 +36,9 @@ export const FindContainer = () => {
     // 수정 모드이고 eventDataFromStore가 있으면 기존 데이터로 초기화
     if (isEdit && eventDataFromStore) {
       return {
-        eventName: eventDataFromStore.eventName || "",
-        eventDate: eventDataFromStore.eventDate || "",
-        eventTime: eventDataFromStore.eventTime || "",
+        eventName: eventDataFromStore.eventName ?? "",
+        eventDate: eventDataFromStore.eventDate ?? "",
+        eventTime: eventDataFromStore.eventTime ?? "",
         username: "",
         startPoint: "",
         address: "",
