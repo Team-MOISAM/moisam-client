@@ -24,7 +24,7 @@ export const MapHeader = () => {
 
   return (
     <header className="flex justify-between items-center py-3 px-5 bg-white w-full z-[101] relative">
-      <img src={Logo} alt="logo" className="w-[72px] h-5" onClick={handleLogoClick} />
+      <img src={Logo} alt="logo" className="w-[86px] h-5" onClick={handleLogoClick} />
       {profileImg ? (
         <button onClick={() => navigate("/my")}>
           <img src={profileImg} alt="프로필 이미지" className="w-8 h-8 rounded-full" />
