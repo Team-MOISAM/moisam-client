@@ -13,7 +13,7 @@ interface ScrolledHeaderProps {
 export const ScrolledHeader = ({ backClick, shareClick, isScrolled, name }: ScrolledHeaderProps) => {
   return (
     <div
-      className={`flex justify-between ${isScrolled ? "relative bg-white px-5 py-3 shadow-pin02" : "absolute top-3 left-5 right-5"}`}>
+      className={`flex justify-between px-5 py-3 ${isScrolled ? "relative bg-white shadow-pin02" : "absolute top-0 left-0 w-full bg-[linear-gradient(180deg,_rgba(8,8,10,0.60)_8%,_rgba(28,28,34,0.00)_100%)]"}`}>
       <button onClick={backClick}>
         <img src={isScrolled ? BackScroll : Back} alt="back" className="w-6 h-6" />
       </button>
