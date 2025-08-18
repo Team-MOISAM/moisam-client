@@ -3,14 +3,14 @@ import BackScroll from "@/assets/icon/back.svg";
 import Share from "@/assets/icon/whiteShare.svg";
 import ShareScroll from "@/assets/icon/share.svg";
 
-interface DetailHeaderProps {
+interface ScrolledHeaderProps {
   backClick: () => void;
   shareClick: () => void;
   isScrolled: boolean;
   name: string;
 }
 
-export const DetailHeader = ({ backClick, shareClick, isScrolled, name }: DetailHeaderProps) => {
+export const ScrolledHeader = ({ backClick, shareClick, isScrolled, name }: ScrolledHeaderProps) => {
   return (
     <div
       className={`flex justify-between ${isScrolled ? "relative bg-white px-5 py-3 shadow-pin02" : "absolute top-3 left-5 right-5"}`}>

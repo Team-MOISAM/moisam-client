@@ -3,7 +3,7 @@ import { Empty } from "@/features/detail/ui";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useRef, useState } from "react";
 import { ShareModal } from "@/shared/ui";
-import { DetailHeader } from "@/widgets/headers";
+import { FixedHeader, ScrolledHeader } from "@/widgets/headers";
 import { usePlaceInfo } from "@/features/detail/hooks";
 import LoadingSpinner from "@/shared/ui/LoadingSpinner";
 import Toast from "@/shared/ui/Toast";
@@ -59,21 +59,25 @@ const DetailPage = () => {
     navigate(`/place/${eventId}`);
   };
 
-  console.log(data);
   return (
     <>
       <Helmet>
         <title>장소 상세 | 모이삼</title>
       </Helmet>
       <div className="relative flex flex-col h-screen-dvh">
-        <DetailHeader
-          backClick={handleClick}
-          shareClick={() => setIsOpenShareModal(true)}
-          isScrolled={isScrolled}
-          name={data.name}
-        />
+        {data.images.length > 1 ? (
+          <ScrolledHeader
+            backClick={handleClick}
+            shareClick={() => setIsOpenShareModal(true)}
+            isScrolled={isScrolled}
+            name={data.name}
+          />
+        ) : (
+          <FixedHeader backClick={handleClick} shareClick={() => setIsOpenShareModal(true)} name={data.name} />
+        )}
+
         <div className="flex-1 overflow-y-auto scrollbar-hidden mb-[88px]" ref={scrollRef} onScroll={onScroll}>
-          <Photo images={data.images} />
+          {data.images.length > 1 && <Photo images={data.images} />}
           <PlaceInfo
             placeId={data.kakaoPlaceId}
             distance={data.distance}
