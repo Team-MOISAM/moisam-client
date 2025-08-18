@@ -21,12 +21,17 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
   const isMobile = useIsMobile()
   const translateX = useResponsiveTranslate()
 
-  // 오늘 날짜를 기준으로 과거 날짜 비활성화
+  // 오늘 날짜를 기준으로 과거 날짜와 미래 5년 이후 날짜 비활성화
   const today = new Date()
   today.setHours(0, 0, 0, 0) // 시간을 00:00:00으로 설정하여 정확한 날짜 비교
 
+  const maxDate = new Date()
+  maxDate.setFullYear(today.getFullYear() + 5) // 5년 후
+  maxDate.setHours(23, 59, 59, 999) // 해당 날짜의 마지막 시간으로 설정
+
   const disabledDays = {
-    before: today
+    before: today,
+    after: maxDate
   }
 
   return (
@@ -55,6 +60,8 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
             selected={value}
             captionLayout="dropdown"
             disabled={disabledDays}
+            fromYear={today.getFullYear()}
+            toYear={today.getFullYear() + 5}
             onSelect={(date) => {
               if (date) {
                 onChange(date)
