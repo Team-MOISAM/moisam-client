@@ -27,7 +27,8 @@ const KakaoCallbackPage = () => {
 
     if (isInvalidEventId) {
       navigate(`/${to}`);
-    } else if (to === "find") {
+    } else if (to && to.startsWith("find")) {
+      // find로 시작하는 경우 (find 또는 find?eventId=xxx 같은 경우)
       navigate(`/find?eventId=${eventId}&startStep=1`);
     } else {
       navigate(`/${to}/${eventId}`);

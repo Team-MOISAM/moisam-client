@@ -12,7 +12,7 @@ export const LoginModal = () => {
 
   const handleKakaoClick = () => {
     if (id) {
-      kakaoLogin({ to: `find?eventId=${id}`, eventId: id });
+      kakaoLogin({ to: "find", eventId: id });
     }
   };
 
