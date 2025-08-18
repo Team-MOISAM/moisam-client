@@ -65,7 +65,7 @@ const DetailPage = () => {
         <title>장소 상세 | 모이삼</title>
       </Helmet>
       <div className="relative flex flex-col h-screen-dvh">
-        {data.images.length > 1 ? (
+        {data.images.length > 0 ? (
           <ScrolledHeader
             backClick={handleClick}
             shareClick={() => setIsOpenShareModal(true)}
@@ -77,7 +77,7 @@ const DetailPage = () => {
         )}
 
         <div className="flex-1 overflow-y-auto scrollbar-hidden mb-[88px]" ref={scrollRef} onScroll={onScroll}>
-          {data.images.length > 1 && <Photo images={data.images} />}
+          {data.images.length > 0 && <Photo images={data.images} />}
           <PlaceInfo
             placeId={data.kakaoPlaceId}
             distance={data.distance}
