@@ -44,29 +44,29 @@ export const EventNameStep = ({
   // 날짜 변경 시 과거 시간이 선택되어 있으면 초기화
   const handleDateChange = (date: Date) => {
     setSelectedDate(date);
-    
+
     // 오늘 날짜인 경우에만 시간 검증
     const today = new Date();
     const dateOnly = new Date(date);
     dateOnly.setHours(0, 0, 0, 0);
     const todayOnly = new Date(today);
     todayOnly.setHours(0, 0, 0, 0);
-    
+
     if (dateOnly.getTime() === todayOnly.getTime() && eventTime) {
-      const [hour, minute] = eventTime.split(':').map(Number);
+      const [hour, minute] = eventTime.split(":").map(Number);
       const selectedTimeInMinutes = hour * 60 + minute;
       const currentTimeInMinutes = today.getHours() * 60 + today.getMinutes();
-      
+
       // 선택된 시간이 현재 시간보다 이전이면 초기화
       if (selectedTimeInMinutes <= currentTimeInMinutes) {
-        setEventTime('');
+        setEventTime("");
       }
     }
   };
 
   // 시간 선택 여부 확인
-  const isTimeSelected = eventTime && eventTime.trim() !== '';
-  
+  const isTimeSelected = eventTime && eventTime.trim() !== "";
+
   // 전체 유효성 검사 (이름 + 시간)
   const isFormValid = isValid && isTimeSelected;
 
@@ -115,10 +115,10 @@ export const EventNameStep = ({
   const handleNext = () => {
     // 이벤트명 유효성 검사
     if (!validateValue()) return;
-    
+
     // 시간 선택 검사
     if (!isTimeSelected) return;
-    
+
     setEventName(value);
     setEventDate(formatDateWithDash(selectedDate));
     setCurrentStep(2);
@@ -128,7 +128,11 @@ export const EventNameStep = ({
     <div className="flex flex-col h-full">
       <div className="flex-1 px-4">
         <div className="flex flex-col gap-6">
-          <PlainHeader title={isEdit ? "출발지 수정" : "출발지 추가"} onBack={() => setCurrentStep(0)} />
+          <PlainHeader
+            title={isEdit ? "출발지 수정" : "출발지 추가"}
+            onBack={() => setCurrentStep(0)}
+            isEdit={isEdit}
+          />
           <p className="text-gray-90 text-xxl font-bold">
             <span className="text-sub-sub">어떤 모임인가요?</span>
             <br />

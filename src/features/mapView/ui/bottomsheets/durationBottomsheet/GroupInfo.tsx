@@ -45,7 +45,7 @@ export const GroupInfo = ({ id }: GroupInfoProps) => {
             {year}년 {parseInt(month)}월 {parseInt(day)}일, {eventData.eventTime}
           </p>
         </div>
-        <button className="relative" onClick={() => setIsOpen(prev => !prev)}>
+        <button className="relative w-6 h-6 flex items-center justify-center" onClick={() => setIsOpen(prev => !prev)}>
           <img src={Setting} alt="setting" className="w-[3px] h-[15px]" />
           {isOpen && <Dropdown handleEdit={handleEdit} handleDelete={() => setOpenDeleteModal(true)} />}
         </button>

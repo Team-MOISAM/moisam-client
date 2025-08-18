@@ -56,7 +56,7 @@ export const TransferDetail = ({ type, totalTime, startPoint, endPoint }: Transf
           {endPoint}
         </div>
         <button
-          className="relative"
+          className="relative w-6 h-6 flex items-center justify-center"
           onClick={() => {
             setIsOpen(prev => !prev);
           }}>
