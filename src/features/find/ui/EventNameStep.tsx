@@ -26,6 +26,7 @@ interface EventNameStepProps {
 export const EventNameStep = ({
   setCurrentStep,
   eventName,
+  eventDate,
   eventTime,
   setEventName,
   setEventDate,
@@ -34,7 +35,14 @@ export const EventNameStep = ({
 }: EventNameStepProps) => {
   const { value, error, handleChange, validateValue, isValid } = useValidation(eventName, validateEventName);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date>(() => {
+    // 수정 모드이고 eventDate가 있으면 해당 날짜로 설정
+    if (isEdit && eventDate) {
+      const [year, month, day] = eventDate.split('-').map(Number);
+      return new Date(year, month - 1, day); // month는 0-based
+    }
+    return new Date();
+  });
   const [searchParams] = useSearchParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const eventIdParam = searchParams.get("eventId");
