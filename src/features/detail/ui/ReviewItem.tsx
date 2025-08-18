@@ -10,7 +10,7 @@ export const ReviewItem = ({ nickname, profileImage, date, day, content, isGoogl
     <div className="p-5 pl-6 flex flex-col gap-2 border-t border-t-gray-5">
       <div className="flex items-center gap-1 text-sm font-medium">
         <img src={profileImage ?? DefaultImg} alt="profileImg" className="mr-[2px] rounded-full w-5 h-5 object-cover" />
-        <p className="text-gray-90">{nickname}</p>
+        <p className="text-gray-90">{nickname ?? "(알 수 없음)"}</p>
         <p className="text-gray-40">·</p>
         <p className="text-gray-40">
           {date} {day}
