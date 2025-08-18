@@ -49,7 +49,6 @@ const PlaceCard = ({
             alt="placeImg"
             className="w-[68px] h-[68px] rounded-lg object-cover"
             onError={() => setHasImgError(true)}
-            loading="lazy"
           />
         )}
       </div>
