@@ -12,6 +12,7 @@ import NotVisitedPage from "@/pages/NotVisitedPage";
 import PolicyPage from "@/pages/PolicyPage";
 import MarketingPage from "@/pages/MarketingPage";
 import KakaoCallbackPage from "@/pages/KakaoCallbackPage";
+import NotFoundPage from "@/pages/NotFoundPage";
 
 export const router = createBrowserRouter([
   { path: "/", element: <MainPage /> },
@@ -27,4 +28,5 @@ export const router = createBrowserRouter([
   { path: "/policy", element: <PolicyPage /> },
   { path: "/marketing", element: <MarketingPage /> },
   { path: "/oauth/kakao/callback", element: <KakaoCallbackPage /> },
+  { path: "/notFound", element: <NotFoundPage /> },
 ]);

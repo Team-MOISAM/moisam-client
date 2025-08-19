@@ -27,6 +27,7 @@ const MapViewPage = () => {
 
   const errorCode = (error as AxiosError<{ error: { code: string } }>)?.response?.data?.error?.code;
   const isInsufficientStartPoints = errorCode === "INSUFFICIENT_START_POINTS";
+  const isNotFound = errorCode === "EVENT_NOT_FOUND";
   const email = useUserStore(state => state.email);
   const personalInfoAgreement = useUserStore(state => state.personalInfoAgreement);
   const setPersonalInfoAgreement = useUserStore(state => state.setPersonalInfoAgreement);
@@ -44,6 +45,10 @@ const MapViewPage = () => {
   };
 
   useEffect(() => {
+    if (isNotFound) {
+      navigate("/notFound");
+    }
+
     if (email && personalInfoAgreement === false) {
       setIsPolicyOpen(true);
     }
