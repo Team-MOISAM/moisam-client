@@ -18,6 +18,7 @@ export const FindContainer = () => {
 
   //수정 시
   const detailEventData = useEventStore(state => state.detailEventData);
+  const eventDataFromStore = useEventStore(state => state.eventData);
 
   const [name, setName] = useState(() => {
     if (isEdit && detailEventData) return detailEventData.nickname;
@@ -31,17 +32,35 @@ export const FindContainer = () => {
   const [startPointInfo, setStartPointInfo] = useState<StartPointInfo | null>(null);
 
   // 모임 생성 데이터
-  const [eventData, setEventData] = useState<CreateEventData>({
-    eventName: "",
-    eventDate: "",
-    eventTime: "",
-    username: "",
-    startPoint: "",
-    address: "",
-    roadAddress: "",
-    longitude: 0,
-    latitude: 0,
-    isTransit: true,
+  const [eventData, setEventData] = useState<CreateEventData>(() => {
+    // 수정 모드이고 eventDataFromStore가 있으면 기존 데이터로 초기화
+    if (isEdit && eventDataFromStore) {
+      return {
+        eventName: eventDataFromStore.eventName ?? "",
+        eventDate: eventDataFromStore.eventDate ?? "",
+        eventTime: eventDataFromStore.eventTime ?? "",
+        username: "",
+        startPoint: "",
+        address: "",
+        roadAddress: "",
+        longitude: 0,
+        latitude: 0,
+        isTransit: true,
+      };
+    }
+    
+    return {
+      eventName: "",
+      eventDate: "",
+      eventTime: "",
+      username: "",
+      startPoint: "",
+      address: "",
+      roadAddress: "",
+      longitude: 0,
+      latitude: 0,
+      isTransit: true,
+    };
   });
 
   return (

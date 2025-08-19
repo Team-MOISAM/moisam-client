@@ -87,24 +87,20 @@ export function TimePicker({ value, onChange, selectedDate }: TimePickerProps) {
         sideOffset={4}
         avoidCollisions={false}>
         <div className="max-h-60 overflow-y-auto">
-          {timeOptions.map(time => {
-            const isDisabled = isPastTime(time);
-            return (
+          {timeOptions
+            .filter(time => !isPastTime(time))
+            .map(time => (
               <button
                 key={time}
                 onClick={() => handleTimeSelect(time)}
-                disabled={isDisabled}
                 className={`w-full px-4 py-2 text-left focus:outline-none ${
-                  isDisabled
-                    ? "text-gray-40 cursor-not-allowed"
-                    : value === time
-                      ? "bg-gray-10 text-gray-90"
-                      : "text-gray-700 hover:bg-gray-10 focus:bg-gray-20"
+                  value === time
+                    ? "bg-gray-10 text-gray-90"
+                    : "text-gray-700 hover:bg-gray-10 focus:bg-gray-20"
                 }`}>
                 {time}
               </button>
-            );
-          })}
+            ))}
         </div>
       </PopoverContent>
     </Popover>
