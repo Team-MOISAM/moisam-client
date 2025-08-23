@@ -21,7 +21,7 @@ export const InputField = ({ value, onChange, placeholder, error, type }: InputF
       {type === "startPoint" && (
         <img src={Search} alt="search" className="absolute right-0 top-1/2 -translate-y-1/2 w-5 h-5" />
       )}
-      {error && <p className="text-error text-xs">{error}</p>}
+      {error && <p className="text-error text-labelXs">{error}</p>}
     </div>
   );
 };

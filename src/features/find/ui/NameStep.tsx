@@ -3,7 +3,7 @@ import { validateName } from "@/shared/utils";
 import Button from "@/shared/ui/Button";
 import { useEffect, useState } from "react";
 import { InputField } from "@/shared/ui";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { PlainHeader } from "@/widgets/headers";
 
 interface NameStepProps {
@@ -16,6 +16,8 @@ export const NameStep = ({ setCurrentStep, setName, name }: NameStepProps) => {
   const { value, error, handleChange, validateValue, isValid } = useValidation(name, validateName);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const eventIdParam = searchParams.get("eventId");
 
   useEffect(() => {
     const handleResize = () => {
@@ -36,7 +38,13 @@ export const NameStep = ({ setCurrentStep, setName, name }: NameStepProps) => {
   const handleNext = () => {
     if (!validateValue()) return;
     setName(value);
-    setCurrentStep(1);
+    
+    // eventId가 있으면 step1을 건너뛰고 step2로 이동
+    if (eventIdParam) {
+      setCurrentStep(2);
+    } else {
+      setCurrentStep(1);
+    }
   };
 
   return (

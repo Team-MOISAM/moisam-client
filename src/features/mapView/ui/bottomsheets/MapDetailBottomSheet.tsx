@@ -1,16 +1,12 @@
 import { SnapBottomSheet } from "@/shared/ui";
 import { useEventStore } from "@/shared/stores";
-import { TransferType } from "../../model";
+
 import { CarDetail, FixedButton, Path, TransferDetail } from "./detailContents";
 
-interface MapDetailBottomSheetProps {
-  type: TransferType;
-  setType: React.Dispatch<React.SetStateAction<"subway" | "car">>;
-}
-
-export const MapDetailBottomSheet = ({ type, setType }: MapDetailBottomSheetProps) => {
+export const MapDetailBottomSheet = () => {
   const detailEventData = useEventStore(state => state.detailEventData);
   const eventData = useEventStore(state => state.eventData);
+  const meetingPointData = useEventStore(state => state.meetingPointData);
 
   if (!detailEventData || !eventData) {
     return <div>Loading...</div>;
@@ -21,18 +17,17 @@ export const MapDetailBottomSheet = ({ type, setType }: MapDetailBottomSheetProp
       <SnapBottomSheet minHeightVh={30}>
         <SnapBottomSheet.Header />
         <TransferDetail
-          type={type}
-          setType={setType}
-          averageDuration={type === "car" ? detailEventData.driveTime : detailEventData.transitTime}
+          type={detailEventData.isTransit}
+          totalTime={detailEventData.totalTime}
           startPoint={detailEventData.startName}
-          endPoint={eventData.meetingPoint.endStationName}
+          endPoint={meetingPointData?.meetingPoint?.endStationName || ""}
           isMe={detailEventData.isMe}
         />
         <SnapBottomSheet.Content>
-          {type === "subway" ? (
+          {detailEventData.isTransit ? (
             <Path
               startPoint={detailEventData.startName}
-              endPoint={eventData.meetingPoint.endStationName}
+              endPoint={meetingPointData?.meetingPoint?.endStationName || ""}
               transferInfo={detailEventData.transitRoute}
             />
           ) : (
@@ -40,7 +35,7 @@ export const MapDetailBottomSheet = ({ type, setType }: MapDetailBottomSheetProp
               driveDistance={detailEventData.drivingInfo.distance}
               toll={detailEventData.drivingInfo.toll}
               taxiToll={detailEventData.drivingInfo.taxi}
-              parking={eventData.parkingLot}
+              parking={meetingPointData?.parkingLot}
             />
           )}
           <FixedButton />

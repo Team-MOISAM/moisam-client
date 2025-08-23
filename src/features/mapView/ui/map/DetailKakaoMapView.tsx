@@ -3,18 +3,13 @@ import { useEventStore } from "@/shared/stores";
 import { MeetingMarker } from "./MeetingMarker";
 import { MapMarker } from "./MapMarker";
 import { ParkingMarker } from "./ParkingMarker";
-import { TransferType } from "../../model";
 
 interface PathPoint {
   latitude: number;
   longitude: number;
 }
 
-interface DetailKakaoMapViewProps {
-  type: TransferType;
-}
-
-export const DetailKakaoMapView = ({ type }: DetailKakaoMapViewProps) => {
+export const DetailKakaoMapView = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
   const eventData = useEventStore(state => state.eventData);
@@ -32,10 +27,10 @@ export const DetailKakaoMapView = ({ type }: DetailKakaoMapViewProps) => {
     longitude: detailEventData.startLongitude,
   });
 
-  if (type === "subway") {
+  if (detailEventData.isTransit) {
     // transitRoute 순회하며 경유지 추가
-    detailEventData.transitRoute.forEach(route => {
-      if (route.passStopList) {
+    detailEventData.transitRoute?.forEach(route => {
+      if (route.passStopList?.stations) {
         route.passStopList.stations.forEach(station => {
           pathPoints.push({
             latitude: parseFloat(station.y),
@@ -46,7 +41,7 @@ export const DetailKakaoMapView = ({ type }: DetailKakaoMapViewProps) => {
     });
   } else {
     // drivingRoute 순회하며 경유지 추가
-    detailEventData.drivingRoute.forEach(route => {
+    detailEventData.drivingRoute?.forEach(route => {
       if (route.coordinates) {
         route.coordinates.forEach(station => {
           pathPoints.push({
@@ -59,10 +54,13 @@ export const DetailKakaoMapView = ({ type }: DetailKakaoMapViewProps) => {
   }
 
   // 마지막 중간지점 마커 추가
-  pathPoints.push({
-    latitude: eventData.meetingPoint.endLatitude,
-    longitude: eventData.meetingPoint.endLongitude,
-  });
+  const meetingPointData = useEventStore(state => state.meetingPointData);
+  if (meetingPointData?.meetingPoint) {
+    pathPoints.push({
+      latitude: meetingPointData.meetingPoint.endLatitude,
+      longitude: meetingPointData.meetingPoint.endLongitude,
+    });
+  }
 
   useEffect(() => {
     const initializeMap = () => {
@@ -122,7 +120,7 @@ export const DetailKakaoMapView = ({ type }: DetailKakaoMapViewProps) => {
       script.onload = initializeMap;
       document.head.appendChild(script);
     }
-  }, [type, eventData, detailEventData]);
+  }, [eventData, detailEventData]);
 
   return (
     <div
@@ -134,14 +132,16 @@ export const DetailKakaoMapView = ({ type }: DetailKakaoMapViewProps) => {
       {map && (
         <>
           {/* 중간지점 마커 */}
-          <MeetingMarker
-            map={map}
-            position={{
-              lat: eventData.meetingPoint.endLatitude,
-              lng: eventData.meetingPoint.endLongitude,
-            }}
-            title={eventData.meetingPoint.endStationName}
-          />
+          {meetingPointData?.meetingPoint && (
+            <MeetingMarker
+              map={map}
+              position={{
+                lat: meetingPointData.meetingPoint.endLatitude,
+                lng: meetingPointData.meetingPoint.endLongitude,
+              }}
+              title={meetingPointData.meetingPoint.endStationName}
+            />
+          )}
           {/* 사용자 마커 */}
           <MapMarker
             key={detailEventData.id}
@@ -150,10 +150,10 @@ export const DetailKakaoMapView = ({ type }: DetailKakaoMapViewProps) => {
             profileImg={detailEventData.profileImage}
             name={detailEventData.nickname}
           />
-          {type === "car" && (
+          {!detailEventData.isTransit && meetingPointData?.parkingLot && (
             <ParkingMarker
               map={map}
-              position={{ lat: eventData.parkingLot.latitude, lng: eventData.parkingLot.longitude }}
+              position={{ lat: meetingPointData.parkingLot.latitude, lng: meetingPointData.parkingLot.longitude }}
             />
           )}
         </>

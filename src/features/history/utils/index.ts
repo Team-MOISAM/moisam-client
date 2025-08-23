@@ -1,1 +1,2 @@
-export * from "./formatDaysAgo";
+export * from "./formatDate";
+export * from "./formatDateWithDash";

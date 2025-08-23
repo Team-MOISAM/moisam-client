@@ -11,7 +11,7 @@ const policySections = [
       },
       { type: "li", text: "1. 회사가 명시하지 않은 방식으로 서비스에 접근하거나 방해하는 행위" },
       { type: "li", text: "2. 타인의 개인정보를 무단 수집, 이용하거나 제3자에게 제공하는 행위" },
-      { type: "li", text: "3. SPOT 서비스를 영리, 홍보 등 부정한 목적에 사용하는 행위" },
+      { type: "li", text: "3. 모이삼 서비스를 영리, 홍보 등 부정한 목적에 사용하는 행위" },
       { type: "li", text: "4. 법령이나 공공질서에 위배되는 정보를 게시 또는 전송하는 행위" },
       { type: "li", text: "5. 서비스 또는 소프트웨어의 무단 복제, 수정, 배포, 판매, 대여, 역설계 등의 행위" },
       { type: "li", text: "6. 관련 법령 및 본 약관 또는 운영정책을 위반하는 행위" },
@@ -23,7 +23,7 @@ const policySections = [
       {
         type: "p",
         text: `회사는 서비스 제공을 위한 최소한의 개인정보만 수집하며, 사용자의 동의 범위 내에서만 이용합니다. 보다 자세한
-          내용은 [SPOT 개인정보처리방침]을 확인해 주세요.`,
+          내용은 [모이삼 개인정보처리방침]을 확인해 주세요.`,
       },
     ],
   },
@@ -41,7 +41,7 @@ const policySections = [
     contents: [
       {
         type: "p",
-        text: "SPOT은 현재 위치를 기반으로 중간 지점을 탐색하여 추천하는 서비스를 제공합니다. 본 서비스는 단말기의 위치정보를 수집하는 위치정보사업자를 통해 정보를 전달받으며, 사용자 동의 하에 무료로 제공됩니다.",
+        text: "모이삼은 현재 위치를 기반으로 중간 지점을 탐색하여 추천하는 서비스를 제공합니다. 본 서비스는 단말기의 위치정보를 수집하는 위치정보사업자를 통해 정보를 전달받으며, 사용자 동의 하에 무료로 제공됩니다.",
       },
       {
         type: "li",
@@ -63,7 +63,7 @@ const policySections = [
     contents: [
       {
         type: "p",
-        text: `SPOT은 사용자의 편의를 위한 일부 기능을 유료로 제공할 수 있으며, 세부 조건은 별도의 [유료서비스 이용약관]에 따릅니다.`,
+        text: `추후 모이삼은 사용자의 편의를 위한 일부 기능을 유료로 제공할 수 있으며, 세부 조건은 별도의 [유료서비스 이용약관]에 따릅니다.`,
       },
     ],
   },
@@ -150,9 +150,9 @@ const PolicyPage = () => {
     <div className="flex flex-col h-screen-dvh">
       <CloseHeader title="이용약관 및 개인정보처리방침" onClick={handleClick} />
       <div className="flex-1 p-5 text-md text-gray-60 overflow-y-scroll scrollbar-hidden min-h-0">
-        <h2 className="text-gray-80 font-semibold">SPOT 서비스 이용약관</h2>
+        <h2 className="text-gray-80 font-semibold">모이삼(MOISAM) 서비스 이용약관</h2>
         <p>
-          감사합니다. 본 약관은 모임의 중간지점을 편리하게 찾아주는 위치기반 서비스인 "SPOT"(이하 "회사")의 이용과
+          감사합니다. 본 약관은 모임의 중간장소를 편리하게 찾아주는 위치기반 서비스인 "모이삼"(이하 "회사")의 이용과
           관련된 사용자 권리, 의무 및 책임사항을 규정합니다.
         </p>
         <hr className="my-3" />
@@ -178,8 +178,8 @@ const PolicyPage = () => {
           </div>
         ))}
 
-        <li>공고일자: 2025년 5월 31일</li>
-        <li>시행일자: 2025년 5월 31일</li>
+        <li>공고일자: 2025년 8월 2일</li>
+        <li>시행일자: 2025년 8월 2일</li>
       </div>
     </div>
   );

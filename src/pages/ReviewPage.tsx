@@ -25,7 +25,7 @@ const ReviewPage = () => {
   return (
     <>
       <Helmet>
-        <title>장소 리뷰 | SPOT</title>
+        <title>장소 리뷰 | 모이삼</title>
       </Helmet>
       <div className="flex flex-col h-screen-dvh">
         <CloseHeader url="/history" />

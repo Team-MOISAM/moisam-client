@@ -5,9 +5,10 @@ interface PlainHeaderProps {
   title: string;
   onBack?: () => void;
   url?: string;
+  isEdit?: boolean;
 }
 
-export const PlainHeader = ({ title, onBack, url }: PlainHeaderProps) => {
+export const PlainHeader = ({ title, onBack, url, isEdit = false }: PlainHeaderProps) => {
   const navigate = useNavigate();
 
   const handleBack = () => {
@@ -22,9 +23,11 @@ export const PlainHeader = ({ title, onBack, url }: PlainHeaderProps) => {
 
   return (
     <header className="relative flex w-full py-3 items-center">
-      <button onClick={handleBack}>
-        <img src={Back} alt="back" className="w-6 h-6" />
-      </button>
+      {!isEdit && (
+        <button onClick={handleBack}>
+          <img src={Back} alt="back" className="w-6 h-6" />
+        </button>
+      )}
       <span className="absolute top-3 left-1/2 -translate-x-1/2 text-md font-semibold">{title}</span>
     </header>
   );

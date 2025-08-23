@@ -1,5 +1,8 @@
 export interface UserEventHistoryResponses {
   eventId: string;
+  eventDate: string;
+  eventTime: string;
+  eventName: string;
   middlePointName: string;
   placeName: string;
   participatedPeopleCount: number;

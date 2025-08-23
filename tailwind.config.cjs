@@ -1,19 +1,85 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: ["class"],
   content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/**/*.html"],
   theme: {
     extend: {
-      /* Typography */
       fontSize: {
-        xxxl: ["24px", { lineHeight: "150%" }],
-        xxl: ["22px", { lineHeight: "150%" }],
-        xl: ["20px", { lineHeight: "150%" }],
-        lg: ["18px", { lineHeight: "150%" }],
-        md: ["16px", { lineHeight: "150%" }],
-        sm: ["14px", { lineHeight: "150%" }],
-        xs: ["12px", { lineHeight: "150%" }],
-        xxs: ["10px", { lineHeight: "120%" }],
-        xxxs: ["8px", { lineHeight: "110%" }],
+        xxxl: [
+          "24px",
+          {
+            lineHeight: "120%",
+            letterSpacing: "-2%",
+          },
+        ],
+        xxl: [
+          "22px",
+          {
+            lineHeight: "120%",
+            letterSpacing: "-2%",
+          },
+        ],
+        xl: [
+          "20px",
+          {
+            lineHeight: "120%",
+            letterSpacing: "-2%",
+          },
+        ],
+        lg: [
+          "18px",
+          {
+            lineHeight: "120%",
+            letterSpacing: "-2%",
+          },
+        ],
+        md: [
+          "16px",
+          {
+            lineHeight: "150%",
+          },
+        ],
+        sm: [
+          "14px",
+          {
+            lineHeight: "150%",
+          },
+        ],
+        labelMd: [
+          "16px",
+          {
+            lineHeight: "120%",
+            letterSpacing: "-2%",
+          },
+        ],
+        labelSm: [
+          "14px",
+          {
+            lineHeight: "120%",
+            letterSpacing: "-2%",
+          },
+        ],
+        labelXs: [
+          "12px",
+          {
+            lineHeight: "120%",
+            letterSpacing: "-2%",
+          },
+        ],
+        labelXxs: [
+          "10px",
+          {
+            lineHeight: "120%",
+            letterSpacing: "-2%",
+          },
+        ],
+        xxxs: [
+          "8px",
+          {
+            lineHeight: "120%",
+            letterSpacing: "-2%",
+          },
+        ],
       },
       fontWeight: {
         bold: "700",
@@ -21,7 +87,6 @@ module.exports = {
         medium: "500",
         regular: "400",
       },
-      /* Color Pallet */
       colors: {
         gray: {
           5: "#F7F7F8",
@@ -37,31 +102,71 @@ module.exports = {
           90: "#1C1C22",
         },
         sub: {
-          sub: "#007AFF",
           10: "#E5F2FF",
+          sub: "#007AFF",
         },
         metro: {
-          KA: "#0090D1", // 공항철도
-          S: "#D4013B", // 신분당선
-          UI: "#B0CE1A", // 우이신설경전철
-
-          rail1: "#77C4A3", // 경중선
-          rail2: "#F5A202", // 수인분당선
-          rail4: "#0C8E71", // 경춘선
-
-          // 서울 지하철
-          line1: "#0032A0", // 1호선
-          line2: "#00B140", // 2호선
-          line3: "#FC4C02", // 3호선
-          line4: "#00A9E0", // 4호선
-          line5: "#A05EB5", // 5호선
-          line6: "#A9431E", // 6호선
-          line7: "#67823A", // 7호선
-          line8: "#E31C79", // 8호선
-          line9: "#BB8336", // 9호선
+          KA: "#0090D1",
+          S: "#D4013B",
+          UI: "#B0CE1A",
+          rail1: "#77C4A3",
+          rail2: "#F5A202",
+          rail4: "#0C8E71",
+          line1: "#0032A0",
+          line2: "#00B140",
+          line3: "#FC4C02",
+          line4: "#00A9E0",
+          line5: "#A05EB5",
+          line6: "#A9431E",
+          line7: "#67823A",
+          line8: "#E31C79",
+          line9: "#BB8336",
         },
-        kakao: { yellow: "#FEE500", black: "#1E1E20" },
+        kakao: {
+          yellow: "#FEE500",
+          black: "#1E1E20",
+        },
         error: "#D4013B",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        chart: {
+          1: "hsl(var(--chart-1))",
+          2: "hsl(var(--chart-2))",
+          3: "hsl(var(--chart-3))",
+          4: "hsl(var(--chart-4))",
+          5: "hsl(var(--chart-5))",
+        },
       },
       height: {
         "screen-dvh": "100dvh",
@@ -72,8 +177,14 @@ module.exports = {
         pin02: "0px 4px 8px 0px rgba(28, 28, 34, 0.15)",
         list: "0px 0px 16px 0px rgba(0, 0, 0, 0.05)",
         back: "0px 0px 32px 0px rgba(28, 28, 34, 0.20)",
+        box: "0 0 12px 0 rgba(28, 28, 34, 0.14)",
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 };

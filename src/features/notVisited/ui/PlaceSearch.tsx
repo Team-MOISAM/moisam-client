@@ -53,7 +53,7 @@ export const PlaceSearch = ({ setCurrentStep, setVisitedPlace }: PlaceSearchProp
                   <p className="text-center text-gray-40 text-sm">
                     일치하는 주소가 없어요
                     <br />
-                    서울 내 지역인지 다시 확인해보세요
+                    서비스 지역인지 다시 확인해보세요
                   </p>
                 </div>
               ) : searchResults.length > 0 ? (

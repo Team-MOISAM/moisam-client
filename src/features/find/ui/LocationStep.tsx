@@ -5,27 +5,44 @@ import { InputField, LocationCard, PolicyBottomSheet } from "@/shared/ui";
 import { FormattedData, StartPointInfo } from "../model";
 import { highlightMatchingText } from "@/shared/utils";
 import { useSearchParams } from "react-router-dom";
-import { useCreateStartPoint } from "../hooks";
+import { useCreateStartPoint, useEditStartPoint } from "../hooks";
 import { PlainHeader } from "@/widgets/headers";
 import NoResult from "@/assets/icon/noresult.svg";
 import { useSearch } from "@/entities/place/hooks";
 import { StartPoint } from "@/entities/place/model";
-import { useUserStore } from "@/shared/stores";
+import { useEventStore, useUserStore } from "@/shared/stores";
+import { TransportToggle } from "./TransportToggle";
 
 interface LocationStepProps {
   setCurrentStep: (step: number) => void;
   startPointInfo: StartPointInfo | null;
   setStartPointInfo: (info: StartPointInfo) => void;
   name: string;
+  eventName: string;
+  eventDate: string;
+  eventTime: string;
+  isEdit: boolean;
 }
 
-export const LocationStep = ({ setCurrentStep, startPointInfo, setStartPointInfo, name }: LocationStepProps) => {
+export const LocationStep = ({
+  setCurrentStep,
+  startPointInfo,
+  setStartPointInfo,
+  name,
+  eventName,
+  eventDate,
+  eventTime,
+  isEdit,
+}: LocationStepProps) => {
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [searchParams] = useSearchParams();
   const eventIdParam = searchParams.get("eventId");
   const [locationError, setLocationError] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPolicyOpen, setIsPolicyOpen] = useState(false);
+  const [isTransit, setIsTransit] = useState(true);
+
+  const startPointId = useEventStore(state => state.detailEventData?.id);
   const email = useUserStore(state => state.email);
   const personalInfoAgreement = useUserStore(state => state.personalInfoAgreement);
   const setPersonalInfoAgreement = useUserStore(state => state.setPersonalInfoAgreement);
@@ -33,6 +50,7 @@ export const LocationStep = ({ setCurrentStep, startPointInfo, setStartPointInfo
   const { value, setValue, searchResults, isError, handleChange, isTyping, setIsSearching, isFetching } = useSearch();
 
   const { handleSubmit } = useCreateStartPoint(eventIdParam);
+  const { mutate: editStartPointMutate } = useEditStartPoint();
 
   const onClose = () => {
     setIsPolicyOpen(false);
@@ -79,7 +97,21 @@ export const LocationStep = ({ setCurrentStep, startPointInfo, setStartPointInfo
     const newValue = e.target.value;
     setValue(newValue);
 
-    if ((startPointInfo && newValue === startPointInfo.startPoint) || (startPointInfo && newValue === "")) {
+    // 입력 필드가 비워지면 startPointInfo 초기화 (TransportToggle 숨김)
+    if (newValue === "") {
+      setStartPointInfo({
+        name: name,
+        startPoint: "",
+        address: "",
+        roadAddress: "",
+        latitude: 0,
+        longitude: 0,
+      });
+      setIsSearching(false);
+      return;
+    }
+
+    if (startPointInfo && newValue === startPointInfo.startPoint) {
       setIsSearching(false);
       return;
     }
@@ -97,20 +129,75 @@ export const LocationStep = ({ setCurrentStep, startPointInfo, setStartPointInfo
       roadAddress: startPointInfo.roadAddress,
       longitude: startPointInfo.longitude,
       latitude: startPointInfo.latitude,
+      isTransit: isTransit,
+    };
+  };
+
+  const getCreateEventData = () => {
+    if (!startPointInfo) return null;
+
+    return {
+      eventName,
+      eventDate,
+      eventTime,
+      username: name,
+      startPoint: startPointInfo.startPoint,
+      address: startPointInfo.address,
+      roadAddress: startPointInfo.roadAddress,
+      longitude: startPointInfo.longitude,
+      latitude: startPointInfo.latitude,
+      isTransit: isTransit,
     };
   };
 
   const handleComplete = () => {
     if (isSubmitting) return; // 중복 방지
     if (value.trim().length === 0 || !startPointInfo) return;
-    const data = getFormattedData();
-    if (!data) return;
 
-    try {
-      setIsSubmitting(true);
-      handleSubmit(data);
-    } finally {
-      setIsSubmitting(false);
+    // 출발지 수정
+    if (isEdit) {
+      const data = getFormattedData();
+      if (!eventIdParam || !startPointId || !data) {
+        setIsSubmitting(false);
+        return;
+      }
+      editStartPointMutate(
+        {
+          eventId: eventIdParam,
+          startPointId,
+          payload: data,
+        },
+        {
+          onSettled: () => {
+            setIsSubmitting(false);
+          },
+        }
+      );
+      return;
+    }
+
+    if (eventIdParam) {
+      // 기존 모임에 멤버 추가
+      const data = getFormattedData();
+      if (!data) return;
+
+      try {
+        setIsSubmitting(true);
+        handleSubmit(data);
+      } finally {
+        setIsSubmitting(false);
+      }
+    } else {
+      // 새 모임 생성
+      const data = getCreateEventData();
+      if (!data) return;
+
+      try {
+        setIsSubmitting(true);
+        handleSubmit(data);
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -118,7 +205,18 @@ export const LocationStep = ({ setCurrentStep, startPointInfo, setStartPointInfo
     <div className="flex flex-col h-full">
       <div className="flex-1 px-4">
         <div className="flex flex-col gap-6">
-          <PlainHeader title="출발지 추가" onBack={() => setCurrentStep(0)} />
+          <PlainHeader
+            title={isEdit ? "출발지 수정" : "출발지 추가"}
+            onBack={() => {
+              if (eventIdParam) {
+                // eventId가 있으면 메인 페이지로 이동
+                window.history.back();
+              } else {
+                // 새 모임 생성이면 이전 스텝으로
+                setCurrentStep(1);
+              }
+            }}
+          />
           <p className="text-gray-90 text-xxl font-bold">
             <span className="text-sub-sub">{name}</span>님의
             <br />
@@ -141,7 +239,7 @@ export const LocationStep = ({ setCurrentStep, startPointInfo, setStartPointInfo
                 <p className="text-center text-gray-40 text-sm">
                   일치하는 주소가 없어요
                   <br />
-                  서울 내 지역인지 다시 확인해보세요
+                  서비스 지역인지 다시 확인해보세요
                 </p>
               </div>
             ) : (
@@ -169,6 +267,12 @@ export const LocationStep = ({ setCurrentStep, startPointInfo, setStartPointInfo
                 <p className="text-center text-gray-40 text-sm">현재 서울 내 지역인지 다시 확인해보세요</p>
               </div>
             )}
+            {startPointInfo && startPointInfo.startPoint && startPointInfo.startPoint.trim() !== "" && (
+              <div className="flex flex-col gap-4 mt-4">
+                <p className="text-gray-90 text-xxl font-bold">어떻게 오시나요?</p>
+                <TransportToggle value={isTransit} onChange={setIsTransit} />
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -179,7 +283,7 @@ export const LocationStep = ({ setCurrentStep, startPointInfo, setStartPointInfo
             marginBottom: keyboardHeight > 0 ? `${keyboardHeight + 20}px` : "20px",
           }}>
           <Button onClick={handleComplete} disabled={value.trim().length === 0 || isSubmitting}>
-            추가하기
+            {isEdit ? "수정하기" : eventIdParam ? "참여하기" : "추가하기"}
           </Button>
         </div>
       )}

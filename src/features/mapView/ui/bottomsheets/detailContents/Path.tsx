@@ -18,16 +18,16 @@ export const Path = ({ startPoint, endPoint, transferInfo }: PathProps) => {
       <div className="flex gap-3 items-center">
         <div className="relative">
           <img src={Start} alt="start" className="w-6 h-7" />
-          <span className="absolute top-[5px] left-[3px] right-[3px] text-xxs font-semibold text-white">출발</span>
+          <span className="absolute top-[5px] left-[3px] right-[3px] text-labelXxs font-semibold text-white">출발</span>
         </div>
         <span className="text-md font-semibold text-gray-90">{startPoint}</span>
       </div>
       <img src={ShortPath} alt="shortPath" className="ml-[11px] w-[2px] h-8" />
 
-      {transferInfo.map((info, index) => {
-        const isLastIndex = index === transferInfo.length - 1;
-        const prevInfo = index > 0 ? transferInfo[index - 1] : null;
-        const nextInfo = index < transferInfo.length - 1 ? transferInfo[index + 1] : null;
+      {transferInfo?.map((info, index) => {
+        const isLastIndex = index === (transferInfo?.length || 0) - 1;
+        const prevInfo = index > 0 ? transferInfo?.[index - 1] : null;
+        const nextInfo = index < (transferInfo?.length || 0) - 1 ? transferInfo?.[index + 1] : null;
 
         if (info.trafficType === "SUBWAY") {
           return <SubwayPath key={index} {...info} />;
@@ -44,7 +44,7 @@ export const Path = ({ startPoint, endPoint, transferInfo }: PathProps) => {
       <div className="flex gap-3 items-center">
         <div className="relative">
           <img src={End} alt="end" className="w-6 h-7" />
-          <span className="absolute top-[5px] left-[3px] right-[3px] text-xxs font-semibold text-white">도착</span>
+          <span className="absolute top-[5px] left-[3px] right-[3px] text-labelXxs font-semibold text-white">도착</span>
         </div>
         <span className="text-md font-semibold text-gray-90">{endPoint}역</span>
       </div>

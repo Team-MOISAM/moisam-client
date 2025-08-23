@@ -1,5 +1,4 @@
 import { useEventRoutes } from "@/features/mapView/hooks";
-import { TransferType } from "@/features/mapView/model";
 import {
   AddMemberBottomSheet,
   DetailKakaoMapView,
@@ -16,28 +15,40 @@ import { MapHeader } from "@/widgets/headers";
 import { AxiosError } from "axios";
 import { setCookie } from "@/shared/utils";
 import { useEffect, useState } from "react";
-import { PolicyBottomSheet } from "@/shared/ui";
+import { MeetPointCard, PolicyBottomSheet } from "@/shared/ui";
 import { Helmet } from "react-helmet-async";
+import { useNavigate, useParams } from "react-router-dom";
 
 const MapViewPage = () => {
   const { data, isLoading, isError, error } = useEventRoutes();
   const setEventData = useEventStore(state => state.setEventData);
+  const setMeetingPointData = useEventStore(state => state.setMeetingPointData);
   const isDetail = useEventStore(state => state.isDetail);
 
   const errorCode = (error as AxiosError<{ error: { code: string } }>)?.response?.data?.error?.code;
   const isInsufficientStartPoints = errorCode === "INSUFFICIENT_START_POINTS";
+  const isNotFound = errorCode === "EVENT_NOT_FOUND";
   const email = useUserStore(state => state.email);
   const personalInfoAgreement = useUserStore(state => state.personalInfoAgreement);
   const setPersonalInfoAgreement = useUserStore(state => state.setPersonalInfoAgreement);
-  const [type, setType] = useState<TransferType>("subway");
   const [isPolicyOpen, setIsPolicyOpen] = useState(false);
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   const onClose = () => {
     setIsPolicyOpen(false);
     setPersonalInfoAgreement(true);
   };
 
+  const goToPlace = () => {
+    navigate(`/place/${id}`);
+  };
+
   useEffect(() => {
+    if (isNotFound) {
+      navigate("/notFound");
+    }
+
     if (email && personalInfoAgreement === false) {
       setIsPolicyOpen(true);
     }
@@ -46,19 +57,23 @@ const MapViewPage = () => {
   useEffect(() => {
     if (data) {
       setEventData(data);
-      // 현재 사용자의 routeResponse 찾기
-      const myRoute = data.routeResponse.find(route => route.isMe);
-      if (myRoute) {
-        // startPointId를 쿠키에 저장
-        setCookie("startPointId", myRoute.id, { path: "/", maxAge: 86400 });
+      // 현재 사용자의 routeResponse 찾기 (첫 번째 그룹에서 찾음)
+      const firstGroup = data.meetingPointRouteGroups?.[0];
+      setMeetingPointData(firstGroup);
+      if (firstGroup?.routeResponse) {
+        const myRoute = firstGroup.routeResponse.find(route => route.isMe);
+        if (myRoute) {
+          // startPointId를 쿠키에 저장
+          setCookie("startPointId", myRoute.id, { path: "/", maxAge: 86400 });
+        }
       }
     }
-  }, [data, setEventData]);
+  }, [data, setEventData, setMeetingPointData]);
 
   return (
     <>
       <Helmet>
-        <title>중간장소 | SPOT</title>
+        <title>중간장소 | 모이삼</title>
       </Helmet>
       <div className="relative w-full h-screen overflow-hidden">
         {!isDetail && <MapHeader />}
@@ -75,14 +90,17 @@ const MapViewPage = () => {
         ) : isDetail ? (
           <div className="relative">
             <BackButton />
-            <DetailKakaoMapView type={type} />
-            <MapDetailBottomSheet type={type} setType={setType} />
+            <DetailKakaoMapView />
+            <MapDetailBottomSheet />
           </div>
         ) : (
-          <>
+          <div className="relative">
             <KakaoMapView />
             {isPolicyOpen ? <PolicyBottomSheet onClose={onClose} /> : <SnapMapBottomSheet />}
-          </>
+            <div className="absolute top-3 left-5 right-5 z-[1000]">
+              <MeetPointCard placeName={data?.placeName} onClick={goToPlace} />
+            </div>
+          </div>
         )}
       </div>
     </>

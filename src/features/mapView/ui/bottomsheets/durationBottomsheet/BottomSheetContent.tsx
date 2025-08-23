@@ -10,14 +10,14 @@ import AddDisabled from "@/assets/icon/addDisabled.svg";
 import Toast from "@/shared/ui/Toast";
 
 export const BottomSheetContent = () => {
-  const eventData = useEventStore(state => state.eventData);
+  const meetingPointData = useEventStore(state => state.meetingPointData);
   const toggleDetail = useEventStore(state => state.toggleDetail);
   const setDetailEventData = useEventStore(state => state.setDetailEventData);
 
   return (
     <div className="h-full flex flex-col">
       <div className="mx-5 pb-[80px]">
-        {eventData?.routeResponse.map(user => (
+        {meetingPointData?.routeResponse?.map(user => (
           <UserCard
             key={user.id}
             isTransit={user.isTransit}
@@ -30,18 +30,6 @@ export const BottomSheetContent = () => {
             }}
           />
         ))}
-      </div>
-    </div>
-  );
-};
-
-export const GroupAverageTime = () => {
-  const eventData = useEventStore(state => state.eventData);
-  return (
-    <div className="mx-5">
-      <div>
-        <h1 className="text-gray-80 text-xl font-bold pb-[2px]">{eventData?.meetingPoint.endStationName}</h1>
-        <p className="text-gray-40 text-md pb-3">평균 {eventData?.averageTime}분</p>
       </div>
     </div>
   );
@@ -68,10 +56,10 @@ export const FixedButtons = () => {
   const shareContent = {
     title: title,
     description: "",
-    imageUrl: "https://www.pickspot.co.kr/image/KT2.webp",
+    imageUrl: "https://www.moisam.kr/image/KT2.webp",
     links: [
-      { label: "내 출발지 추가", url: `https://www.pickspot.co.kr/find?eventId=${id}` },
-      { label: "중간지점 보기", url: `https://www.pickspot.co.kr/mapView/${id}` },
+      { label: "내 출발지 추가", url: `https://www.moisam.kr/find?eventId=${id}` },
+      { label: "중간지점 보기", url: `https://www.moisam.kr/mapView/${id}` },
     ],
   };
   const navigate = useNavigate();

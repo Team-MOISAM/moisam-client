@@ -1,7 +1,7 @@
 import api from "@/shared/api/api";
-import { FormattedData } from "../model";
+import { FormattedData, CreateEventData, EventData } from "../model";
 
-export const createEvent = async (payload: FormattedData) => {
+export const createEvent = async (payload: CreateEventData) => {
   const response = await api.post("/events", payload);
 
   if (response.data.result !== "SUCCESS") {
@@ -16,6 +16,26 @@ export const addMember = async (payload: FormattedData, eventId: string) => {
 
   if (response.data.result !== "SUCCESS") {
     throw new Error(response.data.error?.message || "멤버 추가 실패");
+  }
+
+  return response.data;
+};
+
+export const editStartPoint = async (eventId: string, startPointId: string, payload: FormattedData) => {
+  const response = await api.patch(`/events/${eventId}/start-points/${startPointId}`, payload);
+
+  if (response.data.result !== "SUCCESS") {
+    throw new Error(response.data.error?.message || "출발지 수정 실패");
+  }
+
+  return response.data;
+};
+
+export const editEventName = async (eventId: string, payload: EventData) => {
+  const response = await api.patch(`/events/${eventId}`, payload);
+
+  if (response.data.result !== "SUCCESS") {
+    throw new Error(response.data.error?.message || "출발지 수정 실패");
   }
 
   return response.data;

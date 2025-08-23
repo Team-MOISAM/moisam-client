@@ -5,7 +5,7 @@ interface PhotoProps {
 export const Photo = ({ images }: PhotoProps) => {
   const length = images.length;
 
-  if (length < 1) return;
+  if (length < 1) return null;
   if (length > 5) images = images.slice(0, 5);
 
   if (length === 1) {

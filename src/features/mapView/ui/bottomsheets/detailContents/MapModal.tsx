@@ -12,10 +12,15 @@ interface MapModalProps {
 
 export const MapModal = ({ onClose }: MapModalProps) => {
   const eventData = useEventStore(state => state.eventData);
+  const meetingPointData = useEventStore(state => state.meetingPointData);
   const detailEventData = useEventStore(state => state.detailEventData);
   const deviceType = useDeviceDetector();
 
   if (!eventData || !detailEventData) return;
+
+  const meetingPoint = meetingPointData?.meetingPoint;
+
+  if (!meetingPoint) return;
 
   const TransferMap = [
     {
@@ -26,9 +31,9 @@ export const MapModal = ({ onClose }: MapModalProps) => {
         openKakaoMap({
           startLat: detailEventData.startLatitude,
           startLng: detailEventData.startLongitude,
-          endPoint: eventData.meetingPoint.endStationName,
-          endLat: eventData.meetingPoint.endLatitude,
-          endLng: eventData.meetingPoint.endLongitude,
+          endPoint: meetingPoint.endStationName,
+          endLat: meetingPoint.endLatitude,
+          endLng: meetingPoint.endLongitude,
           isPc: deviceType === "Mac PC" || deviceType === "Windows PC" || deviceType === "Unknown Device",
         }),
     },
@@ -41,9 +46,9 @@ export const MapModal = ({ onClose }: MapModalProps) => {
           startPoint: detailEventData.startName,
           startLat: detailEventData.startLatitude,
           startLng: detailEventData.startLongitude,
-          endPoint: eventData.meetingPoint.endStationName,
-          endLat: eventData.meetingPoint.endLatitude,
-          endLng: eventData.meetingPoint.endLongitude,
+          endPoint: meetingPoint.endStationName,
+          endLat: meetingPoint.endLatitude,
+          endLng: meetingPoint.endLongitude,
         }),
     },
     ...(deviceType === "iPhone"
@@ -54,9 +59,9 @@ export const MapModal = ({ onClose }: MapModalProps) => {
             text: "TMAP",
             onClick: () =>
               openTMAP({
-                endPoint: eventData.meetingPoint.endStationName,
-                endLat: eventData.meetingPoint.endLatitude,
-                endLng: eventData.meetingPoint.endLongitude,
+                endPoint: meetingPoint.endStationName,
+                endLat: meetingPoint.endLatitude,
+                endLng: meetingPoint.endLongitude,
               }),
           },
         ]
@@ -76,7 +81,7 @@ export const MapModal = ({ onClose }: MapModalProps) => {
           {TransferMap.map(item => (
             <div className="flex flex-col gap-2 items-center cursor-pointer" onClick={item.onClick}>
               <img src={item.src} alt={item.alt} className="w-10 h-10" />
-              <p className="text-xs font-medium text-gray-80">{item.text}</p>
+              <p className="text-labelXs font-medium text-gray-80">{item.text}</p>
             </div>
           ))}
         </div>

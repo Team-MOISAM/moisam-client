@@ -1,2 +1,3 @@
 export * from "./useEventInfo";
-export * from "./useTransfer";
+export * from "./useDeleteStartPoint";
+export * from "./useDeleteEvent";
