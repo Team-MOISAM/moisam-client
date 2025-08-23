@@ -56,10 +56,10 @@ export const FixedButtons = () => {
   const shareContent = {
     title: title,
     description: "",
-    imageUrl: "https://www.pickspot.co.kr/image/KT2.webp",
+    imageUrl: "https://www.moisam.kr/image/KT2.webp",
     links: [
-      { label: "내 출발지 추가", url: `https://www.pickspot.co.kr/find?eventId=${id}` },
-      { label: "중간지점 보기", url: `https://www.pickspot.co.kr/mapView/${id}` },
+      { label: "내 출발지 추가", url: `https://www.moisam.kr/find?eventId=${id}` },
+      { label: "중간지점 보기", url: `https://www.moisam.kr/mapView/${id}` },
     ],
   };
   const navigate = useNavigate();

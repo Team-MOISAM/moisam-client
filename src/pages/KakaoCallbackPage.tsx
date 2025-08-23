@@ -29,7 +29,8 @@ const KakaoCallbackPage = () => {
       navigate(`/${to}`);
     } else if (to && to.startsWith("find")) {
       // find로 시작하는 경우 (find 또는 find?eventId=xxx 같은 경우)
-      navigate(`/find?eventId=${eventId}&startStep=1`);
+      // 로그인 후 멤버 추가 시 step2(출발지 입력)로 바로 이동
+      navigate(`/find?eventId=${eventId}&startStep=2`);
     } else {
       navigate(`/${to}/${eventId}`);
     }
