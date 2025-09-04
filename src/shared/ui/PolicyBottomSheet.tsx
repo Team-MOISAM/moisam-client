@@ -6,6 +6,7 @@ import { CheckBox } from "@/features/history/ui";
 import { useStoreAgreement } from "@/features/history/hooks";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
+import { createGtagHandler } from "@/shared/utils";
 
 interface PolicyBottomSheetProps {
   onClose: () => void;
@@ -34,6 +35,14 @@ export const PolicyBottomSheet = ({ onClose }: PolicyBottomSheetProps) => {
         {
           onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["userInfo"] });
+
+            // gtag 유틸로 전송 (기본 파라미터 자동 병합)
+            const sendSignIn = createGtagHandler("sign_in", {
+              is_marketing_agree: agreements.marketing,
+              surface: "history_policy_bottom_sheet",
+            });
+            sendSignIn();
+
             onClose();
           },
           onError: error => {
