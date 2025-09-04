@@ -1,4 +1,6 @@
 import { Modal } from "@/shared/ui";
+import { createGtagHandler } from "@/shared/utils";
+import { useUserStore } from "@/shared/stores";
 
 interface DeleteAccountModalProps {
   onClose: () => void;
@@ -6,6 +8,19 @@ interface DeleteAccountModalProps {
 }
 
 export const DeleteAccountModal = ({ onClose, onDelete }: DeleteAccountModalProps) => {
+  const { nickname, email, personalInfoAgreement } = useUserStore();
+
+  const handleDelete = createGtagHandler(
+    "delete_account",
+    {
+      user_nickname: nickname || "unknown",
+      user_email: email || "unknown", 
+      personal_info_agreement: personalInfoAgreement,
+      surface: "my_page_modal",
+    },
+    onDelete
+  );
+
   return (
     <Modal>
       <div className="px-5 py-[28px] flex flex-col gap-1 items-center">
@@ -20,7 +35,7 @@ export const DeleteAccountModal = ({ onClose, onDelete }: DeleteAccountModalProp
         </button>
         <button
           className="w-1/2 flex justify-center items-center py-3 text-white text-sm font-semibold border-t bg-gray-90 rounded-br-[20px] cursor-pointer"
-          onClick={onDelete}>
+          onClick={handleDelete}>
           떠날래요
         </button>
       </div>
