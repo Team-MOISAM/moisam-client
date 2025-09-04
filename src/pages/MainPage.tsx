@@ -6,6 +6,7 @@ import { LoginHeader } from "@/widgets/headers";
 import { Footer, IntroSection, InviteSection, MeetPointSection, PathSection, PlaceSection } from "@/features/main/ui";
 import { AnimatedSection } from "@/shared/ui";
 import { useScrollAnimation } from "@/shared/hooks/useScrollAnimation";
+import { createGtagHandler } from "@/shared/utils";
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -15,9 +16,9 @@ const MainPage = () => {
   // 각 섹션의 ref를 저장할 배열
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  const handleClick = () => {
+  const handleClick = createGtagHandler("find_midpoint_guest", { surface: "landing_cta" }, () => {
     navigate("/find");
-  };
+  });
 
   useEffect(() => {
     if (email) {

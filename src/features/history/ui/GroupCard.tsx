@@ -4,6 +4,7 @@ import Pin from "@/assets/icon/pin.svg";
 import DefaultProfile from "@/assets/icon/default-profile.svg";
 import { UserEventHistoryResponses } from "../model";
 import { formatDate } from "../utils";
+import { createGtagHandler } from "@/shared/utils";
 
 export const GroupCard = ({
   eventId,
@@ -25,9 +26,9 @@ export const GroupCard = ({
     return userProfileImageUrls[i] || DefaultProfile;
   });
 
-  const handleClick = () => {
+  const handleClick = createGtagHandler("click_existing_meeting", { event_id: eventId, surface: "history_list_card" }, () => {
     navigate(`/mapView/${eventId}`);
-  };
+  });
 
   return (
     <section className="flex flex-col px-5 pb-5 pt-4 gap-1 border-b border-b-gray-5">

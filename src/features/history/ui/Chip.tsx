@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import Check from "@/assets/icon/check.svg";
 import Review from "@/assets/icon/review.svg";
+import { createGtagHandler } from "@/shared/utils";
 
 interface ChipProps {
   id: string;
@@ -13,6 +14,8 @@ export const Chip = ({ id, isComplete }: ChipProps) => {
   const handleClick = () => {
     if (isComplete) return;
 
+    const sendWriteReview = createGtagHandler("wirte_review", { event_id: id, surface: "history_list_card" });
+    sendWriteReview();
     navigate(`/review/${id}`);
   };
 
