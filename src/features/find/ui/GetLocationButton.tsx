@@ -3,6 +3,7 @@ import { loadKakaoMapSdk } from "@/shared/utils";
 import { Dispatch, SetStateAction } from "react";
 import { StartPointInfo } from "../model";
 import Location from "@/assets/icon/location.svg";
+import { gtagEvent } from "@/shared/utils";
 
 interface GetLocationButtonProps {
   setValue: Dispatch<SetStateAction<string>>;
@@ -25,6 +26,11 @@ export const GetLocationButton = ({ setValue, setStartPointInfo, name, onError }
       await loadKakaoMapSdk();
 
       const locationInfo = await getLocationInfo(position.coords.latitude, position.coords.longitude);
+
+      gtagEvent("load_current_location", {
+        current_location: locationInfo.placeName,
+        surface: "find_location_step",
+      });
 
       setValue(locationInfo.placeName);
 
