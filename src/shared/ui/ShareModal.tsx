@@ -12,6 +12,7 @@ interface ShareModalProps {
   description?: string;
   shareContent: shareContentProps;
   onCopyComplete?: () => void;
+  onKakaoComplete?: () => void;
 }
 
 const shareItems = [
@@ -27,9 +28,10 @@ const shareItems = [
   },
 ];
 
-export const ShareModal = ({ onClose, title, description, shareContent, onCopyComplete }: ShareModalProps) => {
+export const ShareModal = ({ onClose, title, description, shareContent, onCopyComplete, onKakaoComplete }: ShareModalProps) => {
   const handleKakaoShare = () => {
     shareToKakao(shareContent);
+    onKakaoComplete?.();
     onClose();
   };
 

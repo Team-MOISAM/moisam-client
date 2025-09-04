@@ -23,6 +23,6 @@ export const kakaoLogin = ({ to, eventId }: KakaoLoginProps) => {
 
   // 이벤트 전송 여유 후 리다이렉트
   setTimeout(() => {
-    window.location.href = kakaoAuthUrl;
+  window.location.href = kakaoAuthUrl;
   }, 150);
 };

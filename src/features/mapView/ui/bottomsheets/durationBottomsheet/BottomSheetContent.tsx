@@ -8,11 +8,13 @@ import { LoginModal } from "../..";
 import { UserCard } from "./UserCard";
 import AddDisabled from "@/assets/icon/addDisabled.svg";
 import Toast from "@/shared/ui/Toast";
+import { gtagEvent } from "@/shared/utils";
 
 export const BottomSheetContent = () => {
   const meetingPointData = useEventStore(state => state.meetingPointData);
   const toggleDetail = useEventStore(state => state.toggleDetail);
   const setDetailEventData = useEventStore(state => state.setDetailEventData);
+  const nickname = useUserStore(state => state.nickname);
 
   return (
     <div className="h-full flex flex-col">
@@ -25,6 +27,12 @@ export const BottomSheetContent = () => {
             startStation={user.startName}
             totalTime={user.totalTime}
             onClick={() => {
+              gtagEvent("view_route", {
+                current_user: nickname ?? "unknown",
+                target_user: user.nickname,
+                surface: "snap_bottom_sheet",
+              });
+
               toggleDetail();
               setDetailEventData(user);
             }}
@@ -40,6 +48,7 @@ export const FixedButtons = () => {
   const [isOpenLoginModal, setIsOpenLoginModal] = useState(false);
   const { id } = useParams();
   const eventData = useEventStore(state => state.eventData);
+  const meetingPointData = useEventStore(state => state.meetingPointData);
   const nickname = useUserStore(state => state.nickname);
   const peopleCount = eventData?.peopleCount || 0;
   const isFull = peopleCount >= 8;
@@ -64,11 +73,73 @@ export const FixedButtons = () => {
   };
   const navigate = useNavigate();
 
+  // 공통 모임 데이터 생성 함수
+  const getMeetingEventData = () => {
+    if (!eventData || !meetingPointData) return null;
+    
+    const participantCount = meetingPointData.routeResponse?.length ?? 0;
+    const memberNames = meetingPointData.routeResponse?.map(user => user.nickname).join(", ") ?? "";
+    
+    return {
+      meeting_name: eventData.eventName,
+      meeting_members: memberNames,
+      meet_here_button_status: eventData.placeName ? "place_selected" : "no_place_selected",
+      meeting_date: eventData.eventDate,
+      meeting_time: eventData.eventTime,
+      participant_count: participantCount,
+      surface: "snap_bottom_sheet_fixed_buttons",
+    };
+  };
+
+  // 공통 ga 이벤트 데이터 생성 함수
+  const getShareEventData = () => {
+    const meetingData = getMeetingEventData();
+    if (!meetingData) return null;
+    
+    return {
+      meeting_name: meetingData.meeting_name,
+      meeting_date: meetingData.meeting_date,
+      meeting_time: meetingData.meeting_time,
+      meeting_members: meetingData.meeting_members,
+      surface: "share_modal",
+    };
+  };
+
   const handleAddMemberClick = () => {
+    const meetingData = getMeetingEventData();
+    if (meetingData) {
+      gtagEvent("add_startpoint", meetingData);
+    }
+
     if (nickname) {
       navigate(`/find?eventId=${id}`);
     } else {
       setIsOpenLoginModal(true);
+    }
+  };
+
+  const handleShareClick = () => {
+    const meetingData = getMeetingEventData();
+    if (meetingData) {
+      gtagEvent("share_meeting", meetingData);
+    }
+
+    setIsOpen(true);
+  };
+
+  const handleCopyComplete = () => {
+    const shareData = getShareEventData();
+    if (shareData) {
+      gtagEvent("share_meeting_copylink", shareData);
+    }
+    
+    setToastKey(Date.now());
+  };
+
+  const handleKakaoComplete = () => {
+    const shareData = getShareEventData();
+    if (shareData) {
+      gtagEvent("share_meeting_kakao", shareData);
     }
   };
 
@@ -87,13 +158,14 @@ export const FixedButtons = () => {
           <span>{isFull ? "인원이 다 찼어요" : "출발지 추가하기"}</span>
         </button>
         <button className="flex-shrink-0 flex justify-center items-center w-[52px] h-[52px] rounded-xl border-2 border-gray-10">
-          <img src={Share} alt="share" onClick={() => setIsOpen(true)} className="w-6 h-6" />
+          <img src={Share} alt="share" onClick={handleShareClick} className="w-6 h-6" />
         </button>
       </div>
       {isOpen && (
         <ShareModal
           onClose={() => setIsOpen(false)}
-          onCopyComplete={() => setToastKey(Date.now())}
+          onCopyComplete={handleCopyComplete}
+          onKakaoComplete={handleKakaoComplete}
           title="이벤트 공유하기"
           shareContent={shareContent}
         />

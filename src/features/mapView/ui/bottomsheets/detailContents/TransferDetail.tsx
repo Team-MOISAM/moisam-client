@@ -4,9 +4,10 @@ import Car from "@/assets/icon/car.svg";
 import Setting from "@/assets/icon/setting.svg";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEventStore } from "@/shared/stores";
+import { useEventStore, useUserStore } from "@/shared/stores";
 import { DeleteModal, Dropdown } from "@/shared/ui";
 import { useDeleteStartPoint } from "@/features/mapView/hooks";
+import { gtagEvent } from "@/shared/utils";
 
 interface TransferDetailProps {
   type: boolean;
@@ -23,10 +24,28 @@ export const TransferDetail = ({ type, totalTime, startPoint, endPoint }: Transf
   const { id } = useParams();
   const { mutate } = useDeleteStartPoint();
   const startPointId = useEventStore(state => state.detailEventData?.id);
+  const detailEventData = useEventStore(state => state.detailEventData);
   const toggleDetail = useEventStore(state => state.toggleDetail);
+  const nickname = useUserStore(state => state.nickname);
 
   const handleEdit = () => {
+    gtagEvent("view_route_edit", {
+      current_user: nickname ?? "unknown",
+      target_user: detailEventData?.nickname ?? "unknown",
+      surface: "route_detail_transfer_detail",
+    });
+
     navigate(`/find?startStep=2&eventId=${id}&isEdit=true`);
+  };
+
+  const handleDeleteClick = () => {
+    gtagEvent("view_route_delete", {
+      current_user: nickname ?? "unknown",
+      target_user: detailEventData?.nickname ?? "unknown",
+      surface: "route_detail_transfer_detail",
+    });
+
+    setOpenDeleteModal(true);
   };
 
   const handleDelete = () => {
@@ -61,7 +80,7 @@ export const TransferDetail = ({ type, totalTime, startPoint, endPoint }: Transf
             setIsOpen(prev => !prev);
           }}>
           <img src={Setting} alt="setting" className="w-[3px] h-[15px]" />
-          {isOpen && <Dropdown handleEdit={handleEdit} handleDelete={() => setOpenDeleteModal(true)} isDetail={true} />}
+          {isOpen && <Dropdown handleEdit={handleEdit} handleDelete={handleDeleteClick} isDetail={true} />}
         </button>
       </div>
       {openDeleteModal && (
