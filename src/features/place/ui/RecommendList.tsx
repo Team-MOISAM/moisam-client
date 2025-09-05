@@ -2,7 +2,8 @@ import PlaceCard from "@/shared/ui/PlaceCard";
 import { useNavigate, useParams } from "react-router-dom";
 import { PlaceResponse } from "../model";
 import placeNoResult from "@/assets/image/placeNoResult.webp";
-// import { FilterChips } from ".";
+import { useEventStore } from "@/shared/stores";
+import { gtagEvent } from "@/shared/utils";
 
 interface RecommendListProps {
   places: PlaceResponse[];
@@ -12,7 +13,29 @@ interface RecommendListProps {
 export const RecommendList = ({ places, subwayId }: RecommendListProps) => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const eventData = useEventStore(state => state.eventData);
+
   const handleNavigate = (placeId: string) => {
+    // 클릭된 장소 정보 찾기
+    const clickedPlace = places.find(place => place.id === placeId);
+    
+    // 현재 선택된 중간지점 역 정보 찾기
+    const currentMeetingPoint = eventData?.meetingPointRouteGroups?.find(
+      group => group.subwayId === subwayId
+    );
+
+    if (clickedPlace) {
+      gtagEvent("view_cafe_info", {
+        cafe_name: clickedPlace.name,
+        midpoint_station: currentMeetingPoint?.meetingPoint?.endStationName ?? "unknown",
+        distance_from_station: clickedPlace.distance.toString(),
+        cafe_rating: clickedPlace.averageRating?.toString() ?? "none",
+        outlet_status: clickedPlace.placeScore?.socket?.toString() ?? "none",
+        seat_status: clickedPlace.placeScore?.seat?.toString() ?? "none",
+        surface: "place_recommend_list",
+      });
+    }
+
     navigate(`/detail/${id}/${placeId}?subwayId=${subwayId}`);
   };
 
