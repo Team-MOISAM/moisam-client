@@ -2,7 +2,9 @@
 interface KakaoStatic {
   init: (key: string) => void;
   isInitialized: () => boolean;
-  Link?: unknown;
+  Link?: {
+    sendDefault: (options: any) => void;
+  };
 }
 
 interface Window {
