@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { postPlaceInfo } from "../service";
+import { patchPlaceInfo } from "../service";
 import { PlaceInfo } from "../model";
 
 export const useSetPlace = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: postPlaceInfo,
+    mutationFn: patchPlaceInfo,
     onSuccess: (_, variables) => {
       const { placeId, eventId, subwayId } = variables;
 
