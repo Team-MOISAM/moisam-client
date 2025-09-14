@@ -48,14 +48,13 @@ const MapViewPage = () => {
       const participantCount = currentMeetingPoint?.routeResponse?.length ?? 0;
       
       gtagEvent("click_meet_here", {
-        button_status: data.placeName ? "place_selected" : "no_placeㄴ_selected",
-        selected_place: data.placeName ?? "none",
-        selected_station: currentMeetingPoint?.meetingPoint?.endStationName ?? "unknown",
-        participant_count: participantCount,
+        button_status: data.placeName ? "place_selected" : "no_place_selected",
+        meeting_place: data.placeName ?? "none",
+        midpoint_station: currentMeetingPoint?.meetingPoint?.endStationName ?? "unknown",
+        member_count: participantCount,
         meeting_name: data.eventName ?? "unknown",
         meeting_date: data.eventDate ?? "unknown", 
         meeting_time: data.eventTime ?? "unknown",
-        surface: "mapview_meet_point_card",
       });
     }
     

@@ -27,12 +27,11 @@ export const RecommendList = ({ places, subwayId }: RecommendListProps) => {
     if (clickedPlace) {
       gtagEvent("view_cafe_info", {
         cafe_name: clickedPlace.name,
-        midpoint_station: currentMeetingPoint?.meetingPoint?.endStationName ?? "unknown",
-        distance_from_station: clickedPlace.distance.toString(),
+        cafe_station: currentMeetingPoint?.meetingPoint?.endStationName ?? "unknown",
+        cafe_distance: clickedPlace.distance.toString(),
         cafe_rating: clickedPlace.averageRating?.toString() ?? "none",
-        outlet_status: clickedPlace.placeScore?.socket?.toString() ?? "none",
-        seat_status: clickedPlace.placeScore?.seat?.toString() ?? "none",
-        surface: "place_recommend_list",
+        cafe_outlet_number: clickedPlace.placeScore?.socket?.toString() ?? "none",
+        cafe_seat_number: clickedPlace.placeScore?.seat?.toString() ?? "none",
       });
     }
 

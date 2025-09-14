@@ -29,7 +29,6 @@ export const GroupInfo = ({ id }: GroupInfoProps) => {
       meeting_name: eventData.eventName,
       meeting_date: eventData.eventDate,
       meeting_time: eventData.eventTime,
-      surface: "group_info_overflow_menu",
     });
 
     navigate(`/find?startStep=1&eventId=${id}&isEdit=true`);
@@ -43,11 +42,10 @@ export const GroupInfo = ({ id }: GroupInfoProps) => {
 
     gtagEvent("click_overflow_delete", {
       meeting_name: eventData.eventName,
-      participant_count: participantCount,
-      participant_names: participantNames,
+      member_count: participantCount,
+      member_id: participantNames,
       midpoint_station: meetingPointData?.meetingPoint?.endStationName ?? "unknown",
-      selected_cafe: eventData.placeName ?? "none",
-      surface: "group_info_overflow_menu",
+      place_name: eventData.placeName ?? "none",
     });
 
     setOpenDeleteModal(true);

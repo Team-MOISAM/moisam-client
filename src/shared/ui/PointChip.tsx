@@ -24,7 +24,10 @@ export const PointChip = ({ text, isSelect, onClick, additionalEventData }: Poin
       eventData.current_user = additionalEventData.currentUser;
     }
 
-    gtagEvent("click_midpoint_options", eventData);
+    gtagEvent("click_midpoint_options", {
+      cafe_name: additionalEventData?.cafeName,
+      click_member_id: additionalEventData?.currentUser,
+    });
 
     // 원래 onClick 핸들러 실행
     if (onClick) {

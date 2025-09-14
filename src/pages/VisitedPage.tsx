@@ -52,11 +52,10 @@ const VisitedPage = () => {
       gtagEvent("visit_time", {
         cafe_name: eventData.placeName ?? "unknown",
         meeting_name: eventData.eventName,
-        meeting_members: memberNames,
+        member_id: memberNames,
         meeting_date: eventData.eventDate,
         meeting_time: eventData.eventTime,
-        selected_time: timeMap[selectedTime as VisitedTimeType],
-        surface: "visited_first_step",
+        visit_period: timeMap[selectedTime as VisitedTimeType],
       });
     }
 
@@ -67,10 +66,9 @@ const VisitedPage = () => {
     if (!placeId) return;
 
     gtagEvent("rate_place", {
-      outlet_score: (secondData.plugScore || 0).toString(),
-      seat_score: (secondData.seatScore || 0).toString(),
-      crowded_score: (secondData.crowdedScore || 0).toString(),
-      surface: "visited_second_step",
+      score_outlet: (secondData.plugScore || 0).toString(),
+      score_seat: (secondData.seatScore || 0).toString(),
+      score_crowdness: (secondData.crowdedScore || 0).toString(),
     });
 
     // 방문 후기가 작성된 경우 write_review 이벤트 전송

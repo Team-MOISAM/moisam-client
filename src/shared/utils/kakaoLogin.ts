@@ -12,8 +12,7 @@ export const kakaoLogin = ({ to, eventId }: KakaoLoginProps) => {
   // gtag: 로그인 진입 이벤트 (기본 파라미터는 createGtagHandler에서 자동 병합)
   try {
     const sendLogIn = createGtagHandler("log_in", {
-      destination: to,
-      event_id: eventId ?? undefined,
+      prev_page_url: document.referrer || "direct",
     });
     sendLogIn();
   } catch (e) {

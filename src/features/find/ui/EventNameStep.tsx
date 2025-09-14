@@ -129,14 +129,12 @@ export const EventNameStep = ({
     if (!isTimeSelected) return;
 
     gtagEvent("enter_meeting_name", {
-      previous_page_url: document.referrer || "direct",
+      prev_page_url: document.referrer || "direct",
       meeting_name: value,
-      surface: "find_event_name_step",
     });
 
     gtagEvent("enter_meeting_time", {
-      selected_time: eventTime,
-      surface: "find_event_name_step",
+      meeting_time: eventTime,
     });
 
     setEventName(value);

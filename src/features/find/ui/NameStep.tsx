@@ -40,9 +40,8 @@ export const NameStep = ({ setCurrentStep, setName, name }: NameStepProps) => {
     if (!validateValue()) return;
 
     gtagEvent("enter_name", {
-      previous_page_url: document.referrer || "direct",
-      entered_name: value,
-      surface: "find_name_step",
+      prev_page_url: document.referrer || "direct",
+      name_input: value,
     });
 
     setName(value);

@@ -38,8 +38,7 @@ export const PolicyBottomSheet = ({ onClose }: PolicyBottomSheetProps) => {
 
             // gtag 유틸로 전송 (기본 파라미터 자동 병합)
             const sendSignIn = createGtagHandler("sign_in", {
-              is_marketing_agree: agreements.marketing,
-              surface: "history_policy_bottom_sheet",
+              prev_page_url: document.referrer || "direct",
             });
             sendSignIn();
 

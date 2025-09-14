@@ -70,33 +70,30 @@ export const PlaceButton = ({
       // 장소 변경 이벤트
       gtagEvent("change_place", {
         // 변경 이전 카페 정보
-        previous_cafe_name: previousCafe.name,
-        previous_review_count: previousCafe.reviews.length.toString(),
-        previous_review_content: previousReviewTexts || "none",
-        previous_cafe_rating: previousCafe.averageRating?.toString() ?? "none",
-        previous_outlet_status: previousCafe.placeScore?.socket?.toString() ?? "none",
-        previous_seat_status: previousCafe.placeScore?.seat?.toString() ?? "none",
+        prev_cafe_name: previousCafe.name,
+        prev_review_count: previousCafe.reviews.length.toString(),
+        prev_review_text: previousReviewTexts || "none",
+        prev_cafe_rating: previousCafe.averageRating?.toString() ?? "none",
+        prev_cafe_outlet_number: previousCafe.placeScore?.socket?.toString() ?? "none",
+        prev_cafe_seat_number: previousCafe.placeScore?.seat?.toString() ?? "none",
         
         // 변경할 카페 정보
-        new_cafe_name: name,
-        new_review_count: reviews.length.toString(),
-        new_review_content: reviewTexts || "none",
-        new_cafe_rating: averageRating?.toString() ?? "none",
-        new_outlet_status: placeScore?.socket?.toString() ?? "none",
-        new_seat_status: placeScore?.seat?.toString() ?? "none",
-        
-        surface: "detail_place_button",
+        changed_cafe_name: name,
+        changed_review_count: reviews.length.toString(),
+        changed_review_text: reviewTexts || "none",
+        changed_cafe_rating: averageRating?.toString() ?? "none",
+        changed_cafe_outlet_number: placeScore?.socket?.toString() ?? "none",
+        changed_cafe_seat_number: placeScore?.seat?.toString() ?? "none",
       });
     } else {
       // 처음 장소 선택 이벤트
       gtagEvent("select_place", {
         cafe_name: name,
         review_count: reviews.length.toString(),
-        review_content: reviewTexts || "none",
+        review_text: reviewTexts || "none",
         cafe_rating: averageRating?.toString() ?? "none",
-        outlet_status: placeScore?.socket?.toString() ?? "none",
-        seat_status: placeScore?.seat?.toString() ?? "none",
-        surface: "detail_place_button",
+        cafe_outlet_number: placeScore?.socket?.toString() ?? "none",
+        cafe_seat_number: placeScore?.seat?.toString() ?? "none",
       });
     }
 

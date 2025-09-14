@@ -36,11 +36,10 @@ export const PlaceInfo = ({
     gtagEvent("view_in_kakaomap", {
       cafe_name: name,
       review_count: reviews.length.toString(),
-      review_content: reviewTexts || "none",
+      review_text: reviewTexts || "none",
       cafe_rating: averageRating?.toString() ?? "none",
-      outlet_status: placeScore?.socket?.toString() ?? "none",
-      seat_status: placeScore?.seat?.toString() ?? "none",
-      surface: "detail_place_info",
+      cafe_outlet_number: placeScore?.socket?.toString() ?? "none",
+      cafe_seat_number: placeScore?.seat?.toString() ?? "none",
     });
 
     const kakaoMapUrl = `https://place.map.kakao.com/${placeId}`;

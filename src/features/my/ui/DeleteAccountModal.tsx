@@ -13,10 +13,9 @@ export const DeleteAccountModal = ({ onClose, onDelete }: DeleteAccountModalProp
   const handleDelete = createGtagHandler(
     "delete_account",
     {
-      user_nickname: nickname || "unknown",
+      user_id: nickname || "unknown",
       user_email: email || "unknown", 
       personal_info_agreement: personalInfoAgreement,
-      surface: "my_page_modal",
     },
     onDelete
   );

@@ -29,7 +29,6 @@ export const GetLocationButton = ({ setValue, setStartPointInfo, name, onError }
 
       gtagEvent("load_current_location", {
         current_location: locationInfo.placeName,
-        surface: "find_location_step",
       });
 
       setValue(locationInfo.placeName);

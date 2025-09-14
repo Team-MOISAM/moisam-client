@@ -5,8 +5,8 @@ import { createGtagHandler } from "@/shared/utils";
 export const Logout = () => {
   const { mutate } = useLogout();
 
-  const handleClick = createGtagHandler("log_out", { surface: "my_page",
-    referrer: document.referrer || "direct" }, () => {
+  const handleClick = createGtagHandler("log_out", { 
+    prev_page_url: document.referrer || "direct" }, () => {
     mutate();
   });
 

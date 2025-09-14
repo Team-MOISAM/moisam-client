@@ -28,9 +28,8 @@ export const BottomSheetContent = () => {
             totalTime={user.totalTime}
             onClick={() => {
               gtagEvent("view_route", {
-                current_user: nickname ?? "unknown",
-                target_user: user.nickname,
-                surface: "snap_bottom_sheet",
+                click_member_id: nickname ?? "unknown",
+                viewed_member_id: user.id,
               });
 
               toggleDetail();
@@ -108,7 +107,15 @@ export const FixedButtons = () => {
   const handleAddMemberClick = () => {
     const meetingData = getMeetingEventData();
     if (meetingData) {
-      gtagEvent("add_startpoint", meetingData);
+      gtagEvent("add_startpoint", {
+        meeting_name: meetingData.meeting_name,
+        button_state: meetingData.meet_here_button_status,
+        meeting_date: meetingData.meeting_date,
+        meeting_time: meetingData.meeting_time,
+        at_click_members: meetingData.meeting_members,
+        at_click_date: meetingData.meeting_date,
+        at_click_time: meetingData.meeting_time,
+      });
     }
 
     if (nickname) {
@@ -121,7 +128,16 @@ export const FixedButtons = () => {
   const handleShareClick = () => {
     const meetingData = getMeetingEventData();
     if (meetingData) {
-      gtagEvent("share_meeting", meetingData);
+      gtagEvent("share_meeting", {
+        meeting_name: meetingData.meeting_name,
+        member_id: nickname ?? "unknown",
+        button_state: meetingData.meet_here_button_status,
+        meeting_date: meetingData.meeting_date,
+        meeting_time: meetingData.meeting_time,
+        at_click_members: meetingData.meeting_members,
+        at_click_date: meetingData.meeting_date,
+        at_click_time: meetingData.meeting_time,
+      });
     }
 
     setIsOpen(true);
@@ -130,7 +146,12 @@ export const FixedButtons = () => {
   const handleCopyComplete = () => {
     const shareData = getShareEventData();
     if (shareData) {
-      gtagEvent("share_meeting_copylink", shareData);
+      gtagEvent("share_meeting_copylink", {
+        meeting_name: shareData.meeting_name,
+        meeting_date: shareData.meeting_date,
+        meeting_time: shareData.meeting_time,
+        member_id: nickname ?? "unknown",
+      });
     }
     
     setToastKey(Date.now());
@@ -139,7 +160,12 @@ export const FixedButtons = () => {
   const handleKakaoComplete = () => {
     const shareData = getShareEventData();
     if (shareData) {
-      gtagEvent("share_meeting_kakao", shareData);
+      gtagEvent("share_meeting_kakao", {
+        meeting_name: shareData.meeting_name,
+        meeting_date: shareData.meeting_date,
+        meeting_time: shareData.meeting_time,
+        member_id: nickname ?? "unknown",
+      });
     }
   };
 

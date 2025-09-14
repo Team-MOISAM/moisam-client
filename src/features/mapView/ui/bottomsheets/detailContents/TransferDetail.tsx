@@ -30,9 +30,8 @@ export const TransferDetail = ({ type, totalTime, startPoint, endPoint }: Transf
 
   const handleEdit = () => {
     gtagEvent("view_route_edit", {
-      current_user: nickname ?? "unknown",
-      target_user: detailEventData?.nickname ?? "unknown",
-      surface: "route_detail_transfer_detail",
+      editing_member_id: nickname ?? "unknown",
+      edited_member_id: detailEventData?.nickname ?? "unknown",
     });
 
     navigate(`/find?startStep=2&eventId=${id}&isEdit=true`);
@@ -40,9 +39,8 @@ export const TransferDetail = ({ type, totalTime, startPoint, endPoint }: Transf
 
   const handleDeleteClick = () => {
     gtagEvent("view_route_delete", {
-      current_user: nickname ?? "unknown",
-      target_user: detailEventData?.nickname ?? "unknown",
-      surface: "route_detail_transfer_detail",
+      deleting_member_id: nickname ?? "unknown",
+      deleted_member_id: detailEventData?.nickname ?? "unknown",
     });
 
     setOpenDeleteModal(true);

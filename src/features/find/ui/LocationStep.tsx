@@ -82,9 +82,8 @@ export const LocationStep = ({
 
   const handleSelectLocation = (location: StartPoint) => {
     gtagEvent("enter_startpoint_manual", {
-      previous_page_url: document.referrer || "direct",
-      entered_startpoint: location.name,
-      surface: "find_location_step",
+      prev_page_url: document.referrer || "direct",
+      startpoint_input: location.name,
     });
 
     setValue(location.name);

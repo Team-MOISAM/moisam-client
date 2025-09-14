@@ -26,9 +26,8 @@ export const MapModal = ({ onClose }: MapModalProps) => {
 
   const handleKakaoMapClick = () => {
     gtagEvent("view_route_kakao", {
-      current_user: nickname ?? "unknown",
-      target_user: detailEventData.nickname,
-      surface: "route_detail_map_modal",
+      click_member_id: nickname ?? "unknown",
+      viewed_member_id: detailEventData.nickname,
     });
 
     openKakaoMap({
@@ -43,9 +42,8 @@ export const MapModal = ({ onClose }: MapModalProps) => {
 
   const handleNaverMapClick = () => {
     gtagEvent("view_route_naver", {
-      current_user: nickname ?? "unknown",
-      target_user: detailEventData.nickname,
-      surface: "route_detail_map_modal",
+      viewing_member_id: nickname ?? "unknown",
+      viewed_member_id: detailEventData.nickname,
     });
 
     openNaverMap({

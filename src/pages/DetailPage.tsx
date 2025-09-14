@@ -70,11 +70,10 @@ const DetailPage = () => {
     gtagEvent("share_item", {
       cafe_name: data.name,
       review_count: data.reviews.length.toString(),
-      review_content: reviewTexts || "none",
+      review_text: reviewTexts || "none",
       cafe_rating: data.averageRating?.toString() ?? "none",
-      outlet_status: data.placeScore?.socket?.toString() ?? "none",
-      seat_status: data.placeScore?.seat?.toString() ?? "none",
-      surface: "detail_page_header",
+      cafe_outlet_number: data.placeScore?.socket?.toString() ?? "none",
+      cafe_seat_number: data.placeScore?.seat?.toString() ?? "none",
     });
 
     setIsOpenShareModal(true);

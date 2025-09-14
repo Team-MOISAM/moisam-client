@@ -26,22 +26,21 @@ const NotVisitedPage = () => {
     if (!eventId || !placeId || !visitedPlace) return;
 
     gtagEvent("no_visit_pick", {
-      surface: "not_visited_page",
+      no_visit_reason: selectedReasons.join(","),
     });
 
     // 텍스트를 직접 입력한 경우 no_visit_text 이벤트 전송
     const customText = directReason || etcReason;
     if (customText && customText.trim() !== "") {
       gtagEvent("no_visit_text", {
-        custom_reason_text: customText,
-        surface: "not_visited_page",
+        type_review: customText,
       });
     }
 
     // 방문한 다른 장소를 입력한 경우 another_place 이벤트 전송
     if (visitedPlace && visitedPlace.name && visitedPlace.name.trim() !== "") {
       gtagEvent("another_place", {
-        surface: "not_visited_page",
+        pick_other_place: visitedPlace.name,
       });
     }
 

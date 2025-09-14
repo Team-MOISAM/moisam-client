@@ -6,15 +6,35 @@ import { createGtagHandler } from "@/shared/utils";
 interface ChipProps {
   id: string;
   isComplete: boolean;
+  meetingName?: string;
+  meetingDate?: string;
+  meetingTime?: string;
+  memberCount?: number;
+  placeName?: string;
 }
 
-export const Chip = ({ id, isComplete }: ChipProps) => {
+export const Chip = ({ 
+  id, 
+  isComplete, 
+  meetingName,
+  meetingDate, 
+  meetingTime, 
+  memberCount, 
+  placeName 
+}: ChipProps) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
     if (isComplete) return;
 
-    const sendWriteReview = createGtagHandler("wirte_review", { event_id: id, surface: "history_list_card" });
+    const sendWriteReview = createGtagHandler("wirte_review", { 
+      meeting_name: meetingName || "unknown",
+      meeting_date: meetingDate || "unknown",
+      meeting_time: meetingTime || "unknown",
+      member_count: memberCount || 0,
+      member_id: id,
+      place_name: placeName || "none"
+    });
     sendWriteReview();
     navigate(`/review/${id}`);
   };
