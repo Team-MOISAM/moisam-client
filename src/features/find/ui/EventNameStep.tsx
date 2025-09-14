@@ -9,6 +9,7 @@ import { TimePicker } from "./TimePicker";
 import { formatDateWithDash } from "@/features/history/utils";
 import { useEditEventName } from "../hooks";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { gtagEvent } from "@/shared/utils";
 
 interface EventNameStepProps {
   setCurrentStep: (step: number) => void;
@@ -126,6 +127,15 @@ export const EventNameStep = ({
 
     // 시간 선택 검사
     if (!isTimeSelected) return;
+
+    gtagEvent("enter_meeting_name", {
+      prev_page_url: document.referrer || "direct",
+      meeting_name: value,
+    });
+
+    gtagEvent("enter_meeting_time", {
+      meeting_time: eventTime,
+    });
 
     setEventName(value);
     setEventDate(formatDateWithDash(selectedDate));

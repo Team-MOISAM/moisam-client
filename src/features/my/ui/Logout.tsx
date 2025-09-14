@@ -1,12 +1,14 @@
 import { useLogout } from "../hooks";
 import LogoutIcon from "@/assets/icon/logout.svg";
+import { createGtagHandler } from "@/shared/utils";
 
 export const Logout = () => {
   const { mutate } = useLogout();
 
-  const handleClick = async () => {
+  const handleClick = createGtagHandler("log_out", { 
+    prev_page_url: document.referrer || "direct" }, () => {
     mutate();
-  };
+  });
 
   return (
     <button

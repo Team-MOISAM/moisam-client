@@ -9,6 +9,8 @@ import { BackHeader } from "@/widgets/headers";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
+import { useEventStore } from "@/shared/stores";
+import { gtagEvent } from "@/shared/utils";
 
 const VisitedPage = () => {
   const navigate = useNavigate();
@@ -23,6 +25,9 @@ const VisitedPage = () => {
   });
   const [isModalOpen, setModalOpen] = useState(false);
 
+  const eventData = useEventStore(state => state.eventData);
+  const meetingPointData = useEventStore(state => state.meetingPointData);
+
   const { mutate: postReview, isPending } = usePostVisitedReview(eventId!, placeId!);
 
   const handleBack = () => {
@@ -34,11 +39,50 @@ const VisitedPage = () => {
   };
 
   const handleFirstStep = () => {
+    if (eventData && selectedTime) {
+      const memberNames = meetingPointData?.routeResponse?.map(user => user.nickname).join(", ") ?? "unknown";
+      
+      // 선택한 시간을 한글로 변환
+      const timeMap: Record<VisitedTimeType, string> = {
+        MORNING: "아침",
+        LUNCH: "낮", 
+        NIGHT: "저녁"
+      };
+      
+      gtagEvent("visit_time", {
+        cafe_name: eventData.placeName ?? "unknown",
+        meeting_name: eventData.eventName,
+        member_id: memberNames,
+        meeting_date: eventData.eventDate,
+        meeting_time: eventData.eventTime,
+        visit_period: timeMap[selectedTime as VisitedTimeType],
+      });
+    }
+
     setCurrentStep(2);
   };
 
   const handleSecondStep = () => {
     if (!placeId) return;
+
+    gtagEvent("rate_place", {
+      score_outlet: (secondData.plugScore || 0).toString(),
+      score_seat: (secondData.seatScore || 0).toString(),
+      score_crowdness: (secondData.crowdedScore || 0).toString(),
+    });
+
+    // 방문 후기가 작성된 경우 write_review 이벤트 전송
+    if (secondData.review && secondData.review.trim() !== "") {
+      gtagEvent("write_review", {
+        review_text: secondData.review,
+        surface: "visited_second_step",
+      });
+    }
+
+    // 방문 리뷰 완료 이벤트
+    gtagEvent("complete_visit", {
+      surface: "visited_second_step",
+    });
 
     const reviewData = {
       visitedTime: selectedTime as VisitedTimeType,

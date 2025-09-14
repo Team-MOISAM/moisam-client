@@ -2,6 +2,7 @@ import Button from "@/shared/ui/Button";
 import { useSetPlace } from "../hooks";
 import { useState } from "react";
 import { PlaceModal } from "./PlaceModal";
+import { gtagEvent } from "@/shared/utils";
 
 interface PlaceButtonProps {
   eventId: string;
@@ -11,8 +12,38 @@ interface PlaceButtonProps {
   isConfirmed: boolean;
   subwayId?: string | null;
   onComplete?: () => void;
+  // GA4 이벤트를 위한 추가 props
+  reviews?: Array<{ content: string }>;
+  averageRating?: number | null;
+  placeScore?: {
+    socket?: number;
+    seat?: number;
+  };
+  // 변경 이전 카페 정보 (장소 변경 시 필요)
+  previousCafe?: {
+    name: string;
+    reviews: Array<{ content: string }>;
+    averageRating: number | null;
+    placeScore?: {
+      socket?: number;
+      seat?: number;
+    };
+  };
 }
-export const PlaceButton = ({ eventId, placeId, name, isChanged, isConfirmed, subwayId, onComplete }: PlaceButtonProps) => {
+
+export const PlaceButton = ({ 
+  eventId, 
+  placeId, 
+  name, 
+  isChanged, 
+  isConfirmed, 
+  subwayId, 
+  onComplete,
+  reviews = [],
+  averageRating,
+  placeScore,
+  previousCafe
+}: PlaceButtonProps) => {
   const { mutate, isPending } = useSetPlace();
   const [isChangedOpen, setIsChangedOpen] = useState(false);
   const [isConfirmedOpen, setIsConfirmedOpen] = useState(false);
@@ -26,6 +57,46 @@ export const PlaceButton = ({ eventId, placeId, name, isChanged, isConfirmed, su
   };
 
   const handleClick = () => {
+    // 리뷰 텍스트 수집 (모이삼 자체 리뷰만)
+    const reviewTexts = reviews.map(review => review.content).join(" | ");
+    
+    // 장소 변경인지 처음 선택인지 확인
+    const isPlaceChange = isConfirmed && isChanged && previousCafe;
+    
+    if (isPlaceChange) {
+      // 변경 이전 카페 리뷰 텍스트
+      const previousReviewTexts = previousCafe.reviews.map(review => review.content).join(" | ");
+      
+      // 장소 변경 이벤트
+      gtagEvent("change_place", {
+        // 변경 이전 카페 정보
+        prev_cafe_name: previousCafe.name,
+        prev_review_count: previousCafe.reviews.length.toString(),
+        prev_review_text: previousReviewTexts || "none",
+        prev_cafe_rating: previousCafe.averageRating?.toString() ?? "none",
+        prev_cafe_outlet_number: previousCafe.placeScore?.socket?.toString() ?? "none",
+        prev_cafe_seat_number: previousCafe.placeScore?.seat?.toString() ?? "none",
+        
+        // 변경할 카페 정보
+        changed_cafe_name: name,
+        changed_review_count: reviews.length.toString(),
+        changed_review_text: reviewTexts || "none",
+        changed_cafe_rating: averageRating?.toString() ?? "none",
+        changed_cafe_outlet_number: placeScore?.socket?.toString() ?? "none",
+        changed_cafe_seat_number: placeScore?.seat?.toString() ?? "none",
+      });
+    } else {
+      // 처음 장소 선택 이벤트
+      gtagEvent("select_place", {
+        cafe_name: name,
+        review_count: reviews.length.toString(),
+        review_text: reviewTexts || "none",
+        cafe_rating: averageRating?.toString() ?? "none",
+        cafe_outlet_number: placeScore?.socket?.toString() ?? "none",
+        cafe_seat_number: placeScore?.seat?.toString() ?? "none",
+      });
+    }
+
     mutate(
       { placeId, eventId, subwayId: subwayId || undefined },
       {

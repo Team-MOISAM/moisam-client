@@ -4,6 +4,7 @@ import Pin from "@/assets/icon/pin.svg";
 import DefaultProfile from "@/assets/icon/default-profile.svg";
 import { UserEventHistoryResponses } from "../model";
 import { formatDate } from "../utils";
+import { createGtagHandler } from "@/shared/utils";
 
 export const GroupCard = ({
   eventId,
@@ -25,9 +26,16 @@ export const GroupCard = ({
     return userProfileImageUrls[i] || DefaultProfile;
   });
 
-  const handleClick = () => {
+  const handleClick = createGtagHandler("click_existing_meeting", { 
+    meeting_name: eventName,
+    meeting_date: eventDate,
+    meeting_time: eventTime,
+    member_count: participatedPeopleCount,
+    member_id: eventId,
+    place_name: placeName || "none"
+  }, () => {
     navigate(`/mapView/${eventId}`);
-  };
+  });
 
   return (
     <section className="flex flex-col px-5 pb-5 pt-4 gap-1 border-b border-b-gray-5">
@@ -63,7 +71,17 @@ export const GroupCard = ({
       </div>
       <div className="flex mt-1 items-center justify-between">
         <p className="text-sm font-medium text-gray-40">{`${formatDate(eventDate)} ${eventTime}`}</p>
-        {placeName && <Chip isComplete={isReviewed} id={eventId} />}
+        {placeName && (
+          <Chip 
+            isComplete={isReviewed} 
+            id={eventId}
+            meetingName={eventName}
+            meetingDate={eventDate}
+            meetingTime={eventTime}
+            memberCount={participatedPeopleCount}
+            placeName={placeName}
+          />
+        )}
       </div>
     </section>
   );

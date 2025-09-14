@@ -12,6 +12,7 @@ import { useSearch } from "@/entities/place/hooks";
 import { StartPoint } from "@/entities/place/model";
 import { useEventStore, useUserStore } from "@/shared/stores";
 import { TransportToggle } from "./TransportToggle";
+import { gtagEvent } from "@/shared/utils";
 
 interface LocationStepProps {
   setCurrentStep: (step: number) => void;
@@ -80,6 +81,11 @@ export const LocationStep = ({
   }, []);
 
   const handleSelectLocation = (location: StartPoint) => {
+    gtagEvent("enter_startpoint_manual", {
+      prev_page_url: document.referrer || "direct",
+      startpoint_input: location.name,
+    });
+
     setValue(location.name);
     setIsSearching(false);
     setLocationError(false);

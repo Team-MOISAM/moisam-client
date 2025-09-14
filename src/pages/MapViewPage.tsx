@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import { MeetPointCard, PolicyBottomSheet } from "@/shared/ui";
 import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
+import { gtagEvent } from "@/shared/utils";
 
 const MapViewPage = () => {
   const { data, isLoading, isError, error } = useEventRoutes();
@@ -41,6 +42,22 @@ const MapViewPage = () => {
   };
 
   const goToPlace = () => {
+    if (data) {
+      // 현재 선택된 중간지점 정보 가져오기
+      const currentMeetingPoint = data.meetingPointRouteGroups?.[0];
+      const participantCount = currentMeetingPoint?.routeResponse?.length ?? 0;
+      
+      gtagEvent("click_meet_here", {
+        button_status: data.placeName ? "place_selected" : "no_place_selected",
+        meeting_place: data.placeName ?? "none",
+        midpoint_station: currentMeetingPoint?.meetingPoint?.endStationName ?? "unknown",
+        member_count: participantCount,
+        meeting_name: data.eventName ?? "unknown",
+        meeting_date: data.eventDate ?? "unknown", 
+        meeting_time: data.eventTime ?? "unknown",
+      });
+    }
+    
     navigate(`/place/${id}`);
   };
 

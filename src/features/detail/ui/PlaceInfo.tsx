@@ -2,6 +2,7 @@ import Pin from "@/assets/icon/pinBlue.svg";
 import Star from "@/assets/icon/star.svg";
 import Time from "@/assets/icon/time.svg";
 import Arrow from "@/assets/icon/rightArrowGray.svg";
+import { gtagEvent } from "@/shared/utils";
 
 interface PlaceInfoProps {
   placeId: string;
@@ -10,10 +11,37 @@ interface PlaceInfoProps {
   averageRating: number | null;
   openTime: string | null;
   closeTime: string | null;
+  // GA4 이벤트를 위한 추가 props
+  reviews?: Array<{ content: string }>;
+  placeScore?: {
+    socket?: number;
+    seat?: number;
+  };
 }
 
-export const PlaceInfo = ({ placeId, distance, name, averageRating, openTime, closeTime }: PlaceInfoProps) => {
+export const PlaceInfo = ({ 
+  placeId, 
+  distance, 
+  name, 
+  averageRating, 
+  openTime, 
+  closeTime,
+  reviews = [],
+  placeScore
+}: PlaceInfoProps) => {
   const handleClickKakao = () => {
+    // 리뷰 텍스트 수집 (모이삼 자체 리뷰만)
+    const reviewTexts = reviews.map(review => review.content).join(" | ");
+    
+    gtagEvent("view_in_kakaomap", {
+      cafe_name: name,
+      review_count: reviews.length.toString(),
+      review_text: reviewTexts || "none",
+      cafe_rating: averageRating?.toString() ?? "none",
+      cafe_outlet_number: placeScore?.socket?.toString() ?? "none",
+      cafe_seat_number: placeScore?.seat?.toString() ?? "none",
+    });
+
     const kakaoMapUrl = `https://place.map.kakao.com/${placeId}`;
     window.open(kakaoMapUrl, "_blank");
   };
