@@ -9,7 +9,7 @@ if (window.Kakao) {
 }
 
 export const shareToKakao = ({ title, description, imageUrl, links }: shareContentProps) => {
-  if (!window.Kakao || !window.Kakao.isInitialized()) {
+  if (!window.Kakao || !window.Kakao.isInitialized() || !window.Kakao.Link) {
     console.error("Kakao SDK is not initialized");
     return;
   }

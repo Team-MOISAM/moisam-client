@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { InputField } from "@/shared/ui";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { PlainHeader } from "@/widgets/headers";
+import { gtagEvent } from "@/shared/utils";
 
 interface NameStepProps {
   setCurrentStep: (step: number) => void;
@@ -37,6 +38,12 @@ export const NameStep = ({ setCurrentStep, setName, name }: NameStepProps) => {
 
   const handleNext = () => {
     if (!validateValue()) return;
+
+    gtagEvent("enter_name", {
+      prev_page_url: document.referrer || "direct",
+      name_input: value,
+    });
+
     setName(value);
     
     // eventId가 있으면 step1을 건너뛰고 step2로 이동

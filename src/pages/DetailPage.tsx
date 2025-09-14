@@ -8,6 +8,8 @@ import { usePlaceInfo } from "@/features/detail/hooks";
 import LoadingSpinner from "@/shared/ui/LoadingSpinner";
 import Toast from "@/shared/ui/Toast";
 import { Helmet } from "react-helmet-async";
+import { gtagEvent } from "@/shared/utils";
+import { useEventStore } from "@/shared/stores";
 
 const DetailPage = () => {
   const navigate = useNavigate();
@@ -15,6 +17,8 @@ const DetailPage = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [toastKey, setToastKey] = useState<number | null>(null);
+  
+  const eventData = useEventStore(state => state.eventData);
 
   const { eventId, placeId } = useParams();
   const [searchParams] = useSearchParams();
@@ -59,6 +63,22 @@ const DetailPage = () => {
     navigate(`/place/${eventId}`);
   };
 
+  const handleShareClick = () => {
+    // 리뷰 텍스트 수집 (모이삼 자체 리뷰만)
+    const reviewTexts = data.reviews.map(review => review.content).join(" | ");
+    
+    gtagEvent("share_item", {
+      cafe_name: data.name,
+      review_count: data.reviews.length.toString(),
+      review_text: reviewTexts || "none",
+      cafe_rating: data.averageRating?.toString() ?? "none",
+      cafe_outlet_number: data.placeScore?.socket?.toString() ?? "none",
+      cafe_seat_number: data.placeScore?.seat?.toString() ?? "none",
+    });
+
+    setIsOpenShareModal(true);
+  };
+
   return (
     <>
       <Helmet>
@@ -68,12 +88,12 @@ const DetailPage = () => {
         {data.images.length > 0 ? (
           <ScrolledHeader
             backClick={handleClick}
-            shareClick={() => setIsOpenShareModal(true)}
+            shareClick={handleShareClick}
             isScrolled={isScrolled}
             name={data.name}
           />
         ) : (
-          <FixedHeader backClick={handleClick} shareClick={() => setIsOpenShareModal(true)} name={data.name} />
+          <FixedHeader backClick={handleClick} shareClick={handleShareClick} name={data.name} />
         )}
 
         <div className="flex-1 overflow-y-auto scrollbar-hidden mb-[88px]" ref={scrollRef} onScroll={onScroll}>
@@ -85,6 +105,8 @@ const DetailPage = () => {
             averageRating={data.averageRating}
             openTime={data.openTime}
             closeTime={data.closeTime}
+            reviews={data.reviews}
+            placeScore={data.placeScore}
           />
           <div className="w-full h-2 bg-gray-5" />
           {data.reviews.length > 0 || data.googleReviews.length > 0 ? (
@@ -106,6 +128,19 @@ const DetailPage = () => {
           isConfirmed={data.isConfirmed}
           subwayId={subwayId}
           onComplete={() => setIsOpenShareModal(true)}
+          reviews={data.reviews}
+          averageRating={data.averageRating}
+          placeScore={data.placeScore}
+          previousCafe={
+            data.isConfirmed && data.isChanged && eventData?.placeName 
+              ? {
+                  name: eventData.placeName,
+                  reviews: [], // TODO: 백엔드에서 이전 카페 리뷰 정보 제공 필요
+                  averageRating: null, // TODO: 백엔드에서 이전 카페 평점 정보 제공 필요
+                  placeScore: undefined, // TODO: 백엔드에서 이전 카페 점수 정보 제공 필요
+                }
+              : undefined
+          }
         />
         {isOpenShareModal && (
           <ShareModal

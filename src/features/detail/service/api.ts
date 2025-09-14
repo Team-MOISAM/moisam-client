@@ -23,13 +23,13 @@ export const getPlaceInfo = async ({ placeId, eventId, subwayId }: PlaceInfoProp
   throw new Error(response.data.error?.message || "모임 장소 조회 실패");
 };
 
-export const postPlaceInfo = async ({ placeId, eventId, subwayId }: PlaceInfoProps) => {
-  const params: any = { placeId, eventId };
-  if (subwayId) {
-    params.subwayId = subwayId;
-  }
+export const patchPlaceInfo = async ({ placeId, eventId, subwayId }: PlaceInfoProps) => {
+  const requestBody = {
+    placeId,
+    subwayId: subwayId ? Number(subwayId) : undefined,
+  };
   
-  const response = await api.post(`/places/${placeId}`, null, { params });
+  const response = await api.patch(`/events/${eventId}/place`, requestBody);
 
   if (response.data.result === "SUCCESS") {
     return true;

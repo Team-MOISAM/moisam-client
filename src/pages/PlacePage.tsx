@@ -5,7 +5,7 @@ import { MeetPointCard } from "@/shared/ui/MeetPointCard";
 import { PlainHeader } from "@/widgets/headers";
 import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEventStore } from "@/shared/stores";
+import { useEventStore, useUserStore } from "@/shared/stores";
 import { PointChip } from "@/shared/ui";
 import { useState } from "react";
 
@@ -15,6 +15,7 @@ const PlacePage = () => {
   const eventData = useEventStore(state => state.eventData);
   const meetingPointData = useEventStore(state => state.meetingPointData);
   const setMeetingPointData = useEventStore(state => state.setMeetingPointData);
+  const nickname = useUserStore(state => state.nickname);
 
   // 선택된 지하철역 ID 상태 관리 - meetingPointData에서 초기값 설정
   const [selectedSubwayId, setSelectedSubwayId] = useState<number>(
@@ -76,6 +77,10 @@ const PlacePage = () => {
               text={group.meetingPoint.endStationName.replace(/역$/, "")}
               isSelect={group.subwayId === selectedSubwayId}
               onClick={() => handleSubwaySelect(group.subwayId)}
+              additionalEventData={{
+                cafeName: eventData.placeName || undefined,
+                currentUser: nickname || "unknown",
+              }}
             />
           ))}
         </div>
