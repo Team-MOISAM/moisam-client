@@ -26,16 +26,20 @@ export const GroupCard = ({
     return userProfileImageUrls[i] || DefaultProfile;
   });
 
-  const handleClick = createGtagHandler("click_existing_meeting", { 
-    meeting_name: eventName,
-    meeting_date: eventDate,
-    meeting_time: eventTime,
-    member_count: participatedPeopleCount,
-    member_id: eventId,
-    place_name: placeName || "none"
-  }, () => {
-    navigate(`/mapView/${eventId}`);
-  });
+  const handleClick = createGtagHandler(
+    "click_existing_meeting",
+    {
+      meeting_name: eventName,
+      meeting_date: eventDate,
+      meeting_time: eventTime,
+      member_count: participatedPeopleCount,
+      member_id: eventId,
+      place_name: placeName || "none",
+    },
+    () => {
+      navigate(`/mapView/${eventId}`);
+    }
+  );
 
   return (
     <section className="flex flex-col px-5 pb-5 pt-4 gap-1 border-b border-b-gray-5">
@@ -43,12 +47,12 @@ export const GroupCard = ({
         <span className="text-md font-semibold text-gray-90 overflow-hidden text-ellipsis whitespace-nowrap">
           {eventName}
         </span>
-        <div className="flex gap-1 items-center text-sm font-medium text-gray-40 overflow-hidden text-ellipsis whitespace-nowrap">
-          <>
+        {participatedPeopleCount > 1 && (
+          <div className="flex gap-1 items-center text-sm font-medium text-gray-40 overflow-hidden text-ellipsis whitespace-nowrap">
             <img src={Pin} alt="pin" className="w-4 h-4" />
             <p>{middlePointName}역</p>
-          </>
-        </div>
+          </div>
+        )}
       </div>
       <div className="flex gap-1 text-labelXs font-medium items-center">
         {/* 이미지 영역 */}
@@ -72,8 +76,8 @@ export const GroupCard = ({
       <div className="flex mt-1 items-center justify-between">
         <p className="text-sm font-medium text-gray-40">{`${formatDate(eventDate)} ${eventTime}`}</p>
         {placeName && (
-          <Chip 
-            isComplete={isReviewed} 
+          <Chip
+            isComplete={isReviewed}
             id={eventId}
             meetingName={eventName}
             meetingDate={eventDate}
