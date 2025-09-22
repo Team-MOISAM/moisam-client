@@ -66,7 +66,7 @@ const DetailPage = () => {
   const handleShareClick = () => {
     // 리뷰 텍스트 수집 (모이삼 자체 리뷰만)
     const reviewTexts = data.reviews.map(review => review.content).join(" | ");
-    
+
     gtagEvent("share_item", {
       cafe_name: data.name,
       review_count: data.reviews.length.toString(),
@@ -77,6 +77,24 @@ const DetailPage = () => {
     });
 
     setIsOpenShareModal(true);
+  };
+
+  const handlePlaceComplete = (type?: 'set' | 'cancel') => {
+    if (type !== 'cancel') {
+      setIsOpenShareModal(true);
+    }
+  };
+
+  const getPreviousCafeInfo = () => {
+    if (data.isConfirmed && data.isChanged && eventData?.placeName) {
+      return {
+        name: eventData.placeName,
+        reviews: [],
+        averageRating: null,
+        placeScore: undefined,
+      };
+    }
+    return undefined;
   };
 
   return (
@@ -127,20 +145,11 @@ const DetailPage = () => {
           isChanged={data.isChanged}
           isConfirmed={data.isConfirmed}
           subwayId={subwayId}
-          onComplete={() => setIsOpenShareModal(true)}
+          onComplete={handlePlaceComplete}
           reviews={data.reviews}
           averageRating={data.averageRating}
           placeScore={data.placeScore}
-          previousCafe={
-            data.isConfirmed && data.isChanged && eventData?.placeName 
-              ? {
-                  name: eventData.placeName,
-                  reviews: [], // TODO: 백엔드에서 이전 카페 리뷰 정보 제공 필요
-                  averageRating: null, // TODO: 백엔드에서 이전 카페 평점 정보 제공 필요
-                  placeScore: undefined, // TODO: 백엔드에서 이전 카페 점수 정보 제공 필요
-                }
-              : undefined
-          }
+          previousCafe={getPreviousCafeInfo()}
         />
         {isOpenShareModal && (
           <ShareModal
