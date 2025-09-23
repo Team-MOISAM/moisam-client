@@ -212,7 +212,6 @@ export const LocationStep = ({
       <div className="flex-1 px-4">
         <div className="flex flex-col gap-6">
           <PlainHeader
-            title={isEdit ? "출발지 수정" : "출발지 추가"}
             onBack={() => {
               if (eventIdParam) {
                 // eventId가 있으면 메인 페이지로 이동
