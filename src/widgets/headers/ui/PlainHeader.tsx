@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import Back from "@/assets/icon/back.svg";
 
 interface PlainHeaderProps {
-  title: string;
+  title?: string;
   onBack?: () => void;
   url?: string;
   isEdit?: boolean;
@@ -28,7 +28,7 @@ export const PlainHeader = ({ title, onBack, url, isEdit = false }: PlainHeaderP
           <img src={Back} alt="back" className="w-6 h-6" />
         </button>
       )}
-      <span className="absolute top-3 left-1/2 -translate-x-1/2 text-md font-semibold">{title}</span>
+      {title && <span className="absolute top-3 left-1/2 -translate-x-1/2 text-md font-semibold">{title}</span>}
     </header>
   );
 };
