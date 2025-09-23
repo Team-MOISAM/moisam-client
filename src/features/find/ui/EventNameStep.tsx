@@ -39,7 +39,7 @@ export const EventNameStep = ({
   const [selectedDate, setSelectedDate] = useState<Date>(() => {
     // 수정 모드이고 eventDate가 있으면 해당 날짜로 설정
     if (isEdit && eventDate) {
-      const [year, month, day] = eventDate.split('-').map(Number);
+      const [year, month, day] = eventDate.split("-").map(Number);
       return new Date(year, month - 1, day); // month는 0-based
     }
     return new Date();
@@ -146,11 +146,7 @@ export const EventNameStep = ({
     <div className="flex flex-col h-full">
       <div className="flex-1 px-4">
         <div className="flex flex-col gap-6">
-          <PlainHeader
-            title={isEdit ? "출발지 수정" : "출발지 추가"}
-            onBack={() => setCurrentStep(0)}
-            isEdit={isEdit}
-          />
+          <PlainHeader onBack={() => setCurrentStep(0)} isEdit={isEdit} />
           <p className="text-gray-90 text-xxl font-bold">
             <span className="text-sub-sub">어떤 모임인가요?</span>
             <br />

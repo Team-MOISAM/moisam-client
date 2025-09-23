@@ -45,7 +45,7 @@ export const NameStep = ({ setCurrentStep, setName, name }: NameStepProps) => {
     });
 
     setName(value);
-    
+
     // eventId가 있으면 step1을 건너뛰고 step2로 이동
     if (eventIdParam) {
       setCurrentStep(2);
@@ -58,7 +58,7 @@ export const NameStep = ({ setCurrentStep, setName, name }: NameStepProps) => {
     <div className="flex flex-col h-full">
       <div className="flex-1 px-4">
         <div className="flex flex-col gap-6">
-          <PlainHeader title="출발지 추가" onBack={() => navigate(-1)} />
+          <PlainHeader onBack={() => navigate(-1)} />
           <p className="text-gray-90 text-xxl font-bold">
             새로운 출발지 추가를 위해
             <br />
