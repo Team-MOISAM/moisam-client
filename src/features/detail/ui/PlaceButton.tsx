@@ -1,5 +1,5 @@
 import Button from "@/shared/ui/Button";
-import { useSetPlace } from "../hooks";
+import { useSetPlace, useCancelPlace } from "../hooks";
 import { useState } from "react";
 import { PlaceModal } from "./PlaceModal";
 import { gtagEvent } from "@/shared/utils";
@@ -11,7 +11,7 @@ interface PlaceButtonProps {
   isChanged: boolean;
   isConfirmed: boolean;
   subwayId?: string | null;
-  onComplete?: () => void;
+  onComplete?: (type?: 'set' | 'cancel') => void;
   // GA4 이벤트를 위한 추가 props
   reviews?: Array<{ content: string }>;
   averageRating?: number | null;
@@ -31,13 +31,13 @@ interface PlaceButtonProps {
   };
 }
 
-export const PlaceButton = ({ 
-  eventId, 
-  placeId, 
-  name, 
-  isChanged, 
-  isConfirmed, 
-  subwayId, 
+export const PlaceButton = ({
+  eventId,
+  placeId,
+  name,
+  isChanged,
+  isConfirmed,
+  subwayId,
   onComplete,
   reviews = [],
   averageRating,
@@ -45,11 +45,15 @@ export const PlaceButton = ({
   previousCafe
 }: PlaceButtonProps) => {
   const { mutate, isPending } = useSetPlace();
+  const { mutate: cancelPlace, isPending: isCancelPending } = useCancelPlace();
   const [isChangedOpen, setIsChangedOpen] = useState(false);
   const [isConfirmedOpen, setIsConfirmedOpen] = useState(false);
+  const [isCancelOpen, setIsCancelOpen] = useState(false);
 
   const handleModal = () => {
-    if (isConfirmed) {
+    if (isConfirmed && !isChanged) {
+      setIsCancelOpen(true);
+    } else if (isConfirmed) {
       setIsChangedOpen(true);
     } else {
       setIsConfirmedOpen(true);
@@ -103,10 +107,19 @@ export const PlaceButton = ({
         onSuccess: () => {
           setIsConfirmedOpen(false);
           setIsChangedOpen(false);
-          onComplete?.();
+          onComplete?.('set');
         },
       }
     );
+  };
+
+  const handleCancel = () => {
+    cancelPlace(eventId, {
+      onSuccess: () => {
+        setIsCancelOpen(false);
+        onComplete?.('cancel');
+      },
+    });
   };
 
   return (
@@ -114,8 +127,8 @@ export const PlaceButton = ({
       <div
         className="px-5 pt-4 pb-5 w-full fixed bottom-0 max-w-[600px] z-[100]"
         style={{ background: "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, #FFF 20%)" }}>
-        <Button disabled={(isConfirmed && !isChanged) || isPending} onClick={handleModal}>
-          {isConfirmed ? (isChanged ? "모임장소 바꾸기" : "이미 선택한 장소에요") : "여기에서 만나기"}
+        <Button disabled={isPending || isCancelPending} onClick={handleModal}>
+          {isConfirmed ? (isChanged ? "모임장소 바꾸기" : "확정 취소하기") : "여기에서 만나기"}
         </Button>
       </div>
       {isChangedOpen && (
@@ -123,6 +136,9 @@ export const PlaceButton = ({
       )}
       {isConfirmedOpen && (
         <PlaceModal type="fix" placeName={name} onClose={() => setIsConfirmedOpen(false)} onClick={handleClick} />
+      )}
+      {isCancelOpen && (
+        <PlaceModal type="cancel" placeName={name} onClose={() => setIsCancelOpen(false)} onClick={handleCancel} />
       )}
     </>
   );
