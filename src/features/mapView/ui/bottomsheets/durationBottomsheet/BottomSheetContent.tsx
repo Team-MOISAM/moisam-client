@@ -119,7 +119,8 @@ export const FixedButtons = () => {
     }
 
     if (nickname) {
-      navigate(`/find?eventId=${id}`);
+      // 로그인된 사용자가 멤버 추가 시 NameStep(1)로 시작
+      navigate(`/find?eventId=${id}&startStep=1`);
     } else {
       setIsOpenLoginModal(true);
     }

@@ -27,7 +27,8 @@ const HistoryPage = () => {
   };
 
   const handleClick = () => {
-    navigate("/find?startStep=1");
+    // 로그인된 사용자가 새 모임을 만들 때는 EventNameStep(0)부터 시작
+    navigate("/find?startStep=0");
   };
 
   useEffect(() => {

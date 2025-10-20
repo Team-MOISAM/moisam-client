@@ -10,6 +10,7 @@ import { formatDateWithDash } from "@/features/history/utils";
 import { useEditEventName } from "../hooks";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { gtagEvent } from "@/shared/utils";
+import { useUserStore } from "@/shared/stores";
 
 interface EventNameStepProps {
   setCurrentStep: (step: number) => void;
@@ -49,6 +50,8 @@ export const EventNameStep = ({
   const eventIdParam = searchParams.get("eventId");
   const { mutate } = useEditEventName();
   const navigate = useNavigate();
+  const nickname = useUserStore(state => state.nickname);
+  const isLoggedIn = nickname !== "";
 
   // 날짜 변경 시 과거 시간이 선택되어 있으면 초기화
   const handleDateChange = (date: Date) => {
@@ -139,7 +142,15 @@ export const EventNameStep = ({
 
     setEventName(value);
     setEventDate(formatDateWithDash(selectedDate));
-    setCurrentStep(2);
+    
+    // 로그인 상태에 따라 다음 스텝 결정
+    if (isLoggedIn) {
+      // 로그인된 사용자는 NameStep을 건너뛰고 LocationStep(2)로 이동
+      setCurrentStep(2);
+    } else {
+      // 비로그인 사용자는 NameStep(1)으로 이동
+      setCurrentStep(1);
+    }
   };
 
   return (

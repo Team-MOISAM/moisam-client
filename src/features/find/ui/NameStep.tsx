@@ -3,9 +3,10 @@ import { validateName } from "@/shared/utils";
 import Button from "@/shared/ui/Button";
 import { useEffect, useState } from "react";
 import { InputField } from "@/shared/ui";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { PlainHeader } from "@/widgets/headers";
 import { gtagEvent } from "@/shared/utils";
+import { useUserStore } from "@/shared/stores";
 
 interface NameStepProps {
   setCurrentStep: (step: number) => void;
@@ -17,8 +18,8 @@ export const NameStep = ({ setCurrentStep, setName, name }: NameStepProps) => {
   const { value, error, handleChange, validateValue, isValid } = useValidation(name, validateName);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const eventIdParam = searchParams.get("eventId");
+  const nickname = useUserStore(state => state.nickname);
+  const isLoggedIn = nickname !== "";
 
   useEffect(() => {
     const handleResize = () => {
@@ -46,11 +47,13 @@ export const NameStep = ({ setCurrentStep, setName, name }: NameStepProps) => {
 
     setName(value);
 
-    // eventId가 있으면 step1을 건너뛰고 step2로 이동
-    if (eventIdParam) {
+    // 로그인 상태와 시나리오에 따라 다음 스텝 결정
+    if (isLoggedIn) {
+      // 로그인된 사용자는 항상 위치 입력(step 2)으로 이동
       setCurrentStep(2);
     } else {
-      setCurrentStep(1);
+      // 로그인 안 되어있으면 위치 입력(step 2)으로 이동 (로그인 후 처리)
+      setCurrentStep(2);
     }
   };
 
