@@ -19,7 +19,7 @@ export const NameStep = ({ setCurrentStep, setName, name }: NameStepProps) => {
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const navigate = useNavigate();
   const nickname = useUserStore(state => state.nickname);
-  const isLoggedIn = nickname !== "";
+  const isLoggedIn = nickname !== null && nickname !== "";
 
   useEffect(() => {
     const handleResize = () => {

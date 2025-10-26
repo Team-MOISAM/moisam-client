@@ -9,7 +9,7 @@ import { EventNameStep } from "./EventNameStep";
 
 export const FindContainer = () => {
   const nickname = useUserStore(state => state.nickname);
-  const isLoggedIn = nickname !== "";
+  const isLoggedIn = nickname !== null && nickname !== "";
 
   const [searchParams] = useSearchParams();
   const startStepParam = searchParams.get("startStep");

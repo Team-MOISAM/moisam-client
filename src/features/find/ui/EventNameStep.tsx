@@ -51,7 +51,7 @@ export const EventNameStep = ({
   const { mutate } = useEditEventName();
   const navigate = useNavigate();
   const nickname = useUserStore(state => state.nickname);
-  const isLoggedIn = nickname !== "";
+  const isLoggedIn = nickname !== null && nickname !== "";
 
   // 날짜 변경 시 과거 시간이 선택되어 있으면 초기화
   const handleDateChange = (date: Date) => {
