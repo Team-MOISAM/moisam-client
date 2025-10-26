@@ -31,7 +31,7 @@ export const GroupInfo = ({ id }: GroupInfoProps) => {
       meeting_time: eventData.eventTime,
     });
 
-    navigate(`/find?startStep=1&eventId=${id}&isEdit=true`);
+    navigate(`/find?startStep=0&eventId=${id}&isEdit=true`);
   };
 
   const handleDeleteClick = () => {
