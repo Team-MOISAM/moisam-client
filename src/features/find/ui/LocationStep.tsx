@@ -67,7 +67,7 @@ export const LocationStep = ({
 
   // 출발지 수정 모드일 때 기존 출발지 정보 초기화
   useEffect(() => {
-    if (isEdit && detailEventData && !startPointInfo?.startPoint) {
+    if (isEdit && detailEventData && value === "") {
       setValue(detailEventData.startName);
       setStartPointInfo({
         name: name,
@@ -79,7 +79,7 @@ export const LocationStep = ({
       });
       setIsTransit(detailEventData.isTransit);
     }
-  }, [isEdit, detailEventData, name, startPointInfo?.startPoint]);
+  }, [isEdit, detailEventData]);
 
   useEffect(() => {
     const handleResize = () => {
