@@ -85,26 +85,29 @@ export const DetailKakaoMapView = () => {
         linePath.forEach(latlng => bounds.extend(latlng));
         kakaoMap.setBounds(bounds);
 
-        // 경로 선 그리기 - 두 겹
-        // 1. 흰색 테두리용 선 (먼저 그림)
-        new kakao.maps.Polyline({
-          path: linePath,
-          strokeWeight: 8, // 더 두껍게
-          strokeColor: "#FFFFFF", // 테두리 색상
-          strokeOpacity: 1,
-          strokeStyle: "solid",
-          map: kakaoMap,
-        });
+        // totalTime이 0보다 클 때만 경로 선 그리기
+        if (detailEventData.totalTime > 0) {
+          // 경로 선 그리기 - 두 겹
+          // 1. 흰색 테두리용 선 (먼저 그림)
+          new kakao.maps.Polyline({
+            path: linePath,
+            strokeWeight: 8, // 더 두껍게
+            strokeColor: "#FFFFFF", // 테두리 색상
+            strokeOpacity: 1,
+            strokeStyle: "solid",
+            map: kakaoMap,
+          });
 
-        // 2. 실제 경로 선 (위에 겹쳐 그림)
-        new kakao.maps.Polyline({
-          path: linePath,
-          strokeWeight: 4,
-          strokeColor: "#007AFF", // 실제 색상
-          strokeOpacity: 0.9,
-          strokeStyle: "solid",
-          map: kakaoMap,
-        });
+          // 2. 실제 경로 선 (위에 겹쳐 그림)
+          new kakao.maps.Polyline({
+            path: linePath,
+            strokeWeight: 4,
+            strokeColor: "#007AFF", // 실제 색상
+            strokeOpacity: 0.9,
+            strokeStyle: "solid",
+            map: kakaoMap,
+          });
+        }
       });
     };
 

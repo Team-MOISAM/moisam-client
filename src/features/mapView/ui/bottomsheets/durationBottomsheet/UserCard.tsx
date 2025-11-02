@@ -13,7 +13,7 @@ interface UserCardProps {
 
 export const UserCard = ({ isTransit, name, startStation, totalTime, onClick }: UserCardProps) => {
   return (
-    <div className="flex justify-between items-center" onClick={totalTime > 0 ? onClick : undefined}>
+    <div className="flex justify-between items-center" onClick={onClick}>
       <div className="py-[8px] cursor-pointer">
         <div className="flex gap-1 text-lg font-bold text-gray-70 items-center">
           {totalTime > 0 ? (
@@ -34,11 +34,9 @@ export const UserCard = ({ isTransit, name, startStation, totalTime, onClick }: 
           {name} · {startStation}
         </p>
       </div>
-      {totalTime > 0 && (
-        <button>
-          <img src={Arrow} alt="arrow" className="w-4 h-4" />
-        </button>
-      )}
+      <button>
+        <img src={Arrow} alt="arrow" className="w-4 h-4" />
+      </button>
     </div>
   );
 };

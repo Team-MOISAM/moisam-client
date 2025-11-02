@@ -24,21 +24,22 @@ export const MapDetailBottomSheet = () => {
           isMe={detailEventData.isMe}
         />
         <SnapBottomSheet.Content>
-          {detailEventData.isTransit ? (
-            <Path
-              startPoint={detailEventData.startName}
-              endPoint={meetingPointData?.meetingPoint?.endStationName || ""}
-              transferInfo={detailEventData.transitRoute}
-            />
-          ) : (
-            <CarDetail
-              driveDistance={detailEventData.drivingInfo.distance}
-              toll={detailEventData.drivingInfo.toll}
-              taxiToll={detailEventData.drivingInfo.taxi}
-              parking={meetingPointData?.parkingLot}
-            />
-          )}
-          <FixedButton />
+          {detailEventData.totalTime > 0 &&
+            (detailEventData.isTransit ? (
+              <Path
+                startPoint={detailEventData.startName}
+                endPoint={meetingPointData?.meetingPoint?.endStationName || ""}
+                transferInfo={detailEventData.transitRoute}
+              />
+            ) : (
+              <CarDetail
+                driveDistance={detailEventData.drivingInfo?.distance}
+                toll={detailEventData.drivingInfo?.toll}
+                taxiToll={detailEventData.drivingInfo?.taxi}
+                parking={meetingPointData?.parkingLot}
+              />
+            ))}
+          <FixedButton disabled={detailEventData.totalTime <= 0} />
         </SnapBottomSheet.Content>
       </SnapBottomSheet>
     </>
