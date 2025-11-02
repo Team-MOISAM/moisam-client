@@ -7,7 +7,8 @@ export const LoginModal = () => {
   const { id } = useParams();
 
   const handleNextTime = () => {
-    navigate(`/find?eventId=${id}`);
+    // 비로그인 사용자가 멤버 추가 시 NameStep(1)로 시작
+    navigate(`/find?eventId=${id}&startStep=1`);
   };
 
   const handleKakaoClick = () => {

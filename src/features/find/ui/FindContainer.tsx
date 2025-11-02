@@ -9,7 +9,7 @@ import { EventNameStep } from "./EventNameStep";
 
 export const FindContainer = () => {
   const nickname = useUserStore(state => state.nickname);
-  const isLoggedIn = nickname !== "";
+  const isLoggedIn = nickname !== null && nickname !== "";
 
   const [searchParams] = useSearchParams();
   const startStepParam = searchParams.get("startStep");
@@ -22,11 +22,12 @@ export const FindContainer = () => {
 
   const [name, setName] = useState(() => {
     if (isEdit && detailEventData) return detailEventData.nickname;
-    // startStep이 명시적으로 설정된 경우만 자동 이름 설정
+    // startStep=1(NameStep)일 때만 자동 이름 설정 (멤버 추가 시)
     return isLoggedIn && startStepParam === "1" && nickname ? formatName(nickname) : "";
   });
   const [currentStep, setCurrentStep] = useState(() => {
     const step = Number(startStepParam);
+    // startStep=1이면 NameStep(1)으로, startStep=2이면 LocationStep(2)로 시작
     return [0, 1, 2].includes(step) ? step : 0;
   });
   const [startPointInfo, setStartPointInfo] = useState<StartPointInfo | null>(null);
@@ -65,8 +66,7 @@ export const FindContainer = () => {
 
   return (
     <div className="flex-1 gap-y-[16px]">
-      {currentStep === 0 && <NameStep setCurrentStep={setCurrentStep} setName={setName} name={name} />}
-      {currentStep === 1 && (
+      {currentStep === 0 && (
         <EventNameStep
           setCurrentStep={setCurrentStep}
           setName={setName}
@@ -80,6 +80,7 @@ export const FindContainer = () => {
           isEdit={isEdit}
         />
       )}
+      {currentStep === 1 && <NameStep setCurrentStep={setCurrentStep} setName={setName} name={name} />}
       {currentStep === 2 && (
         <LocationStep
           setCurrentStep={setCurrentStep}
