@@ -44,6 +44,7 @@ export const LocationStep = ({
   const [isTransit, setIsTransit] = useState(true);
 
   const startPointId = useEventStore(state => state.detailEventData?.id);
+  const detailEventData = useEventStore(state => state.detailEventData);
   const email = useUserStore(state => state.email);
   const personalInfoAgreement = useUserStore(state => state.personalInfoAgreement);
   const setPersonalInfoAgreement = useUserStore(state => state.setPersonalInfoAgreement);
@@ -63,6 +64,22 @@ export const LocationStep = ({
       setIsPolicyOpen(true);
     }
   }, []);
+
+  // 출발지 수정 모드일 때 기존 출발지 정보 초기화
+  useEffect(() => {
+    if (isEdit && detailEventData && value === "") {
+      setValue(detailEventData.startName);
+      setStartPointInfo({
+        name: name,
+        startPoint: detailEventData.startName,
+        address: detailEventData.startName,
+        roadAddress: detailEventData.startName,
+        latitude: detailEventData.startLatitude,
+        longitude: detailEventData.startLongitude,
+      });
+      setIsTransit(detailEventData.isTransit);
+    }
+  }, [isEdit, detailEventData]);
 
   useEffect(() => {
     const handleResize = () => {
