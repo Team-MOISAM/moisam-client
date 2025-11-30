@@ -66,7 +66,7 @@ export const FixedButtons = () => {
     description: "",
     imageUrl: "https://www.moisam.kr/image/KT2.webp",
     links: [
-      { label: "내 출발지 추가", url: `https://www.moisam.kr/find?eventId=${id}` },
+      { label: "내 출발지 추가", url: `https://www.moisam.kr/find?eventId=${id}&startStep=1` },
       { label: "중간지점 보기", url: `https://www.moisam.kr/mapView/${id}` },
     ],
   };
