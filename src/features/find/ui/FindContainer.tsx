@@ -22,8 +22,12 @@ export const FindContainer = () => {
 
   const [name, setName] = useState(() => {
     if (isEdit && detailEventData) return detailEventData.nickname;
-    // startStep=1(NameStep)일 때만 자동 이름 설정 (멤버 추가 시)
-    return isLoggedIn && startStepParam === "1" && nickname ? formatName(nickname) : "";
+    // 로그인된 사용자: startStep=0(모임 생성)이거나 startStep=1(멤버 추가)일 때 자동 이름 설정
+    if (isLoggedIn && (startStepParam === "0" || startStepParam === "1") && nickname) {
+      return formatName(nickname);
+    }
+    return "";
+
   });
   const [currentStep, setCurrentStep] = useState(() => {
     const step = Number(startStepParam);
