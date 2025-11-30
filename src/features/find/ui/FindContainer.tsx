@@ -27,6 +27,7 @@ export const FindContainer = () => {
       return formatName(nickname);
     }
     return "";
+
   });
   const [currentStep, setCurrentStep] = useState(() => {
     const step = Number(startStepParam);
