@@ -3,7 +3,7 @@ import { validateName } from "@/shared/utils";
 import Button from "@/shared/ui/Button";
 import { useEffect, useState } from "react";
 import { InputField } from "@/shared/ui";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { PlainHeader } from "@/widgets/headers";
 import { gtagEvent } from "@/shared/utils";
 import { useUserStore } from "@/shared/stores";
@@ -18,6 +18,8 @@ export const NameStep = ({ setCurrentStep, setName, name }: NameStepProps) => {
   const { value, error, handleChange, validateValue, isValid } = useValidation(name, validateName);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const eventIdParam = searchParams.get("eventId");
   const nickname = useUserStore(state => state.nickname);
   const isLoggedIn = nickname !== null && nickname !== "";
 
@@ -61,7 +63,15 @@ export const NameStep = ({ setCurrentStep, setName, name }: NameStepProps) => {
     <div className="flex flex-col h-full">
       <div className="flex-1 px-4">
         <div className="flex flex-col gap-6">
-          <PlainHeader onBack={() => navigate(-1)} />
+          <PlainHeader
+            onBack={() => {
+              if (eventIdParam) {
+                navigate(-1);
+              } else {
+                setCurrentStep(0);
+              }
+            }}
+          />
           <p className="text-gray-90 text-xxl font-bold">
             새로운 출발지 추가를 위해
             <br />

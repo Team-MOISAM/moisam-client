@@ -46,6 +46,8 @@ export const LocationStep = ({
   const startPointId = useEventStore(state => state.detailEventData?.id);
   const detailEventData = useEventStore(state => state.detailEventData);
   const email = useUserStore(state => state.email);
+  const nickname = useUserStore(state => state.nickname);
+  const isLoggedIn = nickname !== null && nickname !== "";
   const personalInfoAgreement = useUserStore(state => state.personalInfoAgreement);
   const setPersonalInfoAgreement = useUserStore(state => state.setPersonalInfoAgreement);
 
@@ -233,8 +235,11 @@ export const LocationStep = ({
               if (eventIdParam) {
                 // eventId가 있으면 메인 페이지로 이동
                 window.history.back();
+              } else if (isLoggedIn) {
+                // 로그인한 사용자: NameStep을 건너뛰었으므로 EventNameStep으로 이동
+                setCurrentStep(0);
               } else {
-                // 새 모임 생성이면 이전 스텝으로
+                // 비로그인 사용자: 이전 스텝(NameStep)으로 이동
                 setCurrentStep(1);
               }
             }}
