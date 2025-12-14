@@ -1,0 +1,79 @@
+name: Manual Deployment
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_branch:
+        description: "Select branch to deploy"
+        required: true
+        default: "dev"
+      target_environment:
+        description: "Select deploy target"
+        required: true
+        default: "dev"
+        type: choice
+        options:
+          - dev
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.source_branch }}
+
+      - name: Notify Discord - Deployment Started
+        run: |
+          curl -X POST ${{ secrets.DISCORD_WEBHOOK }} \
+            -H "Content-Type: application/json" \
+            -d '{
+              "content": "🚀 **배포 시작**\nSource Branch: ${{ github.event.inputs.source_branch }}\nTarget Environment: ${{ github.event.inputs.target_environment }}\nCommit: ${{ github.sha }}\nTriggered by: ${{ github.actor }}"
+            }'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Deploy to Vercel
+        id: deploy
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./
+          vercel-args: ""
+
+      - name: Notify Discord - Deployment Successful
+        if: success()
+        run: |
+          curl -X POST ${{ secrets.DISCORD_WEBHOOK }} \
+            -H "Content-Type: application/json" \
+            -d '{
+              "content": "✅ **배포 완료**\nSource Branch: ${{ github.event.inputs.source_branch }}\nTarget Environment: ${{ github.event.inputs.target_environment }}\nCommit: ${{ github.sha }}\n📍 Vercel 대시보드에서 URL을 확인해주세요."
+            }'
+
+      - name: Notify Discord - Deployment Failed
+        if: failure()
+        run: |
+          curl -X POST ${{ secrets.DISCORD_WEBHOOK }} \
+            -H "Content-Type: application/json" \
+            -d '{
+              "content": "❌ **배포 실패**\nSource Branch: ${{ github.event.inputs.source_branch }}\nTarget Environment: ${{ github.event.inputs.target_environment }}\nCommit: ${{ github.sha }}\n자세한 내용은 GitHub Actions 로그를 확인해주세요."
+            }'
