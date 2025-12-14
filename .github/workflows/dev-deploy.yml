@@ -5,6 +5,14 @@ env:
 
 on:
   workflow_dispatch:
+    inputs:
+      target_environment:
+        description: "Select deploy target"
+        required: true
+        default: "dev"
+        type: choice
+        options:
+          - dev
 
 jobs:
   Deploy:
@@ -18,7 +26,7 @@ jobs:
           curl -X POST ${{ secrets.DISCORD_WEBHOOK }} \
             -H "Content-Type: application/json" \
             -d '{
-              "content": "🚀 **배포 시작**\nBranch: ${{ github.ref_name }}\nTarget Environment: dev\nCommit: ${{ github.sha }}\nTriggered by: ${{ github.actor }}"
+              "content": "🚀 **배포 시작**\nBranch: ${{ github.ref_name }}\nTarget Environment: ${{ github.event.inputs.target_environment }}\nCommit: ${{ github.sha }}\nTriggered by: ${{ github.actor }}"
             }'
 
       - name: Install pnpm
@@ -52,7 +60,7 @@ jobs:
           curl -X POST ${{ secrets.DISCORD_WEBHOOK }} \
             -H "Content-Type: application/json" \
             -d '{
-              "content": "✅ **배포 완료**\nBranch: ${{ github.ref_name }}\nTarget Environment: dev\nCommit: ${{ github.sha }}\n📍 Vercel 대시보드에서 URL을 확인해주세요."
+              "content": "✅ **배포 완료**\nBranch: ${{ github.ref_name }}\nTarget Environment: ${{ github.event.inputs.target_environment }}\nCommit: ${{ github.sha }}\n📍 Vercel 대시보드에서 URL을 확인해주세요."
             }'
 
       - name: Notify Discord - Deployment Failed
@@ -61,5 +69,5 @@ jobs:
           curl -X POST ${{ secrets.DISCORD_WEBHOOK }} \
             -H "Content-Type: application/json" \
             -d '{
-              "content": "❌ **배포 실패**\nBranch: ${{ github.ref_name }}\nTarget Environment: dev\nCommit: ${{ github.sha }}\n자세한 내용은 GitHub Actions 로그를 확인해주세요."
+              "content": "❌ **배포 실패**\nBranch: ${{ github.ref_name }}\nTarget Environment: ${{ github.event.inputs.target_environment }}\nCommit: ${{ github.sha }}\n자세한 내용은 GitHub Actions 로그를 확인해주세요."
             }'
