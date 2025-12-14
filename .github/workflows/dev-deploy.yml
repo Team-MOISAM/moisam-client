@@ -20,6 +20,17 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Deploy to dev branch
+        run: |
+          git checkout -b dev
+          git reset --hard ${{ github.ref_name }}
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit --allow-empty -m "chore: Deploy from ${{ github.ref_name }} by @${{ github.actor }}"
+          git push --atomic origin dev --force
 
       - name: Notify Discord - Deployment Started
         run: |
@@ -60,7 +71,7 @@ jobs:
           curl -X POST ${{ secrets.DISCORD_WEBHOOK }} \
             -H "Content-Type: application/json" \
             -d '{
-              "content": "✅ **배포 완료**\nBranch: ${{ github.ref_name }}\nTarget Environment: ${{ github.event.inputs.target_environment }}\nCommit: ${{ github.sha }}\n📍 Vercel 대시보드에서 URL을 확인해주세요."
+              "content": "✅ **배포 완료**\nBranch: ${{ github.ref_name }}\nTarget Environment: ${{ github.event.inputs.target_environment }}\nCommit: ${{ github.sha }}\n📍 https://staging.moisam.kr"
             }'
 
       - name: Notify Discord - Deployment Failed
@@ -69,5 +80,5 @@ jobs:
           curl -X POST ${{ secrets.DISCORD_WEBHOOK }} \
             -H "Content-Type: application/json" \
             -d '{
-              "content": "❌ **배포 실패**\nBranch: ${{ github.ref_name }}\nTarget Environment: ${{ github.event.inputs.target_environment }}\nCommit: ${{ github.sha }}\n자세한 내용은 GitHub Actions 로그를 확인해주세요."
+              "content": "❌ **배포 실패**\nBranch: ${{ github.ref_name }}\nTarget Environment: ${{ github.event.inputs.target_environment }}\nCommit: ${{ github.sha }}"
             }'
