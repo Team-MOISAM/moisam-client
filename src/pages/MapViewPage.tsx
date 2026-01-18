@@ -36,6 +36,8 @@ const MapViewPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  // TODO: 카카오톡 유입 로깅 - source 파라미터 추출 후 로깅 API 호출
+
   const onClose = () => {
     setIsPolicyOpen(false);
     setPersonalInfoAgreement(true);

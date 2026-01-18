@@ -16,6 +16,8 @@ export const FindContainer = () => {
   const isEditParam = searchParams.get("isEdit");
   const isEdit = isEditParam === "true";
 
+  // TODO: 카카오톡 유입 로깅 - source 파라미터 추출 후 로깅 API 호출
+
   //수정 시
   const detailEventData = useEventStore(state => state.detailEventData);
   const eventDataFromStore = useEventStore(state => state.eventData);
