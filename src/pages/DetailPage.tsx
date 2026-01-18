@@ -56,7 +56,7 @@ const DetailPage = () => {
     title: data.isConfirmed ? "여기서 만나요!" : "여기 어때요?",
     description: data.name,
     imageUrl: ImageUrl,
-    links: [{ label: "모임 장소 보기", url: `https://www.moisam.kr/detail/${eventId}/${placeId}` }],
+    links: [{ label: "모임 장소 보기", url: `https://www.moisam.kr/detail/${eventId}/${placeId}?subwayId=${subwayId}` }],
   };
 
   const handleClick = () => {
