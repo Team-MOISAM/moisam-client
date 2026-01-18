@@ -84,12 +84,12 @@ const MainPage = () => {
       <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[600px] px-5 py-3 bg-[rgba(255,255,255,0.05)] backdrop-blur-md ">
         <Button onClick={handleClick}>중간장소 찾기</Button>
       </div>
-      <div className="fixed bottom-[100px] left-1/2 -translate-x-1/2 w-full max-w-[600px] px-5 flex overflow-visible pointer-events-auto">
+      <div className="fixed bottom-[100px] left-1/2 -translate-x-1/2 w-full max-w-[600px] px-5 flex overflow-visible pointer-events-none">
         <iframe
           title="disquiet-badge"
           frameBorder="0"
           src="https://badge.disquiet.io/vote-badge?productUrlSlug=모이삼&mode=light"
-          className="w-[300px] h-[80px] overflow-visible ml-auto -mr-[100px]"
+          className="w-[300px] h-[80px] overflow-visible ml-auto -mr-[100px] pointer-events-auto"
           style={{ overflow: 'visible' }}
         />
       </div>

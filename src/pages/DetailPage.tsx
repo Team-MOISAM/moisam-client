@@ -24,6 +24,8 @@ const DetailPage = () => {
   const [searchParams] = useSearchParams();
   const subwayId = searchParams.get("subwayId");
 
+  // TODO: 카카오톡 유입 로깅 - source 파라미터 추출 후 로깅 API 호출
+
   if (!placeId || !eventId) return <p>잘못된 접근입니다</p>;
 
   const { data, isLoading, isError } = usePlaceInfo({
@@ -56,7 +58,7 @@ const DetailPage = () => {
     title: data.isConfirmed ? "여기서 만나요!" : "여기 어때요?",
     description: data.name,
     imageUrl: ImageUrl,
-    links: [{ label: "모임 장소 보기", url: `https://www.moisam.kr/detail/${eventId}/${placeId}` }],
+    links: [{ label: "모임 장소 보기", url: `https://www.moisam.kr/detail/${eventId}/${placeId}?subwayId=${subwayId}&source=kakao` }],
   };
 
   const handleClick = () => {
