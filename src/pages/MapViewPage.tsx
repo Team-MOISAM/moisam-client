@@ -19,6 +19,7 @@ import { MeetPointCard, PolicyBottomSheet } from "@/shared/ui";
 import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
 import { gtagEvent } from "@/shared/utils";
+import { useKakaoInflow } from "@/shared/hooks";
 
 const MapViewPage = () => {
   const { data, isLoading, isError, error } = useEventRoutes();
@@ -36,7 +37,8 @@ const MapViewPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // TODO: 카카오톡 유입 로깅 - source 파라미터 추출 후 로깅 API 호출
+  // 카카오톡 유입 로깅
+  useKakaoInflow({ eventId: id });
 
   const onClose = () => {
     setIsPolicyOpen(false);

@@ -5,3 +5,4 @@ export * from "./useDebounce";
 export * from "./useIsMobile";
 export * from "./useResponsiveTranslate";
 export * from "./useScrollAnimation";
+export * from "./useKakaoInflow";

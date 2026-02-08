@@ -10,6 +10,7 @@ import Toast from "@/shared/ui/Toast";
 import { Helmet } from "react-helmet-async";
 import { gtagEvent } from "@/shared/utils";
 import { useEventStore } from "@/shared/stores";
+import { useKakaoInflow } from "@/shared/hooks";
 
 const DetailPage = () => {
   const navigate = useNavigate();
@@ -24,7 +25,8 @@ const DetailPage = () => {
   const [searchParams] = useSearchParams();
   const subwayId = searchParams.get("subwayId");
 
-  // TODO: 카카오톡 유입 로깅 - source 파라미터 추출 후 로깅 API 호출
+  // 카카오톡 유입 로깅
+  useKakaoInflow({ eventId });
 
   if (!placeId || !eventId) return <p>잘못된 접근입니다</p>;
 
