@@ -6,6 +6,7 @@ import { useEventStore, useUserStore } from "@/shared/stores";
 import { useSearchParams } from "react-router-dom";
 import { formatName } from "@/shared/utils";
 import { EventNameStep } from "./EventNameStep";
+import { useKakaoInflow } from "@/shared/hooks";
 
 export const FindContainer = () => {
   const nickname = useUserStore(state => state.nickname);
@@ -15,8 +16,10 @@ export const FindContainer = () => {
   const startStepParam = searchParams.get("startStep");
   const isEditParam = searchParams.get("isEdit");
   const isEdit = isEditParam === "true";
+  const eventIdParam = searchParams.get("eventId");
 
-  // TODO: 카카오톡 유입 로깅 - source 파라미터 추출 후 로깅 API 호출
+  // 카카오톡 유입 로깅
+  useKakaoInflow({ eventId: eventIdParam || undefined });
 
   //수정 시
   const detailEventData = useEventStore(state => state.detailEventData);
