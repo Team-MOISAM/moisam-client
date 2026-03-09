@@ -243,8 +243,9 @@ export const LocationStep = ({
                 setCurrentStep(1);
               }
             }}
+            title="출발지 입력"
           />
-          <p className="text-gray-90 text-xxl font-bold">
+          <p className="text-gray-90 text-xxl font-bold leading-normal">
             <span className="text-sub-sub">{name}</span>님의
             <br />
             출발지를 알려주세요

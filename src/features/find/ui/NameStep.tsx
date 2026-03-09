@@ -71,11 +71,12 @@ export const NameStep = ({ setCurrentStep, setName, name }: NameStepProps) => {
                 setCurrentStep(0);
               }
             }}
+            title="이름 입력"
           />
-          <p className="text-gray-90 text-xxl font-bold">
-            새로운 출발지 추가를 위해
+          <p className="text-gray-90 text-xxl font-bold leading-normal">
+            모임에서 사용할
             <br />
-            이름을 알려주세요
+            <span className="text-sub-sub">이름</span>을 알려주세요
           </p>
           <InputField
             value={value}
