@@ -6,8 +6,11 @@ interface KakaoLoginProps {
 import { createGtagHandler } from "./gtag";
 
 export const kakaoLogin = ({ to, eventId }: KakaoLoginProps) => {
+  const isDev = Boolean(import.meta.env?.DEV);
   const baseUrl = import.meta.env.VITE_BASE_URL;
-  const kakaoAuthUrl = `${baseUrl}/oauth2/authorization/kakao?to=${to}&eventId=${eventId}`;
+  const kakaoAuthUrl = isDev
+    ? `${baseUrl}/oauth2/authorization/kakao?to=${to}&eventId=${eventId}&env=local`
+    : `${baseUrl}/oauth2/authorization/kakao?to=${to}&eventId=${eventId}`;
 
   // gtag: 로그인 진입 이벤트 (기본 파라미터는 createGtagHandler에서 자동 병합)
   try {
@@ -22,6 +25,6 @@ export const kakaoLogin = ({ to, eventId }: KakaoLoginProps) => {
 
   // 이벤트 전송 여유 후 리다이렉트
   setTimeout(() => {
-  window.location.href = kakaoAuthUrl;
+    window.location.href = kakaoAuthUrl;
   }, 150);
 };
