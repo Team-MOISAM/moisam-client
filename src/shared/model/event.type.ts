@@ -71,6 +71,7 @@ export interface GetEventRouteResponse {
   eventTime: string;
   eventMaker: string;
   placeName: string;
+  placeImage: string;
   peopleCount: number;
   meetingPointRouteGroups: MeetingPointRouteGroup[];
 }
