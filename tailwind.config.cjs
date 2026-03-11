@@ -178,6 +178,7 @@ module.exports = {
         list: "0px 0px 16px 0px rgba(0, 0, 0, 0.05)",
         back: "0px 0px 32px 0px rgba(28, 28, 34, 0.20)",
         box: "0 0 12px 0 rgba(28, 28, 34, 0.14)",
+        meetPointCard: "0 0 14px 0 rgba(28, 28, 34, 0.18)",
       },
       borderRadius: {
         lg: "var(--radius)",

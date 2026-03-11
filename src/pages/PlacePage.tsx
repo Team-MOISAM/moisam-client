@@ -61,13 +61,12 @@ const PlacePage = () => {
           <PlainHeader title="장소 추천" url={`/mapview/${id}`} />
         </div>
         <div className="flex-none mt-3 px-5 flex justify-center">
-
           <MeetPointCard
             placeName={isConfirmed ? confirmedPlace.name : undefined}
+            placeImage={isConfirmed ? confirmedPlace.image : undefined}
             isPlace={isConfirmed}
             onClick={isConfirmed ? () => handleNavigate(confirmedPlace.id) : undefined}
           />
-
         </div>
         {/* 지하철역 선택 칩들 */}
         <div className="flex-none mt-3 px-5 flex gap-2 overflow-x-auto scrollbar-hidden">
