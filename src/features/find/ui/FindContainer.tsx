@@ -25,7 +25,8 @@ export const FindContainer = () => {
   const [name, setName] = useState(() => {
     if (isEdit && detailEventData) return detailEventData.nickname;
     // 로그인된 사용자: startStep=0(모임 생성)이거나 startStep=1(멤버 추가)일 때 자동 이름 설정
-    if (isLoggedIn && (startStepParam === "0" || startStepParam === "1") && nickname) {
+    if (isLoggedIn && startStepParam === "0" && nickname) {
+      // NOTE(taehyeon) 로그인 된 사용자 '멤버 추가' 스탭에 자동 이름 설정 기능 제거
       return formatName(nickname);
     }
     return "";
@@ -54,7 +55,7 @@ export const FindContainer = () => {
         isTransit: true,
       };
     }
-    
+
     return {
       eventName: "",
       eventDate: "",
