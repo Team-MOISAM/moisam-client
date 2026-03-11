@@ -1,39 +1,43 @@
 import js from '@eslint/js'
+import tseslintPlugin from '@typescript-eslint/eslint-plugin'
+import tsParser from '@typescript-eslint/parser'
+import eslintConfigPrettier from 'eslint-config-prettier'
 import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
-import tseslint from 'typescript-eslint'
 
-export default tseslint.config(
+export default [
   { ignores: ['dist'] },
+  js.configs.recommended,
+  eslintConfigPrettier,
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended, 'prettier'],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
+      parser: tsParser,
       ecmaVersion: 2020,
+      sourceType: 'module',
       globals: globals.browser,
     },
     plugins: {
+      '@typescript-eslint': tseslintPlugin,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
     },
     rules: {
+      ...tseslintPlugin.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
       ],
-      semi: ['error', 'always'], // 세미콜론 추가
-      quotes: ['error', 'double'], // 더블 따옴표 사용
-      'no-unused-vars': 'warn', // 사용되지 않는 변수 경고
-      'react/react-in-jsx-scope': 'off', // React JSX scope 관련 경고 끄기
+      'react-hooks/rules-of-hooks': 'warn',
+      'no-undef': 'off',
+      'no-unused-vars': 'off',
+      'no-extra-boolean-cast': 'warn',
       '@typescript-eslint/no-explicit-any': 'off', // `any` 타입 사용 허용
-      'react/prop-types': 'off', // prop-types 사용하지 않기
       '@typescript-eslint/no-unused-vars': 'warn', // 사용되지 않는 변수 경고
-      'react/no-unused-state': 'error', // 사용되지 않는 state는 에러
       'array-callback-return': 'off', // array-callback-return 규칙 끄기
-      'react/self-closing-comp': 'warn', // self-closing tag에 대한 경고
       '@typescript-eslint/ban-ts-comment': 'off', // ts-comment 관련 규칙 끄기
     },
   },
-)
+]
