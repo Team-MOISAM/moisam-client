@@ -11,7 +11,7 @@ interface PlaceButtonProps {
   isChanged: boolean;
   isConfirmed: boolean;
   subwayId?: string | null;
-  onComplete?: (type?: 'set' | 'cancel') => void;
+  onComplete?: (type?: "set" | "cancel") => void;
   // GA4 이벤트를 위한 추가 props
   reviews?: Array<{ content: string }>;
   averageRating?: number | null;
@@ -42,7 +42,7 @@ export const PlaceButton = ({
   reviews = [],
   averageRating,
   placeScore,
-  previousCafe
+  previousCafe,
 }: PlaceButtonProps) => {
   const { mutate, isPending } = useSetPlace();
   const { mutate: cancelPlace, isPending: isCancelPending } = useCancelPlace();
@@ -63,14 +63,14 @@ export const PlaceButton = ({
   const handleClick = () => {
     // 리뷰 텍스트 수집 (모이삼 자체 리뷰만)
     const reviewTexts = reviews.map(review => review.content).join(" | ");
-    
+
     // 장소 변경인지 처음 선택인지 확인
     const isPlaceChange = isConfirmed && isChanged && previousCafe;
-    
+
     if (isPlaceChange) {
       // 변경 이전 카페 리뷰 텍스트
       const previousReviewTexts = previousCafe.reviews.map(review => review.content).join(" | ");
-      
+
       // 장소 변경 이벤트
       gtagEvent("change_place", {
         // 변경 이전 카페 정보
@@ -80,7 +80,7 @@ export const PlaceButton = ({
         prev_cafe_rating: previousCafe.averageRating?.toString() ?? "none",
         prev_cafe_outlet_number: previousCafe.placeScore?.socket?.toString() ?? "none",
         prev_cafe_seat_number: previousCafe.placeScore?.seat?.toString() ?? "none",
-        
+
         // 변경할 카페 정보
         changed_cafe_name: name,
         changed_review_count: reviews.length.toString(),
@@ -107,7 +107,7 @@ export const PlaceButton = ({
         onSuccess: () => {
           setIsConfirmedOpen(false);
           setIsChangedOpen(false);
-          onComplete?.('set');
+          onComplete?.("set");
         },
       }
     );
@@ -117,7 +117,8 @@ export const PlaceButton = ({
     cancelPlace(eventId, {
       onSuccess: () => {
         setIsCancelOpen(false);
-        onComplete?.('cancel');
+        onComplete?.("cancel");
+        localStorage.removeItem("confirmed_place_image");
       },
     });
   };
@@ -127,8 +128,8 @@ export const PlaceButton = ({
       <div
         className="px-5 pt-4 pb-5 w-full fixed bottom-0 max-w-[600px] z-[100]"
         style={{ background: "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, #FFF 20%)" }}>
-        <Button disabled={isPending || isCancelPending} onClick={handleModal}>
-          {isConfirmed ? (isChanged ? "모임장소 바꾸기" : "확정 취소하기") : "여기에서 만나기"}
+        <Button disabled={isPending || isCancelPending} onClick={handleModal} isBlue={!isConfirmed}>
+          {isConfirmed ? (isChanged ? "모임장소 바꾸기" : "확정 취소하기") : "장소 확정하기"}
         </Button>
       </div>
       {isChangedOpen && (

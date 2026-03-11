@@ -39,3 +39,26 @@ export const deleteEvent = async (eventId: string) => {
 
   throw new Error(response.data.error?.message || "모임 삭제 실패");
 };
+
+export const getMeetingPotinPlaceImage = async (subwayId: number) => {
+  const response = await api.get<{
+    result: string;
+    data: {
+      image: string;
+    } | null;
+    error?: {
+      code: string;
+      message: string;
+    };
+  }>("/places/image", {
+    params: {
+      subwayId,
+    },
+  });
+
+  if (response.data.result === "SUCCESS") {
+    return response.data.data;
+  }
+
+  throw new Error(response.data.error?.message || "모임 장소 이미지 조회 실패");
+};

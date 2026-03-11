@@ -50,18 +50,18 @@ const MapViewPage = () => {
       // 현재 선택된 중간지점 정보 가져오기
       const currentMeetingPoint = data.meetingPointRouteGroups?.[0];
       const participantCount = currentMeetingPoint?.routeResponse?.length ?? 0;
-      
+
       gtagEvent("click_meet_here", {
         button_status: data.placeName ? "place_selected" : "no_place_selected",
         meeting_place: data.placeName ?? "none",
         midpoint_station: currentMeetingPoint?.meetingPoint?.endStationName ?? "unknown",
         member_count: participantCount,
         meeting_name: data.eventName ?? "unknown",
-        meeting_date: data.eventDate ?? "unknown", 
+        meeting_date: data.eventDate ?? "unknown",
         meeting_time: data.eventTime ?? "unknown",
       });
     }
-    
+
     navigate(`/place/${id}`);
   };
 
@@ -119,7 +119,7 @@ const MapViewPage = () => {
             <KakaoMapView />
             {isPolicyOpen ? <PolicyBottomSheet onClose={onClose} /> : <SnapMapBottomSheet />}
             <div className="absolute top-3 left-5 right-5 z-[1000]">
-              <MeetPointCard placeName={data?.placeName} onClick={goToPlace} />
+              <MeetPointCard placeName={data?.placeName} placeImage={data?.placeImage} onClick={goToPlace} />
             </div>
           </div>
         )}

@@ -18,7 +18,7 @@ const DetailPage = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [toastKey, setToastKey] = useState<number | null>(null);
-  
+
   const eventData = useEventStore(state => state.eventData);
 
   const { eventId, placeId } = useParams();
@@ -52,15 +52,18 @@ const DetailPage = () => {
   if (isError) return <p>유저 정보를 가져오는 데 실패했습니다.</p>;
   if (!data) return <p>데이터 없음</p>;
 
-  const ImageUrl = data.isConfirmed
-    ? "https://www.moisam.kr/image/KT4.webp"
-    : "https://www.moisam.kr/image/KT3.webp";
+  const ImageUrl = data.isConfirmed ? "https://www.moisam.kr/image/KT4.webp" : "https://www.moisam.kr/image/KT3.webp";
 
   const shareContent = {
     title: data.isConfirmed ? "여기서 만나요!" : "여기 어때요?",
     description: data.name,
     imageUrl: ImageUrl,
-    links: [{ label: "모임 장소 보기", url: `https://www.moisam.kr/detail/${eventId}/${placeId}?subwayId=${subwayId}&source=kakao` }],
+    links: [
+      {
+        label: "모임 장소 보기",
+        url: `https://www.moisam.kr/detail/${eventId}/${placeId}?subwayId=${subwayId}&source=kakao`,
+      },
+    ],
   };
 
   const handleClick = () => {
@@ -83,8 +86,8 @@ const DetailPage = () => {
     setIsOpenShareModal(true);
   };
 
-  const handlePlaceComplete = (type?: 'set' | 'cancel') => {
-    if (type !== 'cancel') {
+  const handlePlaceComplete = (type?: "set" | "cancel") => {
+    if (type !== "cancel") {
       setIsOpenShareModal(true);
     }
   };
