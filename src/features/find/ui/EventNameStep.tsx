@@ -142,7 +142,7 @@ export const EventNameStep = ({
 
     setEventName(value);
     setEventDate(formatDateWithDash(selectedDate));
-    
+
     // 로그인 상태에 따라 다음 스텝 결정
     if (isLoggedIn) {
       // 로그인된 사용자는 NameStep을 건너뛰고 LocationStep(2)로 이동
@@ -157,8 +157,8 @@ export const EventNameStep = ({
     <div className="flex flex-col h-full">
       <div className="flex-1 px-4">
         <div className="flex flex-col gap-6">
-          <PlainHeader onBack={() => navigate(-1)} isEdit={isEdit} />
-          <p className="text-gray-90 text-xxl font-bold">
+          <PlainHeader onBack={() => navigate(-1)} isEdit={isEdit} title="모임 생성" />
+          <p className="text-gray-90 text-xxl font-bold leading-normal">
             <span className="text-sub-sub">어떤 모임인가요?</span>
             <br />
             모임명을 알려주세요
