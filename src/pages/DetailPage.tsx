@@ -65,7 +65,7 @@ const DetailPage = () => {
     links: [
       {
         label: "모임 장소 보기",
-        url: `https://www.moisam.kr/detail/${eventId}/${placeId}?subwayId=${subwayId}&source=kakao`,
+        url: `${import.meta.env.VITE_REDIRECT_URL}detail/${eventId}/${placeId}?subwayId=${subwayId}&source=kakao`,
       },
     ],
   };

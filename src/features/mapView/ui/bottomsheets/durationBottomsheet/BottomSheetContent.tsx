@@ -61,8 +61,8 @@ export const FixedButtons = () => {
     title = `${eventData?.eventMaker}님이 모임을 생성했어요`;
   }
 
-  let myStaryPointTargetUrl = `${import.meta.env.VITE_BASE_URL}find?eventId=${id}&startStep=1&source=kakao`;
-  let middlePointTargetUrl = `${import.meta.env.VITE_BASE_URL}mapView/${id}?source=kakao`;
+  let myStaryPointTargetUrl = `${import.meta.env.VITE_REDIRECT_URL}find?eventId=${id}&startStep=1&source=kakao`;
+  let middlePointTargetUrl = `${import.meta.env.VITE_REDIRECT_URL}mapView/${id}?source=kakao`;
 
   const shareContent = {
     title: title,
