@@ -61,13 +61,16 @@ export const FixedButtons = () => {
     title = `${eventData?.eventMaker}님이 모임을 생성했어요`;
   }
 
+  let myStaryPointTargetUrl = `${import.meta.env.VITE_BASE_URL}find?eventId=${id}&startStep=1&source=kakao`;
+  let middlePointTargetUrl = `${import.meta.env.VITE_BASE_URL}mapView/${id}?source=kakao`;
+
   const shareContent = {
     title: title,
     description: "",
     imageUrl: "https://www.moisam.kr/image/KT2.webp",
     links: [
-      { label: "내 출발지 추가", url: `https://www.moisam.kr/find?eventId=${id}&startStep=1&source=kakao` },
-      { label: "중간지점 보기", url: `https://www.moisam.kr/mapView/${id}?source=kakao` },
+      { label: "내 출발지 추가", url: myStaryPointTargetUrl },
+      { label: "중간지점 보기", url: middlePointTargetUrl },
     ],
   };
   const navigate = useNavigate();
@@ -75,10 +78,10 @@ export const FixedButtons = () => {
   // 공통 모임 데이터 생성 함수
   const getMeetingEventData = () => {
     if (!eventData || !meetingPointData) return null;
-    
+
     const participantCount = meetingPointData.routeResponse?.length ?? 0;
     const memberNames = meetingPointData.routeResponse?.map(user => user.nickname).join(", ") ?? "";
-    
+
     return {
       meeting_name: eventData.eventName,
       meeting_members: memberNames,
@@ -94,7 +97,7 @@ export const FixedButtons = () => {
   const getShareEventData = () => {
     const meetingData = getMeetingEventData();
     if (!meetingData) return null;
-    
+
     return {
       meeting_name: meetingData.meeting_name,
       meeting_date: meetingData.meeting_date,
@@ -154,7 +157,7 @@ export const FixedButtons = () => {
         member_id: nickname ?? "unknown",
       });
     }
-    
+
     setToastKey(Date.now());
   };
 

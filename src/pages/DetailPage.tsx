@@ -36,6 +36,10 @@ const DetailPage = () => {
     subwayId: subwayId || undefined,
   });
 
+  // TODO: 카카오톡 유입 로깅 - source 파라미터 추출 후 로깅 API 호출
+
+  if (!placeId || !eventId) return <p>잘못된 접근입니다</p>;
+
   const onScroll = () => {
     const el = scrollRef.current;
     if (!el) return;
@@ -162,8 +166,8 @@ const DetailPage = () => {
           <ShareModal
             onClose={() => setIsOpenShareModal(false)}
             onCopyComplete={() => setToastKey(Date.now())}
-            title={data.isChanged ? "장소 공유하기" : "모임장소가 정해졌어요!"}
-            description={data.isChanged ? undefined : "멤버들에게 알려주세요"}
+            title={!data.isConfirmed ? "장소 공유하기" : "모임장소가 정해졌어요!"}
+            description={!data.isConfirmed ? undefined : "멤버들에게 알려주세요"}
             shareContent={shareContent}
           />
         )}
