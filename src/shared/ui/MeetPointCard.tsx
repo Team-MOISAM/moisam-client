@@ -1,4 +1,4 @@
-// import Pin from "@/assets/icon/pin.svg";
+import Pin from "@/assets/icon/pin.svg";
 import Arrow from "@/assets/icon/rightArrowGray.svg";
 import PinBlue from "@/assets/icon/pinBlue.svg";
 import MP_DEFAULT from "@/assets/image/mp_default.webp";
@@ -41,12 +41,19 @@ export const MeetPointCard = ({ placeName, placeImage, onClick, isPlace = true }
 
   return (
     <div
-      className={`flex gap-3 p-3 h-[66px] rounded-2xl bg-white shadow-meetPointCard w-full items-center ${onClick ? "cursor-pointer" : ""}`}
+      className={`flex gap-3 p-3 h-[66px] rounded-2xl bg-white ${isMapView ? "shadow-meetPointCard" : "border border-gray-10"} w-full items-center ${onClick ? "cursor-pointer" : ""}`}
       onClick={onClick}>
       <div
         className={`w-10 h-10 flex flex-shrink-0 justify-center items-center rounded-xl ${isSelect ? "bg-sub-10" : "bg-gray-5"}`}>
-        {/* <img src={isSelect ? PinBlue : Pin} alt="pin" className="w-6 h-6" /> */}
-        <img src={imageSource} alt="pin" className="w-full h-full object-cover rounded-xl" />
+        {isMapView ? (
+          <img src={imageSource} alt="pin" className="w-full h-full object-cover rounded-xl" />
+        ) : (
+          <img
+            src={isSelect ? placeImage : Pin}
+            alt="pin"
+            className={isSelect ? "w-full h-full object-cover rounded-xl" : "w-6 h-6"}
+          />
+        )}
       </div>
       <div className="flex justify-between items-center w-full">
         <div>
