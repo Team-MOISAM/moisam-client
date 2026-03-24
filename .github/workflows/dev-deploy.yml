@@ -22,22 +22,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Deploy to dev branch
-        run: |
-          git checkout -b dev
-          git reset --hard ${{ github.ref_name }}
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git commit --allow-empty -m "chore: Deploy from ${{ github.ref_name }} by @${{ github.actor }}"
-          git push --atomic origin dev --force
+          ref: dev
 
       - name: Notify Discord - Deployment Started
         run: |
           curl -X POST ${{ secrets.DISCORD_WEBHOOK }} \
             -H "Content-Type: application/json" \
             -d '{
-              "content": "🚀 **배포 시작**\nBranch: ${{ github.ref_name }}\nTarget Environment: ${{ github.event.inputs.target_environment }}\nCommit: ${{ github.sha }}\nTriggered by: ${{ github.actor }}"
+              "content": "🚀 **배포 시작**\nBranch: dev\nTarget Environment: ${{ github.event.inputs.target_environment }}\nCommit: ${{ github.sha }}\nTriggered by: ${{ github.actor }}"
             }'
 
       - name: Install pnpm
@@ -71,7 +63,7 @@ jobs:
           curl -X POST ${{ secrets.DISCORD_WEBHOOK }} \
             -H "Content-Type: application/json" \
             -d '{
-              "content": "✅ **배포 완료**\nBranch: ${{ github.ref_name }}\nTarget Environment: ${{ github.event.inputs.target_environment }}\nCommit: ${{ github.sha }}\n📍 https://staging.moisam.kr"
+              "content": "✅ **배포 완료**\nBranch: dev\nTarget Environment: ${{ github.event.inputs.target_environment }}\nCommit: ${{ github.sha }}\n📍 https://staging.moisam.kr"
             }'
 
       - name: Notify Discord - Deployment Failed
@@ -80,5 +72,5 @@ jobs:
           curl -X POST ${{ secrets.DISCORD_WEBHOOK }} \
             -H "Content-Type: application/json" \
             -d '{
-              "content": "❌ **배포 실패**\nBranch: ${{ github.ref_name }}\nTarget Environment: ${{ github.event.inputs.target_environment }}\nCommit: ${{ github.sha }}"
+              "content": "❌ **배포 실패**\nBranch: dev\nTarget Environment: ${{ github.event.inputs.target_environment }}\nCommit: ${{ github.sha }}"
             }'
