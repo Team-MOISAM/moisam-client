@@ -18,7 +18,7 @@ export const MeetPointCard = ({ placeName, placeImage, onClick, isPlace = true }
   const [imageSource, setImageSource] = useState<string | undefined>(undefined);
 
   const location = useLocation();
-  const isMapView = location.pathname.includes("mapview");
+  const isMapView = location.pathname.includes("mapView");
   const isSelect = !!placeName;
 
   const meetingPointData = useEventStore(state => state.meetingPointData);
@@ -26,6 +26,10 @@ export const MeetPointCard = ({ placeName, placeImage, onClick, isPlace = true }
   const subwayId = meetingPointData?.subwayId;
 
   const { data } = useGetMPImage(subwayId);
+
+  useEffect(() => {
+    console.log(isMapView);
+  }, [isMapView]);
 
   useEffect(() => {
     if (data === undefined) return;
@@ -37,7 +41,7 @@ export const MeetPointCard = ({ placeName, placeImage, onClick, isPlace = true }
       // 장소를 확정 전
       setImageSource(data ? data.image : MP_DEFAULT);
     }
-  }, [data, isSelect]);
+  }, [data, isSelect, placeImage]);
 
   return (
     <div
