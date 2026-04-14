@@ -10,15 +10,19 @@ import {
 import BackButton from "@/features/mapView/ui/common/BackButton";
 import { DefaultMap } from "@/features/mapView/ui/map/DefaultMap";
 import { useEventStore, useUserStore } from "@/shared/stores";
-import LoadingSpinner from "@/shared/ui/LoadingSpinner";
 import { MapHeader } from "@/widgets/headers";
 import { AxiosError } from "axios";
 import { setCookie } from "@/shared/utils";
 import { useEffect, useState } from "react";
 import { MeetPointCard, PolicyBottomSheet } from "@/shared/ui";
 import { Helmet } from "react-helmet-async";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { gtagEvent } from "@/shared/utils";
+import { LoadingModal } from "@/features/mapView/ui/map/LoadingModal";
+
+interface MapViewLocationState {
+  showMeetingPointLoadingModal?: boolean;
+}
 
 const MapViewPage = () => {
   const { data, isLoading, isError, error } = useEventRoutes();
@@ -34,7 +38,30 @@ const MapViewPage = () => {
   const setPersonalInfoAgreement = useUserStore(state => state.setPersonalInfoAgreement);
   const [isPolicyOpen, setIsPolicyOpen] = useState(false);
   const { id } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const shouldTriggerMeetingPointLoadingModal = Boolean(
+    (location.state as MapViewLocationState | null)?.showMeetingPointLoadingModal
+  );
+
+  const [isFindMeetingPointLoading, setIsFindMeetingPointLoading] = useState(shouldTriggerMeetingPointLoadingModal);
+  const [isMeetingPointAnimationComplete, setIsMeetingPointAnimationComplete] = useState(false);
+
+  useEffect(() => {
+    if (!shouldTriggerMeetingPointLoadingModal) {
+      return;
+    }
+
+    setIsFindMeetingPointLoading(true);
+    navigate(location.pathname, { replace: true, state: null });
+  }, [location.pathname, navigate, shouldTriggerMeetingPointLoadingModal]);
+
+  useEffect(() => {
+    if (isLoading && isFindMeetingPointLoading) {
+      setIsMeetingPointAnimationComplete(false);
+    }
+  }, [isLoading, isFindMeetingPointLoading]);
 
   // TODO: 카카오톡 유입 로깅 - source 파라미터 추출 후 로깅 API 호출
 
@@ -46,7 +73,7 @@ const MapViewPage = () => {
   const goToPlace = () => {
     if (data) {
       // 현재 선택된 중간지점 정보 가져오기
-      const currentMeetingPoint = data.meetingPointRouteGroups?.[0];
+      const currentMeetingPoint = data.coordinate;
       const participantCount = currentMeetingPoint?.routeResponse?.length ?? 0;
 
       gtagEvent("click_meet_here", {
@@ -77,7 +104,7 @@ const MapViewPage = () => {
     if (data) {
       setEventData(data);
       // 현재 사용자의 routeResponse 찾기 (첫 번째 그룹에서 찾음)
-      const firstGroup = data.meetingPointRouteGroups?.[0];
+      const firstGroup = data.coordinate;
       setMeetingPointData(firstGroup);
       if (firstGroup?.routeResponse) {
         const myRoute = firstGroup.routeResponse.find(route => route.isMe);
@@ -89,6 +116,8 @@ const MapViewPage = () => {
     }
   }, [data, setEventData, setMeetingPointData]);
 
+  const shouldShowLoadingModal = isFindMeetingPointLoading && (isLoading || !isMeetingPointAnimationComplete);
+
   return (
     <>
       <Helmet>
@@ -96,11 +125,14 @@ const MapViewPage = () => {
       </Helmet>
       <div className="relative w-full h-screen overflow-hidden">
         {!isDetail && <MapHeader />}
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center h-full gap-3">
-            <LoadingSpinner />
-            <p>실시간 교통상황을 가져오고 있습니다...</p>
-          </div>
+        {shouldShowLoadingModal ? (
+          <LoadingModal
+            isFindMeetingPointLoading={isFindMeetingPointLoading}
+            onMeetingPointAnimationComplete={() => {
+              setIsMeetingPointAnimationComplete(true);
+              setIsFindMeetingPointLoading(false);
+            }}
+          />
         ) : isError ? (
           <>
             {<DefaultMap />}

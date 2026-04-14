@@ -73,13 +73,14 @@ export interface GetEventRouteResponse {
   placeName: string;
   placeImage: string;
   peopleCount: number;
-  meetingPointRouteGroups: MeetingPointRouteGroup[];
+  coordinate: MeetingPointRouteGroup;
+  popularity: MeetingPointRouteGroup;
 }
 
 export interface MeetingPointRouteGroup {
-  subwayId: number;
-  averageTime: number;
-  meetingPoint: MeetingPoint;
-  routeResponse: RouteResponse[];
   parkingLot: ParkingLot;
+  meetingPoint: MeetingPoint;
+  averageTime: number;
+  routeResponse: RouteResponse[];
+  subwayId: number;
 }
