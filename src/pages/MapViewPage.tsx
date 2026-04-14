@@ -45,7 +45,8 @@ const MapViewPage = () => {
     (location.state as MapViewLocationState | null)?.showMeetingPointLoadingModal
   );
 
-  const [isFindMeetingPointLoading, setIsFindMeetingPointLoading] = useState(shouldTriggerMeetingPointLoadingModal);
+  const [isLoadingModalOpen, setIsLoadingModalOpen] = useState(shouldTriggerMeetingPointLoadingModal);
+  const [isFindMeetingPointLoading, setIsFindMeetingPointLoading] = useState(false);
   const [isMeetingPointAnimationComplete, setIsMeetingPointAnimationComplete] = useState(false);
 
   useEffect(() => {
@@ -53,15 +54,27 @@ const MapViewPage = () => {
       return;
     }
 
-    setIsFindMeetingPointLoading(true);
+    setIsLoadingModalOpen(true);
+    setIsFindMeetingPointLoading(false);
+    setIsMeetingPointAnimationComplete(false);
     navigate(location.pathname, { replace: true, state: null });
   }, [location.pathname, navigate, shouldTriggerMeetingPointLoadingModal]);
 
   useEffect(() => {
-    if (isLoading && isFindMeetingPointLoading) {
-      setIsMeetingPointAnimationComplete(false);
+    if (!isLoadingModalOpen || isLoading) {
+      return;
     }
-  }, [isLoading, isFindMeetingPointLoading]);
+
+    // 최초 1인 출발지 추가 상황: 출발지 추가 로딩만 보여주고 종료
+    if (isInsufficientStartPoints) {
+      setIsFindMeetingPointLoading(false);
+      setIsLoadingModalOpen(false);
+      return;
+    }
+
+    // 출발지가 2인 이상이면 중간지점 탐색 로딩 애니메이션으로 전환
+    setIsFindMeetingPointLoading(true);
+  }, [isInsufficientStartPoints, isLoading, isLoadingModalOpen]);
 
   // TODO: 카카오톡 유입 로깅 - source 파라미터 추출 후 로깅 API 호출
 
@@ -116,7 +129,7 @@ const MapViewPage = () => {
     }
   }, [data, setEventData, setMeetingPointData]);
 
-  const shouldShowLoadingModal = isFindMeetingPointLoading && (isLoading || !isMeetingPointAnimationComplete);
+  const shouldShowLoadingModal = isLoadingModalOpen && (isLoading || (isFindMeetingPointLoading && !isMeetingPointAnimationComplete));
 
   return (
     <>
@@ -130,7 +143,7 @@ const MapViewPage = () => {
             isFindMeetingPointLoading={isFindMeetingPointLoading}
             onMeetingPointAnimationComplete={() => {
               setIsMeetingPointAnimationComplete(true);
-              setIsFindMeetingPointLoading(false);
+              setIsLoadingModalOpen(false);
             }}
           />
         ) : isError ? (
