@@ -28,10 +28,6 @@ export const MeetPointCard = ({ placeName, placeImage, onClick, isPlace = true }
   const { data } = useGetMPImage(subwayId);
 
   useEffect(() => {
-    console.log(isMapView);
-  }, [isMapView]);
-
-  useEffect(() => {
     if (data === undefined) return;
 
     if (isSelect) {

@@ -76,16 +76,14 @@ export const GroupInfo = ({ id }: GroupInfoProps) => {
         </button>
       </div>
       <div className="pb-3 flex gap-[6px]">
-        {eventData.meetingPointRouteGroups.map(item => (
-          <PointChip
-            key={item.subwayId}
-            text={item.meetingPoint.endStationName}
-            isSelect={item === meetingPointData}
-            onClick={() => {
-              setMeetingPointData(item);
-            }}
-          />
-        ))}
+        <PointChip
+          key={eventData.coordinate.subwayId}
+          text={eventData.coordinate.meetingPoint.endStationName}
+          isSelect={eventData.coordinate.subwayId === meetingPointData?.subwayId}
+          onClick={() => {
+            setMeetingPointData(eventData.coordinate);
+          }}
+        />
       </div>
       {openDeleteModal && (
         <DeleteModal
