@@ -55,7 +55,7 @@ const MapViewPage = () => {
     }
 
     setIsLoadingModalOpen(true);
-    setIsFindMeetingPointLoading(false);
+    setIsFindMeetingPointLoading(true);
     setIsMeetingPointAnimationComplete(false);
     navigate(location.pathname, { replace: true, state: null });
   }, [location.pathname, navigate, shouldTriggerMeetingPointLoadingModal]);
