@@ -131,8 +131,13 @@ export const LoadingModal = ({ isFindMeetingPointLoading, onMeetingPointAnimatio
           </div>
           <div className="w-full mt-[30px]">
             {isFindMeetingPointLoading && (
-              <div className="flex items-center justify-center" style={{ width: "100%", height: 200 }}>
-                <Lottie animationData={LoadingAnimation} loop autoplay style={{ width: "100%", height: "100%" }} />
+              <div className="flex items-center justify-center overflow-hidden" style={{ width: "100%", height: 120 }}>
+                <Lottie
+                  animationData={LoadingAnimation}
+                  loop
+                  autoplay
+                  style={{ width: "100%", height: "100%", transform: "scale(1.8)" }}
+                />
               </div>
             )}
             {isFindMeetingPointLoading ? (

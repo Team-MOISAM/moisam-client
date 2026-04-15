@@ -129,7 +129,8 @@ const MapViewPage = () => {
     }
   }, [data, setEventData, setMeetingPointData]);
 
-  const shouldShowLoadingModal = isLoadingModalOpen && (isLoading || (isFindMeetingPointLoading && !isMeetingPointAnimationComplete));
+  const shouldShowLoadingModal =
+    isLoadingModalOpen && (isLoading || (isFindMeetingPointLoading && !isMeetingPointAnimationComplete));
 
   return (
     <>
