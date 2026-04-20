@@ -1,4 +1,5 @@
 import { useEventRoutes } from "@/features/mapView/hooks";
+import { useRecommendedPlaces } from "@/features/place/hooks";
 import {
   AddMemberBottomSheet,
   DetailKakaoMapView,
@@ -40,6 +41,10 @@ const MapViewPage = () => {
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+  const selectedSubwayId = data?.coordinate?.subwayId ?? 0;
+  const shouldFetchConfirmedPlace = Boolean(id && data?.placeName && selectedSubwayId);
+  const { data: placeListData } = useRecommendedPlaces(id ?? "", selectedSubwayId);
+  const confirmedPlace = shouldFetchConfirmedPlace ? placeListData?.data.confirmedPlaceResponse ?? null : null;
 
   const shouldTriggerMeetingPointLoadingModal = Boolean(
     (location.state as MapViewLocationState | null)?.showMeetingPointLoadingModal
@@ -83,6 +88,7 @@ const MapViewPage = () => {
     setPersonalInfoAgreement(true);
   };
 
+  // 장소 추천 리스트 페이지로 이동하는 핸들러
   const goToPlace = () => {
     if (data) {
       // 현재 선택된 중간지점 정보 가져오기
@@ -101,6 +107,15 @@ const MapViewPage = () => {
     }
 
     navigate(`/place/${id}`);
+  };
+
+  // 확정한 장소 상세페이지로 이동하는 핸들러
+  const goToPlaceDetail = () => {
+    if (!id || !confirmedPlace?.id) {
+      return;
+    }
+
+    navigate(`/detail/${id}/${confirmedPlace.id}?subwayId=${selectedSubwayId}`);
   };
 
   useEffect(() => {
@@ -160,10 +175,14 @@ const MapViewPage = () => {
           </div>
         ) : (
           <div className="relative">
-            <KakaoMapView />
+            <KakaoMapView gotoPlaceList={goToPlace} />
             {isPolicyOpen ? <PolicyBottomSheet onClose={onClose} /> : <SnapMapBottomSheet />}
             <div className="absolute top-3 left-5 right-5 z-[1000]">
-              <MeetPointCard placeName={data?.placeName} placeImage={data?.placeImage} onClick={goToPlace} />
+              <MeetPointCard
+                placeName={confirmedPlace?.name}
+                placeImage={confirmedPlace?.image}
+                onClick={confirmedPlace ? goToPlaceDetail : undefined}
+              />
             </div>
           </div>
         )}

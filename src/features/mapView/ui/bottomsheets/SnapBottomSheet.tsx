@@ -7,6 +7,7 @@ export const SnapMapBottomSheet = () => {
 
   return (
     <SnapBottomSheet minHeightVh={35}>
+      <SnapBottomSheet.Floating />
       <SnapBottomSheet.Header />
       <GroupInfo id={id ?? null} />
       <SnapBottomSheet.Content>

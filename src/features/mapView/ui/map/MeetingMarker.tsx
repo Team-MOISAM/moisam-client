@@ -9,13 +9,15 @@ interface MeetingMarkerProps {
     lng: number;
   };
   title: string;
+  onClick: () => void;
 }
 
-export function MeetingMarker({ map, position, title }: MeetingMarkerProps) {
+export function MeetingMarker({ map, position, title, onClick }: MeetingMarkerProps) {
   useEffect(() => {
     if (!map) return;
 
     const wrapper = document.createElement("div");
+    wrapper.addEventListener("click", onClick);
     wrapper.style.display = "flex";
     wrapper.style.flexDirection = "column";
     wrapper.style.alignItems = "center";
@@ -23,16 +25,38 @@ export function MeetingMarker({ map, position, title }: MeetingMarkerProps) {
 
     // 이름 레이블
     const label = document.createElement("div");
-    label.textContent = title;
+    label.style.display = "flex";
+    label.style.alignItems = "center";
+    label.style.gap = "4px";
     label.style.backgroundColor = "#007AFF";
     label.style.color = "white";
-    label.style.padding = "4px 8px";
+    label.style.padding = "6px 8px";
     label.style.borderRadius = "6px";
     label.style.fontSize = "16px";
     label.style.fontWeight = "600";
     label.style.lineHeight = "150%";
     label.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.1)";
     label.style.whiteSpace = "nowrap";
+
+    const labelText = document.createElement("span");
+    labelText.textContent = title;
+    label.appendChild(labelText);
+
+    const chevronIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    chevronIcon.setAttribute("width", "12");
+    chevronIcon.setAttribute("height", "12");
+    chevronIcon.setAttribute("viewBox", "0 0 12 12");
+    chevronIcon.setAttribute("fill", "none");
+
+    const chevronPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    chevronPath.setAttribute("d", "M4.5 2.5L8 6l-3.5 3.5");
+    chevronPath.setAttribute("stroke", "white");
+    chevronPath.setAttribute("stroke-width", "1.5");
+    chevronPath.setAttribute("stroke-linecap", "round");
+    chevronPath.setAttribute("stroke-linejoin", "round");
+
+    chevronIcon.appendChild(chevronPath);
+    label.appendChild(chevronIcon);
     wrapper.appendChild(label);
 
     // 폴리곤 이미지 (말풍선 뾰족한 부분)
@@ -70,7 +94,7 @@ export function MeetingMarker({ map, position, title }: MeetingMarkerProps) {
     return () => {
       overlay.setMap(null);
     };
-  }, [map, position, title]);
+  }, [map, position, title, onClick]);
 
   return null;
 }
