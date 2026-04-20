@@ -3,7 +3,7 @@ import { useEventStore } from "@/shared/stores";
 import { MeetingMarker } from "./MeetingMarker";
 import { MapMarker } from "./MapMarker";
 
-export function KakaoMapView() {
+export function KakaoMapView({ gotoPlaceList }: { gotoPlaceList: () => void }) {
   const mapRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
   const [center, setCenter] = useState<kakao.maps.LatLng | null>(null);
@@ -151,6 +151,7 @@ export function KakaoMapView() {
                 lng: meetingPointData!.meetingPoint.endLongitude,
               }}
               title={meetingPointData!.meetingPoint.endStationName}
+              onClick={gotoPlaceList}
             />
           )}
           {/* 사용자 마커 */}

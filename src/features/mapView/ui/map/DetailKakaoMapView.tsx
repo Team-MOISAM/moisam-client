@@ -143,6 +143,7 @@ export const DetailKakaoMapView = () => {
                 lng: meetingPointData.meetingPoint.endLongitude,
               }}
               title={meetingPointData.meetingPoint.endStationName}
+              onClick={() => {}}
             />
           )}
           {/* 사용자 마커 */}

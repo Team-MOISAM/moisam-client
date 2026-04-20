@@ -1,7 +1,6 @@
 import Pin from "@/assets/icon/pin.svg";
 import Arrow from "@/assets/icon/rightArrowGray.svg";
 import PinBlue from "@/assets/icon/pinBlue.svg";
-import MP_DEFAULT from "@/assets/image/mp_default.webp";
 import { useEventStore } from "../stores";
 import { useGetMPImage } from "@/features/mapView/hooks/useGetMPImage";
 import { useEffect, useState } from "react";
@@ -30,14 +29,16 @@ export const MeetPointCard = ({ placeName, placeImage, onClick, isPlace = true }
   useEffect(() => {
     if (data === undefined) return;
 
+    // 장소를 확정 후 MPcard 컴포넌트의 카페 이미지 설정
     if (isSelect) {
-      // 장소를 확정 후
       setImageSource(placeImage ? placeImage : PinBlue);
-    } else {
-      // 장소를 확정 전
-      setImageSource(data ? data.image : MP_DEFAULT);
     }
   }, [data, isSelect, placeImage]);
+
+  // 장소를 확정 전에는 카드를 렌더링하지 않음
+  if (!isSelect) {
+    return null;
+  }
 
   return (
     <div
