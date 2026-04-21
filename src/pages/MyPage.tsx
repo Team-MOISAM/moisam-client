@@ -22,7 +22,7 @@ const MyPage = () => {
       </Helmet>
       <div className="flex flex-col h-screen-dvh">
         <div className="flex flex-col px-5">
-          <PlainHeader title="내 정보" url="/history" />
+          <PlainHeader title="내 정보" />
           <div className="flex flex-col gap-2 mb-8">
             <Profile />
             <Logout />

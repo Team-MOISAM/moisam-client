@@ -5,6 +5,7 @@ import { useEventStore } from "../stores";
 import { useGetMPImage } from "@/features/mapView/hooks/useGetMPImage";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { formatEventDateTime } from "../hooks";
 
 interface MeetPointCardProps {
   placeName?: string | undefined;
@@ -18,8 +19,10 @@ export const MeetPointCard = ({ placeName, placeImage, onClick, isPlace = true }
 
   const location = useLocation();
   const isMapView = location.pathname.includes("mapView");
+  const isPlacePage = location.pathname.includes("place");
   const isSelect = !!placeName;
 
+  const eventData = useEventStore(state => state.eventData);
   const meetingPointData = useEventStore(state => state.meetingPointData);
 
   const subwayId = meetingPointData?.subwayId;
@@ -36,7 +39,7 @@ export const MeetPointCard = ({ placeName, placeImage, onClick, isPlace = true }
   }, [data, isSelect, placeImage]);
 
   // 장소를 확정 전에는 카드를 렌더링하지 않음
-  if (!isSelect) {
+  if (!isSelect && !isPlacePage) {
     return null;
   }
 
@@ -58,8 +61,10 @@ export const MeetPointCard = ({ placeName, placeImage, onClick, isPlace = true }
       </div>
       <div className="flex justify-between items-center w-full">
         <div>
-          <p className={`text-labelXs ${isSelect ? "text-sub-sub" : "text-gray-40"}`}>
-            {isSelect ? "여기에서 모여요" : "어디서 만나실 건가요?"}
+          <p className={`text-xs font-medium ${isSelect ? "text-sub-sub" : "text-gray-40"}`}>
+            {!isSelect
+              ? "어디서 만나실 건가요?"
+              : formatEventDateTime(eventData?.eventDate ?? "", eventData?.eventTime ?? "")}
           </p>
           <span className="text-md font-semibold text-gray-90">
             {placeName ?? (isMapView ? "역 주변 카페 보러가기" : "장소를 확정해주세요")}

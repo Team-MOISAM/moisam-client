@@ -1,14 +1,22 @@
 import { useLogout } from "../hooks";
 import LogoutIcon from "@/assets/icon/logout.svg";
+import { useEventStore } from "@/shared/stores";
 import { createGtagHandler } from "@/shared/utils";
 
 export const Logout = () => {
   const { mutate } = useLogout();
+  const clearEventData = useEventStore(state => state.clearEventData);
 
-  const handleClick = createGtagHandler("log_out", { 
-    prev_page_url: document.referrer || "direct" }, () => {
-    mutate();
-  });
+  const handleClick = createGtagHandler(
+    "log_out",
+    {
+      prev_page_url: document.referrer || "direct",
+    },
+    () => {
+      clearEventData();
+      mutate();
+    }
+  );
 
   return (
     <button
