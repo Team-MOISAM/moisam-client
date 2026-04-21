@@ -4,6 +4,7 @@ import { SnapHeader } from "./SnapHeader";
 import { SnapContent } from "./SnapContent";
 import { SnapBottomSheetFloating } from "./SnapBottomSheetFloating";
 import { useSnapPointDrag } from "@/shared/hooks";
+import { SnapSelector } from "./SnapSelector";
 
 interface BottomSheetProps {
   children: React.ReactNode;
@@ -71,3 +72,4 @@ export const SnapBottomSheet = ({
 SnapBottomSheet.Header = SnapHeader;
 SnapBottomSheet.Content = SnapContent;
 SnapBottomSheet.Floating = SnapBottomSheetFloating;
+SnapBottomSheet.Selector = SnapSelector;

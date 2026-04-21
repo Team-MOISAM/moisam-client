@@ -154,7 +154,7 @@ export const SnapBottomSheetFloating = () => {
   };
 
   return (
-    <div className="absolute -top-[114px] right-5">
+    <div className="absolute -top-[160px] right-5">
       <div className="flex flex-col gap-[7px]">
         <button className="w-11 h-11 p-[10px] rounded-full shadow-bt01 bg-white">
           <img src={Share} alt="share" onClick={handleShareClick} className="w-6 h-6" />

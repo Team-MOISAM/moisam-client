@@ -157,7 +157,7 @@ export const EventNameStep = ({
     <div className="flex flex-col h-full">
       <div className="flex-1 px-4">
         <div className="flex flex-col gap-6">
-          <PlainHeader onBack={() => navigate(-1)} isEdit={isEdit} title="모임 생성" />
+          <PlainHeader onBack={() => navigate(-1)} isEdit={false} title="모임 생성" />
           <p className="text-gray-90 text-xxl font-bold leading-normal">
             <span className="text-sub-sub">어떤 모임인가요?</span>
             <br />

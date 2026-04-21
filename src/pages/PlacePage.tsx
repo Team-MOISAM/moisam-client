@@ -5,14 +5,19 @@ import LoadingSpinner from "@/shared/ui/LoadingSpinner";
 import { MeetPointCard } from "@/shared/ui/MeetPointCard";
 import { PlainHeader } from "@/widgets/headers";
 import { Helmet } from "react-helmet-async";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useEventStore, useUserStore } from "@/shared/stores";
 import { PointChip } from "@/shared/ui";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { MeetingPointRouteGroup } from "@/shared/model";
 
 const PlacePage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const currentSubwayId = Number(searchParams.get("subwayId"));
+  const querySubwayId = Number.isNaN(currentSubwayId) ? null : currentSubwayId;
+
   const eventData = useEventStore(state => state.eventData);
   const setEventData = useEventStore(state => state.setEventData);
   const meetingPointData = useEventStore(state => state.meetingPointData);
@@ -21,11 +26,13 @@ const PlacePage = () => {
   const { data: fetchedEventData, isLoading: isEventLoading, isError: isEventError } = useEventRoutes();
 
   const resolvedEventData = eventData ?? fetchedEventData;
+  const meetingPointOptions: MeetingPointRouteGroup[] = useMemo(
+    () => (resolvedEventData ? [resolvedEventData.coordinate, resolvedEventData.popularity] : []),
+    [resolvedEventData]
+  );
 
   // 선택된 지하철역 ID 상태 관리 - meetingPointData에서 초기값 설정
-  const [selectedSubwayId, setSelectedSubwayId] = useState<number>(
-    meetingPointData?.subwayId ?? eventData?.coordinate?.subwayId ?? 0
-  );
+  const [selectedSubwayId, setSelectedSubwayId] = useState<number>(meetingPointData?.subwayId ?? 0);
 
   useEffect(() => {
     if (!fetchedEventData) return;
@@ -35,11 +42,25 @@ const PlacePage = () => {
   }, [fetchedEventData, meetingPointData?.subwayId, setEventData, setMeetingPointData]);
 
   useEffect(() => {
-    if (!resolvedEventData?.coordinate.routeResponse.length) return;
+    if (!meetingPointOptions.length) return;
 
-    const initialSubwayId = meetingPointData?.subwayId ?? resolvedEventData.coordinate.subwayId;
+    const hasQuerySubwayId = querySubwayId !== null;
+    const hasMatchingQuerySubwayId = hasQuerySubwayId
+      ? meetingPointOptions.some(option => option.subwayId === querySubwayId)
+      : false;
+    const initialSubwayId: number = hasMatchingQuerySubwayId
+      ? (querySubwayId as number)
+      : (meetingPointData?.subwayId ?? meetingPointOptions[0].subwayId);
+
     setSelectedSubwayId(initialSubwayId);
-  }, [resolvedEventData, meetingPointData?.subwayId, selectedSubwayId]);
+
+    if (hasMatchingQuerySubwayId) {
+      const matchedData = meetingPointOptions.find(option => option.subwayId === querySubwayId);
+      if (matchedData) {
+        setMeetingPointData(matchedData);
+      }
+    }
+  }, [meetingPointData?.subwayId, meetingPointOptions, querySubwayId, setMeetingPointData]);
 
   const { data, isLoading, isError } = useRecommendedPlaces(id ?? "", selectedSubwayId);
   // 데이터가 없으면 null 처리
@@ -54,7 +75,7 @@ const PlacePage = () => {
   // 지하철역 선택 핸들러
   const handleSubwaySelect = (subwayId: number) => {
     setSelectedSubwayId(subwayId);
-    const matchedData = resolvedEventData?.coordinate;
+    const matchedData = meetingPointOptions.find(option => option.subwayId === subwayId);
     if (matchedData) {
       setMeetingPointData(matchedData);
     }
@@ -98,16 +119,18 @@ const PlacePage = () => {
         </div>
         {/* 지하철역 선택 칩들 */}
         <div className="flex-none mt-3 px-5 flex gap-2 overflow-x-auto scrollbar-hidden">
-          <PointChip
-            key={resolvedEventData.coordinate.subwayId}
-            text={resolvedEventData.coordinate.meetingPoint.endStationName.replace(/역$/, "")}
-            isSelect={resolvedEventData.coordinate.subwayId === selectedSubwayId}
-            onClick={() => handleSubwaySelect(resolvedEventData.coordinate.subwayId)}
-            additionalEventData={{
-              cafeName: resolvedEventData.placeName || undefined,
-              currentUser: nickname || "unknown",
-            }}
-          />
+          {meetingPointOptions.map(option => (
+            <PointChip
+              key={option.subwayId}
+              text={option.meetingPoint.endStationName.replace(/역$/, "")}
+              isSelect={option.subwayId === selectedSubwayId}
+              onClick={() => handleSubwaySelect(option.subwayId)}
+              additionalEventData={{
+                cafeName: resolvedEventData.placeName || undefined,
+                currentUser: nickname || "unknown",
+              }}
+            />
+          ))}
         </div>
         <div className="flex-1 mt-3 min-h-0 relative">
           <RecommendList places={recommendedPlaces} subwayId={selectedSubwayId} />

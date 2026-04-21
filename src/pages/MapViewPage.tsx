@@ -10,7 +10,7 @@ import {
 } from "@/features/mapView/ui";
 import BackButton from "@/features/mapView/ui/common/BackButton";
 import { DefaultMap } from "@/features/mapView/ui/map/DefaultMap";
-import { useEventStore, useUserStore } from "@/shared/stores";
+import { PointType, useEventStore, useUserStore } from "@/shared/stores";
 import { MapHeader } from "@/widgets/headers";
 import { AxiosError } from "axios";
 import { setCookie } from "@/shared/utils";
@@ -30,6 +30,7 @@ const MapViewPage = () => {
   const setEventData = useEventStore(state => state.setEventData);
   const setMeetingPointData = useEventStore(state => state.setMeetingPointData);
   const isDetail = useEventStore(state => state.isDetail);
+  const selectedPointType = useEventStore(state => state.selectedPointType);
 
   const errorCode = (error as AxiosError<{ error: { code: string } }>)?.response?.data?.error?.code;
   const isInsufficientStartPoints = errorCode === "INSUFFICIENT_START_POINTS";
@@ -41,10 +42,11 @@ const MapViewPage = () => {
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const selectedSubwayId = data?.coordinate?.subwayId ?? 0;
+  const currentMeetingPoint = selectedPointType === PointType.HOT_PLACE ? data?.popularity : data?.coordinate;
+  const selectedSubwayId = currentMeetingPoint?.subwayId ?? data?.coordinate?.subwayId ?? 0;
   const shouldFetchConfirmedPlace = Boolean(id && data?.placeName && selectedSubwayId);
   const { data: placeListData } = useRecommendedPlaces(id ?? "", selectedSubwayId);
-  const confirmedPlace = shouldFetchConfirmedPlace ? placeListData?.data.confirmedPlaceResponse ?? null : null;
+  const confirmedPlace = shouldFetchConfirmedPlace ? (placeListData?.data.confirmedPlaceResponse ?? null) : null;
 
   const shouldTriggerMeetingPointLoadingModal = Boolean(
     (location.state as MapViewLocationState | null)?.showMeetingPointLoadingModal
@@ -91,8 +93,6 @@ const MapViewPage = () => {
   // 장소 추천 리스트 페이지로 이동하는 핸들러
   const goToPlace = () => {
     if (data) {
-      // 현재 선택된 중간지점 정보 가져오기
-      const currentMeetingPoint = data.coordinate;
       const participantCount = currentMeetingPoint?.routeResponse?.length ?? 0;
 
       gtagEvent("click_meet_here", {
@@ -106,7 +106,7 @@ const MapViewPage = () => {
       });
     }
 
-    navigate(`/place/${id}`);
+    navigate(`/place/${id}?subwayId=${selectedSubwayId}`);
   };
 
   // 확정한 장소 상세페이지로 이동하는 핸들러
@@ -131,18 +131,20 @@ const MapViewPage = () => {
   useEffect(() => {
     if (data) {
       setEventData(data);
-      // 현재 사용자의 routeResponse 찾기 (첫 번째 그룹에서 찾음)
-      const firstGroup = data.coordinate;
-      setMeetingPointData(firstGroup);
-      if (firstGroup?.routeResponse) {
-        const myRoute = firstGroup.routeResponse.find(route => route.isMe);
+      if (!currentMeetingPoint) {
+        return;
+      }
+
+      setMeetingPointData(currentMeetingPoint);
+      if (currentMeetingPoint.routeResponse) {
+        const myRoute = currentMeetingPoint.routeResponse.find(route => route.isMe);
         if (myRoute) {
           // startPointId를 쿠키에 저장
           setCookie("startPointId", myRoute.id, { path: "/", maxAge: 86400 });
         }
       }
     }
-  }, [data, setEventData, setMeetingPointData]);
+  }, [currentMeetingPoint, data, setEventData, setMeetingPointData]);
 
   const shouldShowLoadingModal =
     isLoadingModalOpen && (isLoading || (isFindMeetingPointLoading && !isMeetingPointAnimationComplete));
