@@ -174,13 +174,20 @@ export const SnapBottomSheetFloating = () => {
         <button className="w-11 h-11 p-[10px] rounded-full shadow-bt01 bg-white">
           <img src={AddStartPoint} alt="addStartPoint" onClick={handleAddMemberClick} className="w-6 h-6" />
         </button>
+
         {isOpenFullModal && (
           <Modal onClose={() => setIsOpenFullModal(false)}>
-            <div className="relative p-5 flex flex-col gap-4 text-gray-90">
-              <p className="text-md font-semibold">인원 초과</p>
-              <p className="text-sm font-medium">
-                모임에는 <span className="text-sub-sub">최대 8명</span>까지 추가할 수 있어요
-              </p>
+            <div className="overflow-hidden rounded-[20px]">
+              <div className="bg-gray-5 py-7 px-5 text-center">
+                <p className="text-md font-semibold text-gray-90">모임 인원이 다 찼어요</p>
+                <p className="mt-1 text-sm font-medium text-gray-40">모임 최대 인원은 8명이에요</p>
+              </div>
+              <button
+                type="button"
+                className="w-full py-3 bg-gray-90 text-white text-sm font-semibold"
+                onClick={() => setIsOpenFullModal(false)}>
+                확인
+              </button>
             </div>
           </Modal>
         )}
