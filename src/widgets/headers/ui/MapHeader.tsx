@@ -11,7 +11,7 @@ import Close from "@/assets/icon/close.svg";
 import DefaultProfile from "@/assets/icon/default-profile.svg";
 import EditGray from "@/assets/icon/editGray.svg";
 import Delete from "@/assets/icon/delete.svg";
-import PinEmpty from "@/assets/icon/pin_empty.svg";
+import Pin from "@/assets/icon/pin_empty.svg";
 import RightArrowGray from "@/assets/icon/rightArrowGray.svg";
 import { DeleteModal } from "@/shared/ui";
 
@@ -184,7 +184,7 @@ export const MapHeader = () => {
                     clearSelectedPointType();
                     navigate("/history");
                   }}>
-                  <img src={PinEmpty} alt="pin" className="w-5 h-5" />
+                  <img src={Pin} alt="pin" className="w-5 h-5" />
                   <p className="font-medium text-md text-gray-80">나의 모임</p>
                 </button>
               )}
