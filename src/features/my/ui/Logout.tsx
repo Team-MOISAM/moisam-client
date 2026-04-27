@@ -6,6 +6,8 @@ import { createGtagHandler } from "@/shared/utils";
 export const Logout = () => {
   const { mutate } = useLogout();
   const clearEventData = useEventStore(state => state.clearEventData);
+  const clearMeetingPointData = useEventStore(state => state.clearMeetingPointData);
+  const clearSelectedPointType = useEventStore(state => state.clearSelectedPointType);
 
   const handleClick = createGtagHandler(
     "log_out",
@@ -14,6 +16,8 @@ export const Logout = () => {
     },
     () => {
       clearEventData();
+      clearMeetingPointData();
+      clearSelectedPointType();
       mutate();
     }
   );

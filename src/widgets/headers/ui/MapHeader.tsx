@@ -29,13 +29,14 @@ export const MapHeader = () => {
   const eventData = useEventStore(state => state.eventData);
   const meetingPointData = useEventStore(state => state.meetingPointData);
   const clearEventData = useEventStore(state => state.clearEventData);
-
-  const eventName = eventData?.eventName ?? "";
-  const displayEventName = eventName.length > 7 ? `${eventName.slice(0, 7)}...` : eventName;
+  const clearMeetingPointData = useEventStore(state => state.clearMeetingPointData);
+  const clearSelectedPointType = useEventStore(state => state.clearSelectedPointType);
 
   // 로고 클릭 시 이벤트 핸들러
   const handleLogoClick = () => {
     clearEventData();
+    clearMeetingPointData();
+    clearSelectedPointType();
 
     if (profileImg) {
       navigate("/history");
@@ -102,14 +103,14 @@ export const MapHeader = () => {
 
   return (
     <>
-      <header className="flex justify-between items-center py-3 px-5 bg-white w-full z-[1001] relative">
+      <header className="flex items-center py-3 px-5 bg-white w-full z-[1001] relative">
         <button onClick={handleLogoClick}>
           <img src={Logo} alt="logo" className="w-[68px] h-4" />
         </button>
 
-        <div className="relative">
-          <button ref={titleRef} onClick={handleEventNameClick}>
-            <p className="font-semibold text-md text-gray-80">{displayEventName}</p>
+        <div className="relative flex-1 min-w-0 flex justify-center px-3">
+          <button ref={titleRef} onClick={handleEventNameClick} className="max-w-full">
+            <p className="font-semibold text-md text-gray-80 truncate max-w-full">{eventData?.eventName ?? ""}</p>
           </button>
           {isOpenEventTimeToggle && (
             <div className="absolute -bottom-9 left-1/2 -translate-x-1/2">
@@ -127,7 +128,7 @@ export const MapHeader = () => {
           )}
         </div>
 
-        <button onClick={handleMenuClick} className="flex items-center justify-end w-[68px] h-6">
+        <button onClick={handleMenuClick} className="flex items-center justify-end w-6 h-6">
           <img src={Menu} alt="menu" className="w-6 h-6" />
         </button>
       </header>
@@ -178,7 +179,11 @@ export const MapHeader = () => {
               {profileImg && (
                 <button
                   className="w-full h-12 flex items-center gap-2 text-gray-80 p-5"
-                  onClick={() => navigate("/history")}>
+                  onClick={() => {
+                    clearMeetingPointData();
+                    clearSelectedPointType();
+                    navigate("/history");
+                  }}>
                   <img src={PinEmpty} alt="pin" className="w-5 h-5" />
                   <p className="font-medium text-md text-gray-80">나의 모임</p>
                 </button>

@@ -15,7 +15,12 @@ export const GroupInfo = () => {
     <div className="mx-5 flex flex-col gap-4 mb-4">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-gray-80 text-lg font-bold pb-[2px]">{eventData.eventName}</h1>
+          <h1 className="text-gray-80 text-lg font-bold pb-[2px]">
+            {selectedPointType === PointType.MIDDLE
+              ? eventData.coordinate.meetingPoint.endStationName
+              : eventData.popularity.meetingPoint.endStationName}
+            역
+          </h1>
           <p className="text-gray-40 text-sm">평균 {formattedAverageTime} 소요</p>
         </div>
       </div>

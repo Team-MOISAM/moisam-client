@@ -1,4 +1,5 @@
 import LoadingSpinner from "@/shared/ui/LoadingSpinner";
+import { Modal } from "@/shared/ui";
 import { useEffect, useRef, useState } from "react";
 import { DefaultMap } from "./DefaultMap";
 import Lottie from "lottie-react";
@@ -10,11 +11,11 @@ interface LoadingModalProps {
 }
 
 const meetingPointLoadingContent = ["출발지 좌표 정리 중", "이동 거리 계산 중", "최적의 중간지점 탐색 중"];
-const STEP_START_DELAY = 3000;
-const STEP_COMPLETE_DELAY = 1500;
-const FINAL_TITLE_DELAY = 1500;
+const STEP_START_DELAY = 1000;
+const STEP_COMPLETE_DELAY = 500;
+const FINAL_TITLE_DELAY = 750;
 const MODAL_CLOSE_DELAY = 1000;
-const TITLE_TRANSITION_DURATION = 500;
+const TITLE_TRANSITION_DURATION = 300;
 
 export const LoadingModal = ({ isFindMeetingPointLoading, onMeetingPointAnimationComplete }: LoadingModalProps) => {
   const [activeStep, setActiveStep] = useState(0);
@@ -113,55 +114,56 @@ export const LoadingModal = ({ isFindMeetingPointLoading, onMeetingPointAnimatio
   };
 
   return (
-    <>
+    <Modal>
       <div className="absolute inset-0 overflow-hidden">
         <DefaultMap className="scale-105 blur-[10px]" />
         <div className="absolute inset-0 z-20 bg-white/25 backdrop-blur-[2px]" />
       </div>
-      <div className="relative z-[1002] flex h-[calc(100dvh-48px)] items-center justify-center px-6">
-        <div className="flex w-full flex-col items-center rounded-[32px] bg-white px-4 py-[38px] shadow-pin01">
-          <div className="w-full flex flex-col items-center justify-center gap-[6px] text-center">
-            <div
-              className={`flex w-full flex-col items-center justify-center gap-[6px] transition-all duration-500 ease-in-out ${
-                isTitleVisible ? "translate-y-0 opacity-100" : "translate-y-1 opacity-0"
-              }`}>
-              <p className="font-semibold text-md text-gray-90">{title}</p>
-              {description ? <p className="font-medium text-sm text-gray-50">{description}</p> : null}
-            </div>
-          </div>
-          <div className="w-full mt-[30px]">
-            {isFindMeetingPointLoading && (
-              <div className="flex items-center justify-center overflow-hidden" style={{ width: "100%", height: 120 }}>
-                <Lottie
-                  animationData={LoadingAnimation}
-                  loop
-                  autoplay
-                  style={{ width: "100%", height: "100%", transform: "scale(1.8)" }}
-                />
-              </div>
-            )}
-            {isFindMeetingPointLoading ? (
-              <div className="relative w-full flex flex-col items-center justify-center gap-[18px] p-[10px]">
-                <div className="absolute top-[23px] left-[18px] border border-dashed border-gray-10 w-[1px] h-[65px]" />
-                {meetingPointLoadingContent.map((content, index) => (
-                  <div key={index} className="z-10 w-full flex items-center justify-start gap-2">
-                    <span className={`${getStepIconColor(index)} transition-colors duration-700 ease-in-out`}>
-                      <CircleCheckIcon />
-                    </span>
-                    <p
-                      className={`font-medium text-sm transition-colors duration-700 ease-in-out ${getStepTextColor(index)}`}>
-                      {content}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <LoadingSpinner />
-            )}
+      <div className="relative z-[1002] flex w-full flex-col items-center rounded-[32px] bg-white px-4 py-[38px] shadow-pin01">
+        <div
+          className={`flex w-full flex-col items-center justify-center overflow-hidden text-center transition-[height] duration-500 ease-in-out ${
+            description ? "h-[50px]" : "h-[24px]"
+          }`}>
+          <div
+            className={`flex w-full flex-col items-center justify-center gap-[6px] transition-all duration-500 ease-in-out ${
+              isTitleVisible ? "translate-y-0 opacity-100" : "translate-y-1 opacity-0"
+            }`}>
+            <p className="font-semibold text-md text-gray-90">{title}</p>
+            {description ? <p className="font-medium text-sm text-gray-50">{description}</p> : null}
           </div>
         </div>
+        <div className="w-full mt-[30px]">
+          {isFindMeetingPointLoading && (
+            <div className="flex items-center justify-center overflow-hidden" style={{ width: "100%", height: 120 }}>
+              <Lottie
+                animationData={LoadingAnimation}
+                loop
+                autoplay
+                style={{ width: "100%", height: "100%", transform: "scale(1.8)" }}
+              />
+            </div>
+          )}
+          {isFindMeetingPointLoading ? (
+            <div className="relative w-full flex flex-col items-center justify-center gap-[18px] p-[10px]">
+              <div className="absolute top-[23px] left-[18px] border border-dashed border-gray-10 w-[1px] h-[65px]" />
+              {meetingPointLoadingContent.map((content, index) => (
+                <div key={index} className="z-10 w-full flex items-center justify-start gap-2">
+                  <span className={`${getStepIconColor(index)} transition-colors duration-700 ease-in-out`}>
+                    <CircleCheckIcon />
+                  </span>
+                  <p
+                    className={`font-medium text-sm transition-colors duration-700 ease-in-out ${getStepTextColor(index)}`}>
+                    {content}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <LoadingSpinner />
+          )}
+        </div>
       </div>
-    </>
+    </Modal>
   );
 };
 

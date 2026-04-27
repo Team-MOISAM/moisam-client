@@ -46,6 +46,8 @@ export const LocationStep = ({
   const startPointId = useEventStore(state => state.detailEventData?.id);
   const detailEventData = useEventStore(state => state.detailEventData);
   const clearEventData = useEventStore(state => state.clearEventData);
+  const clearMeetingPointData = useEventStore(state => state.clearMeetingPointData);
+  const clearSelectedPointType = useEventStore(state => state.clearSelectedPointType);
   const email = useUserStore(state => state.email);
   const nickname = useUserStore(state => state.nickname);
   const isLoggedIn = nickname !== null && nickname !== "";
@@ -224,6 +226,8 @@ export const LocationStep = ({
       } finally {
         setIsSubmitting(false);
         clearEventData();
+        clearMeetingPointData();
+        clearSelectedPointType();
       }
     }
   };

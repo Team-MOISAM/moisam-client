@@ -17,8 +17,10 @@ interface EventStoreState {
   setDetailEventData: (data: RouteResponse) => void;
   meetingPointData: MeetingPointRouteGroup | null;
   setMeetingPointData: (data: MeetingPointRouteGroup) => void;
+  clearMeetingPointData: () => void;
   selectedPointType: PointType;
   setSelectedPointType: (pointType: PointType) => void;
+  clearSelectedPointType: () => void;
 }
 
 export const useEventStore = create<EventStoreState>()(
@@ -32,7 +34,9 @@ export const useEventStore = create<EventStoreState>()(
     setDetailEventData: data => set({ detailEventData: data }),
     meetingPointData: null,
     setMeetingPointData: data => set({ meetingPointData: data }),
+    clearMeetingPointData: () => set({ meetingPointData: null }),
     selectedPointType: PointType.MIDDLE,
     setSelectedPointType: pointType => set({ selectedPointType: pointType }),
+    clearSelectedPointType: () => set({ selectedPointType: PointType.MIDDLE }),
   }))
 );

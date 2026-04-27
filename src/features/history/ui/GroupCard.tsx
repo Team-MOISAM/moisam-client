@@ -43,14 +43,14 @@ export const GroupCard = ({
 
   return (
     <section className="flex flex-col px-5 pb-5 pt-4 gap-1 border-b border-b-gray-5">
-      <div className="cursor-pointer" onClick={handleClick}>
-        <span className="text-md font-semibold text-gray-90 overflow-hidden text-ellipsis whitespace-nowrap">
+      <div className="cursor-pointer w-full min-w-0" onClick={handleClick}>
+        <span className="block w-full min-w-0 truncate text-md font-semibold text-gray-90">
           {eventName}
         </span>
         {participatedPeopleCount > 1 && (
-          <div className="flex gap-1 items-center text-sm font-medium text-gray-40 overflow-hidden text-ellipsis whitespace-nowrap">
+          <div className="flex w-full min-w-0 items-center gap-1 overflow-hidden whitespace-nowrap text-sm font-medium text-gray-40">
             <img src={Pin} alt="pin" className="w-4 h-4" />
-            <p>{middlePointName}역</p>
+            <p className="truncate">{middlePointName}역</p>
           </div>
         )}
       </div>

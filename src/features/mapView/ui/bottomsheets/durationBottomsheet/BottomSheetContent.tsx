@@ -197,9 +197,9 @@ export const FixedButtons = () => {
       <div className="flex flex-row gap-2">
         {eventData ? (
           <button
-            className="flex flex-row items-center justify-center gap-2 rounded-2xl h-[52px] font-semibold text-lg w-full bg-sub-sub text-white"
+            className="flex flex-row items-center justify-center gap-[6px] rounded-2xl h-[52px] font-semibold text-lg w-full bg-sub-sub text-white"
             onClick={handlePlaceViewClick}>
-            <img src={Pin} alt="pin" className="w-[27px] h-4" />
+            <img src={Pin} alt="pin" className="w-[18px] h-[18px]" />
             <span>역 근처 장소 보기</span>
           </button>
         ) : (

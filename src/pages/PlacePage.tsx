@@ -8,7 +8,7 @@ import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useEventStore, useUserStore } from "@/shared/stores";
 import { PointChip } from "@/shared/ui";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MeetingPointRouteGroup } from "@/shared/model";
 
 const PlacePage = () => {
@@ -30,6 +30,7 @@ const PlacePage = () => {
     () => (resolvedEventData ? [resolvedEventData.coordinate, resolvedEventData.popularity] : []),
     [resolvedEventData]
   );
+  const initialMeetingPointSubwayIdRef = useRef<number | null>(meetingPointData?.subwayId ?? null);
 
   // 선택된 지하철역 ID 상태 관리 - meetingPointData에서 초기값 설정
   const [selectedSubwayId, setSelectedSubwayId] = useState<number>(meetingPointData?.subwayId ?? 0);
@@ -39,7 +40,7 @@ const PlacePage = () => {
 
     setEventData(fetchedEventData);
     setMeetingPointData(fetchedEventData.coordinate);
-  }, [fetchedEventData, meetingPointData?.subwayId, setEventData, setMeetingPointData]);
+  }, [fetchedEventData, setEventData, setMeetingPointData]);
 
   useEffect(() => {
     if (!meetingPointOptions.length) return;
@@ -48,19 +49,22 @@ const PlacePage = () => {
     const hasMatchingQuerySubwayId = hasQuerySubwayId
       ? meetingPointOptions.some(option => option.subwayId === querySubwayId)
       : false;
+    const hasMatchingMeetingPointSubwayId = initialMeetingPointSubwayIdRef.current !== null
+      ? meetingPointOptions.some(option => option.subwayId === initialMeetingPointSubwayIdRef.current)
+      : false;
     const initialSubwayId: number = hasMatchingQuerySubwayId
       ? (querySubwayId as number)
-      : (meetingPointData?.subwayId ?? meetingPointOptions[0].subwayId);
+      : hasMatchingMeetingPointSubwayId
+        ? (initialMeetingPointSubwayIdRef.current as number)
+        : meetingPointOptions[0].subwayId;
+    const matchedData = meetingPointOptions.find(option => option.subwayId === initialSubwayId);
 
     setSelectedSubwayId(initialSubwayId);
 
-    if (hasMatchingQuerySubwayId) {
-      const matchedData = meetingPointOptions.find(option => option.subwayId === querySubwayId);
-      if (matchedData) {
-        setMeetingPointData(matchedData);
-      }
+    if (matchedData) {
+      setMeetingPointData(matchedData);
     }
-  }, [meetingPointData?.subwayId, meetingPointOptions, querySubwayId, setMeetingPointData]);
+  }, [meetingPointOptions, querySubwayId, setMeetingPointData]);
 
   const { data, isLoading, isError } = useRecommendedPlaces(id ?? "", selectedSubwayId);
   // 데이터가 없으면 null 처리

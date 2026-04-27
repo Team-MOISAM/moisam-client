@@ -4,9 +4,15 @@ import { Portal } from "./Portal";
 interface ModalProps {
   children: React.ReactNode;
   onClose?: () => void;
+  overlayClassName?: string;
+  contentClassName?: string;
 }
 
-export const Modal = ({ children, onClose }: ModalProps) => {
+const defaultOverlayClassName =
+  "fixed top-0 left-1/2 -translate-x-1/2 max-w-[600px] w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-[1001]";
+const defaultContentClassName = "w-[264px] bg-white shadow-pin01 rounded-[20px]";
+
+export const Modal = ({ children, onClose, overlayClassName, contentClassName }: ModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -25,8 +31,8 @@ export const Modal = ({ children, onClose }: ModalProps) => {
 
   return (
     <Portal>
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 max-w-[600px] w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-[1001]">
-        <div ref={modalRef} className="w-[264px] bg-white shadow-pin01 rounded-[20px]">
+      <div className={overlayClassName ?? defaultOverlayClassName}>
+        <div ref={modalRef} className={contentClassName ?? defaultContentClassName}>
           {children}
         </div>
       </div>
