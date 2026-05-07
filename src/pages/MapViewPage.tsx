@@ -25,6 +25,8 @@ interface MapViewLocationState {
   showMeetingPointLoadingModal?: boolean;
 }
 
+type LoadingModalPhase = "startPoint" | "meetingPoint" | null;
+
 const MapViewPage = () => {
   const { data, isLoading, isError, error } = useEventRoutes();
   const setEventData = useEventStore(state => state.setEventData);
@@ -52,36 +54,33 @@ const MapViewPage = () => {
     (location.state as MapViewLocationState | null)?.showMeetingPointLoadingModal
   );
 
-  const [isLoadingModalOpen, setIsLoadingModalOpen] = useState(shouldTriggerMeetingPointLoadingModal);
-  const [isFindMeetingPointLoading, setIsFindMeetingPointLoading] = useState(false);
-  const [isMeetingPointAnimationComplete, setIsMeetingPointAnimationComplete] = useState(false);
+  const [loadingModalPhase, setLoadingModalPhase] = useState<LoadingModalPhase>(
+    shouldTriggerMeetingPointLoadingModal ? "startPoint" : null
+  );
 
   useEffect(() => {
     if (!shouldTriggerMeetingPointLoadingModal) {
       return;
     }
 
-    setIsLoadingModalOpen(true);
-    setIsFindMeetingPointLoading(true);
-    setIsMeetingPointAnimationComplete(false);
+    setLoadingModalPhase("startPoint");
     navigate(location.pathname, { replace: true, state: null });
   }, [location.pathname, navigate, shouldTriggerMeetingPointLoadingModal]);
 
   useEffect(() => {
-    if (!isLoadingModalOpen || isLoading) {
+    if (loadingModalPhase !== "startPoint" || isLoading) {
       return;
     }
 
     // 최초 1인 출발지 추가 상황: 출발지 추가 로딩만 보여주고 종료
     if (isInsufficientStartPoints) {
-      setIsFindMeetingPointLoading(false);
-      setIsLoadingModalOpen(false);
+      setLoadingModalPhase(null);
       return;
     }
 
     // 출발지가 2인 이상이면 중간지점 탐색 로딩 애니메이션으로 전환
-    setIsFindMeetingPointLoading(true);
-  }, [isInsufficientStartPoints, isLoading, isLoadingModalOpen]);
+    setLoadingModalPhase("meetingPoint");
+  }, [isInsufficientStartPoints, isLoading, loadingModalPhase]);
 
   // TODO: 카카오톡 유입 로깅 - source 파라미터 추출 후 로깅 API 호출
 
@@ -146,8 +145,8 @@ const MapViewPage = () => {
     }
   }, [currentMeetingPoint, data, setEventData, setMeetingPointData]);
 
-  const shouldShowLoadingModal =
-    isLoadingModalOpen && (isLoading || (isFindMeetingPointLoading && !isMeetingPointAnimationComplete));
+  const shouldShowLoadingModal = loadingModalPhase !== null;
+  const isFindMeetingPointLoading = loadingModalPhase === "meetingPoint";
 
   return (
     <>
@@ -159,10 +158,7 @@ const MapViewPage = () => {
         {shouldShowLoadingModal ? (
           <LoadingModal
             isFindMeetingPointLoading={isFindMeetingPointLoading}
-            onMeetingPointAnimationComplete={() => {
-              setIsMeetingPointAnimationComplete(true);
-              setIsLoadingModalOpen(false);
-            }}
+            onMeetingPointAnimationComplete={() => setLoadingModalPhase(null)}
           />
         ) : isError ? (
           <>
