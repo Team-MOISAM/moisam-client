@@ -14,6 +14,7 @@ import Delete from "@/assets/icon/delete.svg";
 import Pin from "@/assets/icon/pin_empty.svg";
 import RightArrowGray from "@/assets/icon/rightArrowGray.svg";
 import { DeleteModal } from "@/shared/ui";
+import { useDeleteEvent } from "@/features/mapView/hooks";
 
 export const MapHeader = () => {
   const navigate = useNavigate();
@@ -31,6 +32,8 @@ export const MapHeader = () => {
   const clearEventData = useEventStore(state => state.clearEventData);
   const clearMeetingPointData = useEventStore(state => state.clearMeetingPointData);
   const clearSelectedPointType = useEventStore(state => state.clearSelectedPointType);
+
+  const { mutate: deleteEvent } = useDeleteEvent();
 
   // 로고 클릭 시 이벤트 핸들러
   const handleLogoClick = () => {
@@ -98,7 +101,17 @@ export const MapHeader = () => {
       place_name: eventData.placeName ?? "none",
     });
 
+    setIsSideBarOpen(false);
     setOpenDeleteModal(true);
+  };
+
+  const handleDelete = () => {
+    if (!id) return;
+    deleteEvent(id, {
+      onSuccess: () => {
+        setOpenDeleteModal(false);
+      },
+    });
   };
 
   return (
@@ -166,12 +179,7 @@ export const MapHeader = () => {
                 <p className="font-medium text-md text-gray-80">현재 모임 수정</p>
               </button>
 
-              <button
-                className="w-full h-12 flex items-center gap-2 text-gray-80 p-5"
-                onClick={() => {
-                  setOpenDeleteModal(true);
-                  setIsSideBarOpen(false);
-                }}>
+              <button className="w-full h-12 flex items-center gap-2 text-gray-80 p-5" onClick={handleDeleteClick}>
                 <img src={Delete} alt="delete" className="w-5 h-5" />
                 <p className="font-medium text-md text-gray-80">현재 모임 삭제</p>
               </button>
@@ -200,7 +208,7 @@ export const MapHeader = () => {
           onClose={() => {
             setOpenDeleteModal(false);
           }}
-          onDelete={handleDeleteClick}
+          onDelete={handleDelete}
         />
       )}
     </>

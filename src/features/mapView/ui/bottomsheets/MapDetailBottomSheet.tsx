@@ -21,7 +21,6 @@ export const MapDetailBottomSheet = () => {
           totalTime={detailEventData.totalTime}
           startPoint={detailEventData.startName}
           endPoint={meetingPointData?.meetingPoint?.endStationName || ""}
-          isMe={detailEventData.isMe}
         />
         <SnapBottomSheet.Content>
           {detailEventData.totalTime > 0 &&

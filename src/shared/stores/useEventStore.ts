@@ -13,8 +13,10 @@ interface EventStoreState {
   clearEventData: () => void;
   isDetail: boolean;
   toggleDetail: () => void;
+  setIsDetail: (isDetail: boolean) => void;
   detailEventData: RouteResponse | null;
   setDetailEventData: (data: RouteResponse) => void;
+  clearDetailEventData: () => void;
   meetingPointData: MeetingPointRouteGroup | null;
   setMeetingPointData: (data: MeetingPointRouteGroup) => void;
   clearMeetingPointData: () => void;
@@ -30,8 +32,10 @@ export const useEventStore = create<EventStoreState>()(
     clearEventData: () => set({ eventData: null }),
     isDetail: false,
     toggleDetail: () => set(state => ({ isDetail: !state.isDetail })),
+    setIsDetail: isDetail => set({ isDetail }),
     detailEventData: null,
     setDetailEventData: data => set({ detailEventData: data }),
+    clearDetailEventData: () => set({ detailEventData: null }),
     meetingPointData: null,
     setMeetingPointData: data => set({ meetingPointData: data }),
     clearMeetingPointData: () => set({ meetingPointData: null }),

@@ -18,9 +18,7 @@ export const useCreateStartPoint = (eventIdParam: string | null) => {
       }
 
       // 페이지 이동
-      navigate(`/mapView/${eventId}`, {
-        state: { showMeetingPointLoadingModal: true },
-      });
+      navigate(`/mapView/${eventId}`);
     },
     onError: error => {
       console.error("모임 생성 실패", error);

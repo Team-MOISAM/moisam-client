@@ -22,6 +22,7 @@ export const BottomSheetContent = () => {
         {meetingPointData?.routeResponse?.map(user => (
           <UserCard
             key={user.id}
+            startPointId={user.id}
             isTransit={user.isTransit}
             name={user.nickname}
             startStation={user.startName}
