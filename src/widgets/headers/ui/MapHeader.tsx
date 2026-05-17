@@ -141,7 +141,7 @@ export const MapHeader = () => {
           )}
         </div>
 
-        <button onClick={handleMenuClick} className="flex items-center justify-end w-6 h-6">
+        <button onClick={handleMenuClick} className="flex items-center justify-end w-[68px] h-6">
           <img src={Menu} alt="menu" className="w-6 h-6" />
         </button>
       </header>

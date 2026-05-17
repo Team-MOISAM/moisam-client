@@ -115,7 +115,7 @@ export const UserCard = ({ startPointId, isTransit, name, startStation, totalTim
             e.stopPropagation();
             setIsDropdownOpen(prev => !prev);
           }}>
-          <img src={Edit} alt="edit" className="w-4 h-4" />
+          <img src={Edit} alt="edit" className="w-[18px] h-[18px]" />
         </button>
         {isDropdownOpen && <Dropdown handleEdit={handleEdit} handleDelete={handleDeleteClick} isDetail={true} />}
         <button
