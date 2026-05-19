@@ -1,4 +1,3 @@
-import LoadingSpinner from "@/shared/ui/LoadingSpinner";
 import { Modal } from "@/shared/ui";
 import { useEffect, useRef, useState } from "react";
 import { DefaultMap } from "./DefaultMap";
@@ -6,7 +5,6 @@ import Lottie from "lottie-react";
 import LoadingAnimation from "@/assets/lottie/loading_spinner.json";
 
 interface LoadingModalProps {
-  isFindMeetingPointLoading: boolean;
   onMeetingPointAnimationComplete?: () => void;
 }
 
@@ -17,7 +15,7 @@ const FINAL_TITLE_DELAY = 750;
 const MODAL_CLOSE_DELAY = 1000;
 const TITLE_TRANSITION_DURATION = 300;
 
-export const LoadingModal = ({ isFindMeetingPointLoading, onMeetingPointAnimationComplete }: LoadingModalProps) => {
+export const LoadingModal = ({ onMeetingPointAnimationComplete }: LoadingModalProps) => {
   const [activeStep, setActiveStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [title, setTitle] = useState("중간 지점을 찾고 있어요!");
@@ -30,15 +28,6 @@ export const LoadingModal = ({ isFindMeetingPointLoading, onMeetingPointAnimatio
   }, [onMeetingPointAnimationComplete]);
 
   useEffect(() => {
-    if (!isFindMeetingPointLoading) {
-      setActiveStep(0);
-      setCompletedSteps([]);
-      setTitle("출발지 추가 중이에요");
-      setDescription("잠시만 기다려주세요");
-      setIsTitleVisible(true);
-      return;
-    }
-
     setActiveStep(0);
     setCompletedSteps([]);
     setTitle("중간 지점을 찾고 있어요!");
@@ -91,7 +80,7 @@ export const LoadingModal = ({ isFindMeetingPointLoading, onMeetingPointAnimatio
     return () => {
       timers.forEach(timer => window.clearTimeout(timer));
     };
-  }, [isFindMeetingPointLoading]);
+  }, []);
 
   const getStepIconColor = (index: number) => {
     if (completedSteps.includes(index)) {
@@ -133,34 +122,28 @@ export const LoadingModal = ({ isFindMeetingPointLoading, onMeetingPointAnimatio
           </div>
         </div>
         <div className="w-full mt-[30px]">
-          {isFindMeetingPointLoading && (
-            <div className="flex items-center justify-center overflow-hidden" style={{ width: "100%", height: 120 }}>
-              <Lottie
-                animationData={LoadingAnimation}
-                loop
-                autoplay
-                style={{ width: "100%", height: "100%", transform: "scale(1.8)" }}
-              />
-            </div>
-          )}
-          {isFindMeetingPointLoading ? (
-            <div className="relative w-full flex flex-col items-center justify-center gap-[18px] p-[10px]">
-              <div className="absolute top-[23px] left-[18px] border border-dashed border-gray-10 w-[1px] h-[65px]" />
-              {meetingPointLoadingContent.map((content, index) => (
-                <div key={index} className="z-10 w-full flex items-center justify-start gap-2">
-                  <span className={`${getStepIconColor(index)} transition-colors duration-700 ease-in-out`}>
-                    <CircleCheckIcon />
-                  </span>
-                  <p
-                    className={`font-medium text-sm transition-colors duration-700 ease-in-out ${getStepTextColor(index)}`}>
-                    {content}
-                  </p>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <LoadingSpinner />
-          )}
+          <div className="flex items-center justify-center overflow-hidden" style={{ width: "100%", height: 120 }}>
+            <Lottie
+              animationData={LoadingAnimation}
+              loop
+              autoplay
+              style={{ width: "100%", height: "100%", transform: "scale(1.8)" }}
+            />
+          </div>
+          <div className="relative w-full flex flex-col items-center justify-center gap-[18px] p-[10px]">
+            <div className="absolute top-[23px] left-[18px] border border-dashed border-gray-10 w-[1px] h-[65px]" />
+            {meetingPointLoadingContent.map((content, index) => (
+              <div key={index} className="z-10 w-full flex items-center justify-start gap-2">
+                <span className={`${getStepIconColor(index)} transition-colors duration-700 ease-in-out`}>
+                  <CircleCheckIcon />
+                </span>
+                <p
+                  className={`font-medium text-sm transition-colors duration-700 ease-in-out ${getStepTextColor(index)}`}>
+                  {content}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </Modal>

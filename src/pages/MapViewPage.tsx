@@ -25,7 +25,7 @@ interface MapViewLocationState {
   showMeetingPointLoadingModal?: boolean;
 }
 
-type LoadingModalPhase = "startPoint" | "meetingPoint" | null;
+type LoadingModalPhase = "meetingPoint" | null;
 
 const MapViewPage = () => {
   const { data, isLoading, isError, error } = useEventRoutes();
@@ -55,7 +55,7 @@ const MapViewPage = () => {
   );
 
   const [loadingModalPhase, setLoadingModalPhase] = useState<LoadingModalPhase>(
-    shouldTriggerMeetingPointLoadingModal ? "startPoint" : null
+    shouldTriggerMeetingPointLoadingModal ? "meetingPoint" : null
   );
 
   useEffect(() => {
@@ -63,23 +63,18 @@ const MapViewPage = () => {
       return;
     }
 
-    setLoadingModalPhase("startPoint");
+    setLoadingModalPhase("meetingPoint");
     navigate(location.pathname, { replace: true, state: null });
   }, [location.pathname, navigate, shouldTriggerMeetingPointLoadingModal]);
 
   useEffect(() => {
-    if (loadingModalPhase !== "startPoint" || isLoading) {
+    if (loadingModalPhase !== "meetingPoint" || isLoading) {
       return;
     }
 
-    // 최초 1인 출발지 추가 상황: 출발지 추가 로딩만 보여주고 종료
     if (isInsufficientStartPoints) {
       setLoadingModalPhase(null);
-      return;
     }
-
-    // 출발지가 2인 이상이면 중간지점 탐색 로딩 애니메이션으로 전환
-    setLoadingModalPhase("meetingPoint");
   }, [isInsufficientStartPoints, isLoading, loadingModalPhase]);
 
   // TODO: 카카오톡 유입 로깅 - source 파라미터 추출 후 로깅 API 호출
@@ -146,7 +141,6 @@ const MapViewPage = () => {
   }, [currentMeetingPoint, data, setEventData, setMeetingPointData]);
 
   const shouldShowLoadingModal = loadingModalPhase !== null;
-  const isFindMeetingPointLoading = loadingModalPhase === "meetingPoint";
 
   return (
     <>
@@ -156,10 +150,7 @@ const MapViewPage = () => {
       <div className="relative w-full h-screen overflow-hidden">
         {!isDetail && <MapHeader />}
         {shouldShowLoadingModal ? (
-          <LoadingModal
-            isFindMeetingPointLoading={isFindMeetingPointLoading}
-            onMeetingPointAnimationComplete={() => setLoadingModalPhase(null)}
-          />
+          <LoadingModal onMeetingPointAnimationComplete={() => setLoadingModalPhase(null)} />
         ) : isError ? (
           <>
             {<DefaultMap />}
